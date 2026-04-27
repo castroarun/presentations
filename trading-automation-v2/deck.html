@@ -669,34 +669,50 @@
     const TOTAL_MINS = 375;
     const START_PRICE = 25000;
 
+    // Deterministic RNG so every reload shows the same day
+    function mulberry32(seed) {
+      return function () {
+        seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    // Designed-for-clarity day: tight OR forms, then a clean LONG breakout
+    // that runs all day with one shallow pullback that stays above SL.
     function generatePath() {
+      const rand = mulberry32(7);
       const path = [START_PRICE];
       let price = START_PRICE;
-      let drift = 0;
       for (let i = 1; i < TOTAL_MINS; i++) {
-        // Phase-based behavior
-        let phaseDrift = 0;
-        if (i < 30) {
-          phaseDrift = 0;       // chop in the open
-        } else if (i < 90) {
-          phaseDrift = 0.08;    // mild upward drift mid-morning
-        } else if (i < 180) {
-          phaseDrift = -0.04;   // midday consolidation
-        } else if (i < 280) {
-          phaseDrift = 0.18;    // afternoon trend
-        } else {
-          phaseDrift = 0.05;    // taper into close
+        let drift, noise;
+        if (i < 20) {           // OR formation: tight oscillation, ~50pt range
+          drift = 0;
+          noise = 5;
+        } else if (i < 55) {    // Pre-breakout coil: gentle upward pressure
+          drift = 0.12;
+          noise = 4;
+        } else if (i < 85) {    // The breakout: punch through OR high
+          drift = 0.85;
+          noise = 6;
+        } else if (i < 200) {   // Post-breakout trend: steady uptrend
+          drift = 0.22;
+          noise = 6;
+        } else if (i < 260) {   // Shallow pullback: profit-taking, stays above SL
+          drift = -0.18;
+          noise = 5;
+        } else {                // Afternoon continuation into the close
+          drift = 0.28;
+          noise = 6;
         }
-        drift = drift * 0.9 + phaseDrift * 0.1;
-        const noise = (Math.random() - 0.5) * 24;
-        price = price + drift + noise;
+        const move = drift + (rand() - 0.5) * noise * 2;
+        price = price + move;
         path.push(price);
       }
       return path;
     }
 
-    // Use a fixed seed-ish pattern for reproducibility across reloads
-    // (purely visual, no real seeding — close enough for inspiration)
     const PRICES = generatePath();
 
     const minToTime = (m) => {
@@ -788,38 +804,55 @@
       const orLow = Math.min(...orPrices);
       const orRange = orHigh - orLow;
 
-      // Find first breakout after orEnd
-      let signal = null; // { side, idx, entry, sl, target }
+      // Find first breakout — scan the whole rest of the day so the exit
+      // can be precomputed regardless of where the scrub currently sits.
+      let signal = null; // { side, idx, entry, sl }
       if (orVisible) {
-        for (let i = orEnd + 1; i <= state.idx; i++) {
-          if (PRICES[i] > orHigh && !signal) {
+        for (let i = orEnd + 1; i < TOTAL_MINS; i++) {
+          if (PRICES[i] > orHigh) {
             const slDist = orRange * (state.slPctOfRange / 100);
-            signal = {
-              side: 'long',
-              idx: i,
-              entry: PRICES[i],
-              sl: PRICES[i] - slDist,
-            };
+            signal = { side: 'long', idx: i, entry: PRICES[i], sl: PRICES[i] - slDist };
             break;
           }
-          if (PRICES[i] < orLow && !signal) {
+          if (PRICES[i] < orLow) {
             const slDist = orRange * (state.slPctOfRange / 100);
-            signal = {
-              side: 'short',
-              idx: i,
-              entry: PRICES[i],
-              sl: PRICES[i] + slDist,
-            };
+            signal = { side: 'short', idx: i, entry: PRICES[i], sl: PRICES[i] + slDist };
             break;
           }
         }
       }
 
-      // P&L (mark-to-market)
+      // Find exit — first SL touch after entry, otherwise close at end-of-day.
+      let exit = null; // { idx, price, reason: 'sl' | 'eod' }
+      if (signal) {
+        for (let i = signal.idx + 1; i < TOTAL_MINS; i++) {
+          if (signal.side === 'long' && PRICES[i] <= signal.sl) {
+            exit = { idx: i, price: signal.sl, reason: 'sl' };
+            break;
+          }
+          if (signal.side === 'short' && PRICES[i] >= signal.sl) {
+            exit = { idx: i, price: signal.sl, reason: 'sl' };
+            break;
+          }
+        }
+        if (!exit) {
+          exit = { idx: TOTAL_MINS - 1, price: PRICES[TOTAL_MINS - 1], reason: 'eod' };
+        }
+      }
+
+      // P&L: mark-to-market until exit, locked-in after.
       let pnl = null;
+      let isClosed = false;
       if (signal && state.idx >= signal.idx) {
-        const cur = PRICES[state.idx];
-        pnl = signal.side === 'long' ? cur - signal.entry : signal.entry - cur;
+        if (state.idx >= exit.idx) {
+          isClosed = true;
+          pnl = signal.side === 'long'
+            ? exit.price - signal.entry
+            : signal.entry - exit.price;
+        } else {
+          const cur = PRICES[state.idx];
+          pnl = signal.side === 'long' ? cur - signal.entry : signal.entry - cur;
+        }
       }
 
       const dynamic = document.getElementById('dynamic');
@@ -847,14 +880,26 @@
         `;
       }
 
-      if (signal) {
+      if (signal && state.idx >= signal.idx) {
         const sx = xAt(signal.idx);
         const sy = yAt(signal.entry);
+        // SL line spans entry → exit (or end of chart if no exit yet visible)
+        const slEndX = exit ? xAt(Math.min(exit.idx, state.idx)) : xAt(state.idx);
         signalSvg += `
-          <line class="sl-line" x1="${sx}" y1="${yAt(signal.sl)}" x2="${VB_W - PAD.right}" y2="${yAt(signal.sl)}" />
-          <text class="sl-label" x="${VB_W - PAD.right + 6}" y="${yAt(signal.sl) + 3}">SL</text>
+          <line class="sl-line" x1="${sx}" y1="${yAt(signal.sl)}" x2="${slEndX}" y2="${yAt(signal.sl)}" />
+          <text class="sl-label" x="${slEndX + 6}" y="${yAt(signal.sl) + 3}">SL</text>
           <circle class="signal-marker ${signal.side}" cx="${sx}" cy="${sy}" r="6" />
         `;
+        // Exit marker — only render once scrub has reached or passed it
+        if (exit && state.idx >= exit.idx) {
+          const ex = xAt(exit.idx);
+          const ey = yAt(exit.price);
+          const exitColor = exit.reason === 'sl' ? 'var(--red)' : 'var(--gray)';
+          signalSvg += `
+            <line x1="${ex - 5}" y1="${ey - 5}" x2="${ex + 5}" y2="${ey + 5}" stroke="${exitColor}" stroke-width="2" />
+            <line x1="${ex - 5}" y1="${ey + 5}" x2="${ex + 5}" y2="${ey - 5}" stroke="${exitColor}" stroke-width="2" />
+          `;
+        }
       }
 
       dynamic.innerHTML = `
@@ -879,10 +924,19 @@
         sigEl.textContent = orVisible ? 'no fire' : 'waiting';
         sigEl.classList.add('dim');
         sigTimeEl.textContent = orVisible ? 'inside range' : 'building OR';
+      } else if (state.idx < signal.idx) {
+        sigEl.textContent = 'no fire';
+        sigEl.classList.add('dim');
+        sigTimeEl.textContent = 'inside range';
       } else {
         sigEl.textContent = signal.side.toUpperCase();
         sigEl.classList.add(signal.side);
-        sigTimeEl.textContent = '@ ' + minToTime(signal.idx) + ' · ' + fmtPrice(signal.entry);
+        const subParts = ['@ ' + minToTime(signal.idx), fmtPrice(signal.entry)];
+        if (isClosed) {
+          const exitTag = exit.reason === 'sl' ? 'stopped' : 'closed eod';
+          subParts.push(exitTag + ' ' + minToTime(exit.idx));
+        }
+        sigTimeEl.textContent = subParts.join(' · ');
       }
 
       const pnlEl = $('pnl');
@@ -891,12 +945,13 @@
       if (pnl === null) {
         pnlEl.textContent = '—';
         pnlEl.classList.add('dim');
-        pnlPctEl.textContent = signal ? 'entry pending' : '—';
+        pnlPctEl.textContent = signal && state.idx >= signal.idx ? 'entry pending' : '—';
       } else {
         pnlEl.textContent = fmtSigned(pnl);
         pnlEl.classList.add(pnl >= 0 ? 'long' : 'short');
         const pct = (pnl / signal.entry) * 100;
-        pnlPctEl.textContent = fmtSigned(pct) + '%';
+        const pctStr = fmtSigned(pct) + '%';
+        pnlPctEl.textContent = isClosed ? pctStr + ' · final' : pctStr;
       }
     }
 

@@ -25,6 +25,19 @@
       "tags": ["investing", "markets", "automation", "trading", "swiss-design"],
       "path": "hurricane-v2-investing/deck.html",
       "notes": "hurricane-v2-investing/notes.md"
+    },
+    {
+      "id": "quantifyd-trading-automation",
+      "title": "Quantifyd — Trading Automation: Progress & Roadmap",
+      "description": "A walkthrough of the live trading automation stack: the ORB cash strategy, the KC6 60-min system, and the MQ paper-trading roadmap — what's running, what's next.",
+      "venue": "Self-published",
+      "date": "2026-04-23",
+      "slides": 20,
+      "duration": "20 min",
+      "status": "delivered",
+      "tags": ["automation", "trading", "quantifyd", "orb", "kc6", "algo"],
+      "path": "quantifyd-trading-automation/deck.html",
+      "notes": "quantifyd-trading-automation/notes.md"
     }
   ]
 }

@@ -548,6 +548,39 @@
       box-shadow: 0 4px 12px rgba(91, 91, 214, 0.3);
     }
 
+    .inspiration {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--rule);
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.05em;
+      color: var(--slate-11);
+      z-index: 150;
+      max-width: 360px;
+      line-height: 1.5;
+    }
+
+    .inspiration a {
+      color: var(--iris-9);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--iris-9);
+    }
+
+    .inspiration .label {
+      color: var(--slate-10);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
     @media (max-width: 768px) {
       .floating-stack { display: none; }
       .deck { grid-template-columns: auto 1fr; gap: 1rem; }
@@ -557,6 +590,11 @@
 </head>
 <body>
   <div class="mockup-tag">Mockup 09 · SaaS Iris</div>
+  <div class="inspiration">
+    <span class="label">Inspired by</span>
+    <a href="https://resumefilter.vercel.app" target="_blank" rel="noopener">resumefilter.vercel.app</a>
+    by <strong>Hakim El Hattab</strong> (creator of Reveal.js)
+  </div>
 
   <header class="header">
     <div class="header-inner">

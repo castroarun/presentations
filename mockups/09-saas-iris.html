@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup 09 · SaaS Iris</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fcfcfd;
+      --paper: #ffffff;
+      --slate-1: #f8f9fa;
+      --slate-2: #f1f3f5;
+      --slate-3: #e9ecef;
+      --slate-12: #1b1f23;
+      --slate-11: #4a5260;
+      --slate-10: #7e8590;
+      --iris-9: #5b5bd6;
+      --iris-10: #4f4fc4;
+      --iris-11: #3a3ab0;
+      --iris-3: #f0f0fa;
+      --iris-4: #e6e6f9;
+      --orange-1: #ffab72;
+      --orange-2: #ff8838;
+      --green-9: #50d450;
+      --rule: rgba(27, 31, 35, 0.08);
+    }
+
+    html, body {
+      background: var(--bg);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--slate-12);
+      min-height: 100vh;
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Sticky header */
+    .header {
+      position: sticky;
+      top: 0;
+      background: rgba(252, 252, 253, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--slate-12);
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, var(--orange-1), var(--orange-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      box-shadow: 0 4px 12px rgba(255, 136, 56, 0.25);
+    }
+
+    .logo-mark .d { font-style: italic; }
+
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 1.6rem;
+      align-items: center;
+    }
+
+    .header-nav a {
+      color: var(--slate-11);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .header-nav a:hover { color: var(--slate-12); }
+
+    .btn-primary {
+      padding: 0.5rem 1rem;
+      background: var(--iris-9);
+      color: white;
+      border: none;
+      border-radius: 7px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--iris-10); }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4vh 2rem 6vh;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem 2rem;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--iris-3);
+      border: 1px solid var(--iris-4);
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--iris-11);
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--green-9);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(80, 212, 80, 0.2);
+    }
+
+    .hero h1 {
+      font-weight: 800;
+      font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      max-width: 920px;
+      margin: 0 auto 1.5rem;
+      color: var(--slate-12);
+    }
+
+    .hero h1 .em {
+      background: linear-gradient(180deg, var(--orange-1), var(--orange-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .lede {
+      font-size: 1.2rem;
+      max-width: 640px;
+      margin: 0 auto 2.2rem;
+      color: var(--slate-11);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.6rem;
+      background: var(--iris-9);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(91, 91, 214, 0.3);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .hero-cta:hover {
+      background: var(--iris-10);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(91, 91, 214, 0.4);
+    }
+
+    /* FLOATING DOCUMENT CARDS — visual flourish */
+    .floating-stack {
+      position: relative;
+      max-width: 880px;
+      margin: 4rem auto 0;
+      height: 360px;
+    }
+
+    .doc-card {
+      position: absolute;
+      width: 280px;
+      height: 360px;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      box-shadow: 0 16px 40px rgba(27, 31, 35, 0.08), 0 4px 12px rgba(27, 31, 35, 0.04);
+      padding: 1.5rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      transition: transform 0.3s;
+    }
+
+    .doc-card:hover { transform: translateY(-8px); }
+
+    .doc-card.doc-1 { left: 5%; transform: rotate(-6deg); top: 0; z-index: 1; }
+    .doc-card.doc-2 { left: 50%; transform: translateX(-50%) rotate(2deg); top: -10px; z-index: 3; }
+    .doc-card.doc-3 { right: 5%; transform: rotate(7deg); top: 5px; z-index: 2; }
+
+    .doc-card.doc-1:hover { transform: rotate(-6deg) translateY(-8px); }
+    .doc-card.doc-2:hover { transform: translateX(-50%) rotate(2deg) translateY(-8px); }
+    .doc-card.doc-3:hover { transform: rotate(7deg) translateY(-8px); }
+
+    .doc-tag {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      background: var(--iris-3);
+      color: var(--iris-11);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      font-weight: 700;
+      align-self: flex-start;
+    }
+
+    .doc-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+      color: var(--slate-12);
+    }
+
+    .doc-line {
+      height: 5px;
+      background: var(--slate-2);
+      border-radius: 2px;
+    }
+
+    .doc-line.short { width: 60%; }
+    .doc-line.medium { width: 80%; }
+
+    /* Score circle */
+    .doc-score {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .score-ring {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: conic-gradient(var(--green-9) 0% 88%, var(--slate-2) 88% 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .score-ring::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: var(--paper);
+      border-radius: 50%;
+    }
+
+    .score-ring span {
+      position: relative;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--slate-12);
+    }
+
+    .doc-score-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate-10);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .doc-score-label strong {
+      display: block;
+      color: var(--slate-12);
+      font-size: 0.78rem;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 700;
+    }
+
+    /* SECTION BREAK */
+    .section-break {
+      text-align: center;
+      margin: 6rem 0 2rem;
+    }
+
+    .section-break h2 {
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.025em;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .section-break h2 .em { color: var(--iris-9); }
+
+    /* DECK ROWS */
+    .controls {
+      max-width: 760px;
+      margin: 0 auto 2rem;
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .search {
+      flex: 1;
+      padding: 0.75rem 1rem 0.75rem 2.6rem;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--slate-12);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237e8590' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 0.9rem center;
+    }
+
+    .search:focus {
+      outline: none;
+      border-color: var(--iris-9);
+      box-shadow: 0 0 0 3px rgba(91, 91, 214, 0.12);
+    }
+
+    .filters { display: flex; gap: 0.3rem; }
+
+    .chip {
+      padding: 0.55rem 0.9rem;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--slate-11);
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    .chip:hover { border-color: var(--iris-9); color: var(--iris-9); }
+    .chip.active {
+      background: var(--iris-9);
+      color: white;
+      border-color: var(--iris-9);
+    }
+
+    .deck-list {
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .deck {
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.4rem;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .deck:hover {
+      border-color: var(--iris-9);
+      box-shadow: 0 8px 24px rgba(91, 91, 214, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .deck-score {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: conic-gradient(var(--iris-9) 0% var(--score, 88%), var(--slate-2) var(--score, 88%) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .deck-score::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      background: var(--paper);
+      border-radius: 50%;
+    }
+
+    .deck-score-num {
+      position: relative;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--slate-12);
+      letter-spacing: -0.02em;
+    }
+
+    .deck-info { min-width: 0; }
+
+    .deck-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate-10);
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .deck-meta .pill {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      background: var(--green-9);
+      color: white;
+      border-radius: 3px;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      margin-right: 0.5rem;
+    }
+
+    .deck-title {
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      color: var(--slate-12);
+      margin-bottom: 0.35rem;
+    }
+
+    .deck-desc {
+      font-size: 0.92rem;
+      color: var(--slate-11);
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .deck-cta {
+      flex-shrink: 0;
+      padding: 0.6rem 1.1rem;
+      background: var(--slate-2);
+      color: var(--slate-12);
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .deck-cta:hover {
+      background: var(--iris-9);
+      color: white;
+    }
+
+    .footer {
+      max-width: 1200px;
+      margin: 5rem auto 0;
+      padding: 2rem;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--slate-10);
+    }
+
+    .footer a {
+      color: var(--slate-11);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer a:hover { color: var(--iris-9); }
+
+    .footer-links { display: flex; gap: 1.5rem; }
+
+    .mockup-tag {
+      position: fixed;
+      top: 0.7rem;
+      right: 0.7rem;
+      background: var(--iris-9);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      z-index: 200;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(91, 91, 214, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .floating-stack { display: none; }
+      .deck { grid-template-columns: auto 1fr; gap: 1rem; }
+      .deck-cta { grid-column: 1 / -1; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-tag">Mockup 09 · SaaS Iris</div>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-mark">T<span class="d">d</span></span>
+        <span class="logo-text">Talks &amp; Decks</span>
+      </a>
+      <div class="header-nav">
+        <a href="#">Decks</a>
+        <a href="#">About</a>
+        <a href="#" class="btn-primary">Subscribe</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <div class="hero-eyebrow">Vol. I · Apr 2026 · 2 editions</div>
+      <h1>Slide decks built solo,<br/>with AI as <span class="em">pair-programmer.</span></h1>
+      <p class="lede">A growing library of talks, field guides, and explorations. Each one static HTML, fully navigable, no build step.</p>
+      <a href="#" class="hero-cta">Browse all decks →</a>
+
+      <div class="floating-stack">
+        <div class="doc-card doc-1">
+          <span class="doc-tag">Talk</span>
+          <div class="doc-title">AI in Action</div>
+          <div class="doc-line medium"></div>
+          <div class="doc-line short"></div>
+          <div class="doc-line medium"></div>
+          <div class="doc-line short"></div>
+          <div class="doc-score">
+            <div class="score-ring"><span>9</span></div>
+            <div class="doc-score-label"><strong>9 slides</strong>20 min</div>
+          </div>
+        </div>
+        <div class="doc-card doc-2">
+          <span class="doc-tag" style="background: rgba(80, 212, 80, 0.12); color: #2d7a2d;">Field Guide</span>
+          <div class="doc-title">The Hurricane v2</div>
+          <div class="doc-line medium"></div>
+          <div class="doc-line short"></div>
+          <div class="doc-line medium"></div>
+          <div class="doc-line medium"></div>
+          <div class="doc-line short"></div>
+          <div class="doc-score">
+            <div class="score-ring" style="background: conic-gradient(#5b5bd6 0% 96%, #f1f3f5 96% 100%);"><span>26</span></div>
+            <div class="doc-score-label"><strong>26 slides</strong>30 min</div>
+          </div>
+        </div>
+        <div class="doc-card doc-3">
+          <span class="doc-tag" style="background: rgba(255, 136, 56, 0.12); color: #b85a18;">Draft</span>
+          <div class="doc-title">Coming next…</div>
+          <div class="doc-line short"></div>
+          <div class="doc-line medium"></div>
+          <div class="doc-line short"></div>
+          <div class="doc-score">
+            <div class="score-ring" style="background: conic-gradient(#ff8838 0% 30%, #f1f3f5 30% 100%);"><span>—</span></div>
+            <div class="doc-score-label"><strong>In progress</strong>tbd</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-break">
+      <h2>The library, ranked by <span class="em">freshness.</span></h2>
+    </div>
+
+    <div class="controls">
+      <input type="text" class="search" placeholder="Search by title, venue, tag, or topic…" />
+      <div class="filters">
+        <button class="chip active">all</button>
+        <button class="chip">talks</button>
+        <button class="chip">guides</button>
+      </div>
+    </div>
+
+    <div class="deck-list">
+      <article class="deck" style="--score: 95%;">
+        <div class="deck-score"><span class="deck-score-num">01</span></div>
+        <div class="deck-info">
+          <div class="deck-meta"><span class="pill">DELIVERED</span> Rotaract MNM Jain · 27 Apr 2026 · 9 slides · 20 min</div>
+          <div class="deck-title">AI in Action — From Idea to Live Product, Solo</div>
+          <p class="deck-desc">How a single builder ships real products end-to-end with AI as pair-programmer.</p>
+        </div>
+        <a class="deck-cta" href="#">Open ↗</a>
+      </article>
+
+      <article class="deck" style="--score: 88%;">
+        <div class="deck-score"><span class="deck-score-num">02</span></div>
+        <div class="deck-info">
+          <div class="deck-meta"><span class="pill">DELIVERED</span> Self-published · 22 Apr 2026 · 26 slides · 30 min</div>
+          <div class="deck-title">The Hurricane v2 — A Field Guide to Investing</div>
+          <p class="deck-desc">A 6-part field guide to the markets — the storm, the hurricane, and the calm.</p>
+        </div>
+        <a class="deck-cta" href="#">Open ↗</a>
+      </article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div>© 2026 Td · Curated by Arun Castro</div>
+    <div class="footer-links">
+      <a href="#">github</a>
+      <a href="#">linkedin</a>
+      <a href="#">support</a>
+    </div>
+  </footer>
+</body>
+</html>

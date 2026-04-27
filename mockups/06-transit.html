@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup 06 · Transit Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #fdfbf6;
+      --ink: #1a2128;
+      --ink-soft: #4a5260;
+      --line-red: #e23838;
+      --line-blue: #0061a5;
+      --line-green: #00824a;
+      --line-yellow: #f5c518;
+      --line-purple: #7a3da8;
+      --rule: rgba(26, 33, 40, 0.12);
+    }
+    html, body {
+      background: var(--bg);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      font-weight: 500;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4vh 5vw;
+    }
+
+    /* MASTHEAD */
+    .masthead {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      border-bottom: 6px solid var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .logo-mark {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 3rem;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      position: relative;
+    }
+    .logo-mark .t { color: var(--bg); }
+    .logo-mark .d { color: var(--line-yellow); font-style: italic; margin-left: -0.05em; }
+
+    .nameplate { display: flex; flex-direction: column; gap: 0.3rem; }
+    .nameplate h1 {
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1;
+      letter-spacing: -0.025em;
+    }
+    .nameplate .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+    .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-align: right;
+      font-weight: 700;
+    }
+    .meta .vol { color: var(--line-red); font-size: 1.1rem; display: block; margin-bottom: 0.3rem; }
+
+    .legend-strip {
+      display: flex;
+      gap: 1.5rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.5rem; }
+    .legend-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 1rem 0 2rem;
+    }
+    .hero h2 {
+      font-weight: 800;
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      max-width: 800px;
+    }
+    .hero h2 .em {
+      color: var(--line-red);
+      position: relative;
+      display: inline-block;
+    }
+    .hero h2 .em::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; bottom: 0.05em;
+      height: 0.3em;
+      background: var(--line-yellow);
+      z-index: -1;
+    }
+    .hero p {
+      margin-top: 1.4rem;
+      max-width: 560px;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      font-weight: 400;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1rem 1.2rem;
+      background: white;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      margin-bottom: 2.5rem;
+    }
+    .search {
+      width: 100%;
+      padding: 0.4rem 0.8rem;
+      background: transparent;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .search:focus { outline: none; }
+    .search::placeholder { color: var(--ink-soft); font-weight: 400; }
+    .filters { display: flex; gap: 0.4rem; }
+    .chip {
+      padding: 0.4rem 1rem;
+      background: transparent;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .chip.active { background: var(--ink); color: var(--bg); }
+
+    /* STATIONS */
+    .line-section {
+      margin-bottom: 3rem;
+    }
+    .line-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .line-badge {
+      padding: 0.4rem 1.2rem;
+      border-radius: 999px;
+      color: white;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .line-badge.red { background: var(--line-red); }
+    .line-badge.blue { background: var(--line-blue); }
+    .line-badge.green { background: var(--line-green); }
+    .line-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+
+    .stations {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .stations::before {
+      content: '';
+      position: absolute;
+      left: 13px;
+      top: 14px;
+      bottom: 14px;
+      width: 6px;
+      border-radius: 4px;
+    }
+    .stations.red::before { background: var(--line-red); }
+    .stations.blue::before { background: var(--line-blue); }
+
+    .station {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      background: white;
+      border: 2px solid var(--ink);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1rem;
+      transition: all 0.18s;
+    }
+
+    .station:hover {
+      transform: translateX(4px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .station::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: white;
+      border: 6px solid var(--ink);
+      box-shadow: -2px 0 0 4px var(--bg), 2px 0 0 4px var(--bg);
+    }
+    .stations.red .station::before { border-color: var(--line-red); }
+    .stations.blue .station::before { border-color: var(--line-blue); }
+
+    .station-info { min-width: 0; }
+    .station-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .station-title {
+      font-weight: 800;
+      font-size: 1.4rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+    .station-desc {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      font-weight: 400;
+      max-width: 560px;
+    }
+    .station-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.6rem;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+    }
+
+    .open-btn {
+      padding: 0.7rem 1.2rem;
+      background: var(--ink);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .open-btn:hover { background: var(--line-red); }
+
+    .colophon {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 6px solid var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-weight: 700;
+    }
+
+    .mockup-tag {
+      position: fixed; top: 1rem; right: 1rem;
+      background: var(--line-red); color: var(--bg);
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      z-index: 100;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-tag">Mockup 06 · Transit</div>
+  <div class="container">
+    <header class="masthead">
+      <div class="logo-mark"><span class="t">T</span><span class="d">d</span></div>
+      <div class="nameplate">
+        <h1>Talks &amp; Decks</h1>
+        <span class="sub">— The Td Network · Curated by Arun Castro —</span>
+      </div>
+      <div class="meta">
+        <span class="vol">VOL. I</span>
+        <span>April 2026</span>
+      </div>
+    </header>
+
+    <div class="legend-strip">
+      <div class="legend-item"><span class="legend-dot" style="background: var(--line-red);"></span><span>Talks</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background: var(--line-blue);"></span><span>Field Guides</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background: var(--line-green);"></span><span>Workshops</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background: var(--line-yellow);"></span><span>Drafts</span></div>
+    </div>
+
+    <section class="hero">
+      <h2>Pick a line, ride the <span class="em">deck.</span></h2>
+      <p>Each deck is a station on the Td Network. Click to open, expand for notes. Keyboard, mouse, touch — all destinations welcome.</p>
+    </section>
+
+    <div class="controls">
+      <input class="search" type="text" placeholder="Search stations…" />
+      <div class="filters">
+        <button class="chip active">all</button>
+        <button class="chip">upcoming</button>
+        <button class="chip">delivered</button>
+      </div>
+    </div>
+
+    <!-- RED LINE — Talks -->
+    <section class="line-section">
+      <div class="line-header">
+        <span class="line-badge red">Red Line</span>
+        <span class="line-name">Talks · Live Audiences</span>
+      </div>
+      <div class="stations red">
+        <article class="station">
+          <div class="station-info">
+            <div class="station-meta">Station 01 · Delivered · 27 Apr 2026</div>
+            <div class="station-title">AI in Action — From Idea to Live Product, Solo</div>
+            <div class="station-desc">How a single builder ships real products end-to-end with AI as pair-programmer.</div>
+            <div class="station-tags"><span class="tag">ai</span><span class="tag">workflow</span><span class="tag">solo-builder</span></div>
+          </div>
+          <a class="open-btn" href="#">Open ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- BLUE LINE — Field Guides -->
+    <section class="line-section">
+      <div class="line-header">
+        <span class="line-badge blue">Blue Line</span>
+        <span class="line-name">Field Guides · Self-Published</span>
+      </div>
+      <div class="stations blue">
+        <article class="station">
+          <div class="station-info">
+            <div class="station-meta">Station 02 · Delivered · 22 Apr 2026</div>
+            <div class="station-title">The Hurricane v2 — A Field Guide to Investing</div>
+            <div class="station-desc">A 6-part field guide to the markets — the storm, the hurricane, and the calm.</div>
+            <div class="station-tags"><span class="tag">investing</span><span class="tag">markets</span><span class="tag">swiss-design</span></div>
+          </div>
+          <a class="open-btn" href="#">Open ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <div class="colophon">
+      <span>Built solo · AI pair-programmer · No build step</span>
+      <span>github &middot; linkedin</span>
+    </div>
+  </div>
+</body>
+</html>

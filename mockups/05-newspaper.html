@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup 05 · Newspaper</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --paper: #f4f1ea;
+      --ink: #1a1612;
+      --ink-soft: #4a3a2a;
+      --rule: rgba(26, 22, 18, 0.25);
+    }
+    html, body {
+      background: var(--paper);
+      font-family: 'EB Garamond', Georgia, serif;
+      color: var(--ink);
+      min-height: 100vh;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity: 0.07;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+    .paper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4vh 5vw;
+    }
+
+    /* MASTHEAD */
+    .nameplate {
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      border-bottom: 4px double var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .nameplate h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-style: italic;
+      font-size: clamp(4rem, 9vw, 8rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+    .nameplate h1 .em { color: #6b4423; }
+    .dateline {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 2.5rem;
+    }
+    .dateline .center { text-align: center; flex: 1; }
+
+    /* HEADLINE */
+    .headline {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #6b4423;
+      margin-bottom: 0.8rem;
+      font-weight: 700;
+    }
+    .headline h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4.5vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      margin: 0 auto 1rem;
+    }
+    .headline .em { font-style: italic; font-weight: 700; }
+    .standfirst {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      max-width: 720px;
+      margin: 0 auto;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    /* CONTROLS bar */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1rem 0;
+      margin: 2.5rem 0 0;
+      border-top: 3px double var(--ink);
+      border-bottom: 1px solid var(--ink);
+      flex-wrap: wrap;
+    }
+    .search {
+      flex: 1;
+      min-width: 240px;
+      padding: 0.5rem 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--ink);
+      font-family: 'EB Garamond', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--ink);
+    }
+    .search:focus { outline: none; border-bottom: 2px solid #6b4423; }
+    .search::placeholder { color: rgba(0,0,0,0.4); }
+    .filters { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .chip {
+      padding: 0.3rem 0.8rem;
+      background: transparent;
+      border: 1px solid var(--ink);
+      font-family: 'EB Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .chip.active { background: var(--ink); color: var(--paper); }
+
+    /* COLUMNS */
+    .columns {
+      column-count: 2;
+      column-gap: 3rem;
+      column-rule: 1px solid var(--rule);
+      margin-top: 2.5rem;
+    }
+    @media (max-width: 720px) { .columns { column-count: 1; } }
+
+    .article {
+      break-inside: avoid;
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--rule);
+    }
+    .byline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #6b4423;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+    }
+    .article h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.7rem;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.7rem;
+    }
+    .article-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding-bottom: 0.7rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: 0.8rem;
+    }
+    .article p {
+      font-size: 1.02rem;
+      line-height: 1.55;
+    }
+    .article p::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 3.5rem;
+      float: left;
+      line-height: 0.85;
+      margin: 0.18rem 0.5rem 0 0;
+      color: #6b4423;
+    }
+    .read-more {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #6b4423;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .colophon {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 4px double var(--ink);
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+    }
+
+    .mockup-tag {
+      position: fixed; top: 1rem; right: 1rem;
+      background: var(--ink); color: var(--paper);
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-tag">Mockup 05 · Newspaper</div>
+  <div class="paper">
+    <header class="nameplate">
+      <h1>The <span class="em">Td</span> Times</h1>
+    </header>
+    <div class="dateline">
+      <span>Vol. I &middot; No. 1</span>
+      <span class="center">— Talks &amp; Decks · A Personal Edition —</span>
+      <span>Mon, 27 Apr 2026</span>
+    </div>
+
+    <section class="headline">
+      <div class="kicker">★ The Programme ★</div>
+      <h2>Slide decks I've built — talks given, <em class="em">field guides written, ideas explored.</em></h2>
+      <p class="standfirst">Each one is static HTML, fully navigable with keyboard, mouse, and touch. A growing library of personal editions.</p>
+    </section>
+
+    <div class="controls">
+      <input class="search" type="text" placeholder="Search by title, venue, tag…" />
+      <div class="filters">
+        <button class="chip active">all</button>
+        <button class="chip">upcoming</button>
+        <button class="chip">delivered</button>
+      </div>
+    </div>
+
+    <div class="columns">
+      <article class="article">
+        <div class="byline">Edition I · Delivered</div>
+        <h3>AI in Action — From Idea to Live Product, Solo</h3>
+        <div class="article-meta">Rotaract MNM Jain · 27 Apr 2026 · 9 slides · 20 min</div>
+        <p>How a single builder ships real products end-to-end with AI as pair-programmer — workflow, mindset, and live demos. A talk delivered to engineering students on the night of the Rotaract Club's annual gathering, exploring what the new tools have made possible for the lone shipper.</p>
+        <a class="read-more" href="#">Open the deck →</a>
+      </article>
+      <article class="article">
+        <div class="byline">Edition II · Delivered</div>
+        <h3>The Hurricane v2 — A Field Guide to Investing</h3>
+        <div class="article-meta">Self-published · 22 Apr 2026 · 26 slides · 30 min</div>
+        <p>A six-part field guide to the markets: the storm, the hurricane, the instruments, the expensive help, the pilot, and the cockpit — ending in the calm. Designed in the Swiss tradition, written for the patient, illustrated for the visual reader, and shipped as a static HTML deck.</p>
+        <a class="read-more" href="#">Open the deck →</a>
+      </article>
+    </div>
+
+    <div class="colophon">
+      Set in <em>Playfair Display</em> &amp; <em>EB Garamond</em>. Built solo, with AI as pair-programmer.
+    </div>
+  </div>
+</body>
+</html>

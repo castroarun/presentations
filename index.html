@@ -8,516 +8,476 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
     rel="stylesheet"
   />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --paper:        #f5efe1;
-      --paper-deep:   #efe7d3;
-      --paper-soft:   #fbf6ea;
-      --ink:          #1a1612;
-      --ink-soft:     #4a3f30;
-      --ink-faint:    #7a6a55;
-      --accent:       #b8742c;
-      --accent-soft:  #d4a14a;
-      --accent-faint: #e8d2a8;
-      --rule:         rgba(26, 22, 18, 0.10);
-      --rule-soft:    rgba(26, 22, 18, 0.05);
-      --green:        #5a7548;
-      --gray:         #807366;
+      --bg: #f5f5f3;
+      --paper: #ffffff;
+      --ink: #000;
+      --ink-soft: #2a2a2a;
+      --ink-faint: #777;
+      --accent: #ff0033;
+      --accent-soft: #ffe6ec;
+      --grid: rgba(0, 0, 0, 0.07);
+      --rule: rgba(0, 0, 0, 0.12);
+      --green: #006633;
+      --gray: #888;
     }
 
     html, body {
-      min-height: 100vh;
-      background: var(--paper);
+      background: var(--bg);
       font-family: 'Inter', system-ui, sans-serif;
       color: var(--ink);
+      min-height: 100vh;
       font-size: 16px;
       line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Subtle paper texture */
-    body::before {
-      content: '';
+    /* Background grid */
+    .grid-bg {
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-      opacity: 0.06;
       pointer-events: none;
-      mix-blend-mode: multiply;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 80px 80px;
       z-index: 0;
     }
 
     .container {
       position: relative;
       z-index: 1;
-      max-width: 980px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 7vh 5vw 6vh;
+      padding: 5vh 4vw 3vh;
     }
 
     /* ── MASTHEAD ─────────────────────────────────── */
     .masthead {
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       gap: 2rem;
       align-items: end;
-      padding-bottom: 2.2rem;
-      border-bottom: 1px solid var(--ink);
-      margin-bottom: 0.4rem;
+      padding-bottom: 2rem;
+      border-bottom: 4px solid var(--ink);
     }
 
     .logo {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 500;
-      font-size: clamp(3.5rem, 6vw, 5rem);
-      line-height: 0.9;
-      letter-spacing: -0.04em;
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(7rem, 14vw, 12rem);
+      line-height: 0.78;
+      letter-spacing: -0.06em;
       display: inline-flex;
       align-items: baseline;
-    }
-
-    .logo .t {
+      text-decoration: none;
       color: var(--ink);
     }
 
+    .logo .t { color: var(--ink); }
     .logo .d {
-      font-style: italic;
       color: var(--accent);
-      margin-left: 0.05em;
-      position: relative;
+      transform: translateX(-0.06em);
     }
 
-    .logo .d::after {
-      content: '';
-      position: absolute;
-      left: 0.05em;
-      right: 0.05em;
-      bottom: 0.12em;
-      height: 1px;
-      background: var(--accent);
-      opacity: 0.4;
+    .masthead-info {
+      align-self: end;
+      padding-bottom: 1rem;
+    }
+
+    .masthead-info .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--ink-soft);
+    }
+
+    .masthead-info .title {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
     }
 
     .masthead-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      align-items: flex-end;
+      align-self: end;
+      text-align: right;
+      padding-bottom: 1rem;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.7rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--ink-faint);
+      font-weight: 700;
     }
 
-    .masthead-meta .editor {
-      font-family: 'Fraunces', Georgia, serif;
-      font-style: italic;
-      font-size: 0.95rem;
-      letter-spacing: 0;
-      text-transform: none;
-      color: var(--ink-soft);
-      font-weight: 400;
-    }
-
-    /* Edition strip */
-    .edition {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.6rem 0 1.5rem;
-      border-bottom: 3px double var(--ink);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink-soft);
-      margin-bottom: 3rem;
+    .masthead-meta .vol {
+      color: var(--accent);
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.3rem;
     }
 
     /* ── HERO ─────────────────────────────────────── */
     .hero {
-      margin-bottom: 3rem;
+      padding: 4rem 0 3rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: end;
     }
 
-    .hero h1 {
-      font-family: 'Fraunces', Georgia, serif;
-      font-weight: 400;
-      font-size: clamp(2.4rem, 4.8vw, 4rem);
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      max-width: 800px;
-      margin-bottom: 1.2rem;
-    }
-
-    .hero h1 .em {
-      font-style: italic;
+    .hero-num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(5rem, 10vw, 9rem);
+      line-height: 0.85;
       color: var(--accent);
+      letter-spacing: -0.05em;
     }
 
-    .lede {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.15rem;
-      line-height: 1.55;
-      color: var(--ink-soft);
-      max-width: 640px;
+    .hero-num .small {
+      display: block;
+      color: var(--ink);
+      font-size: 0.18em;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    .hero-text h1 {
+      font-weight: 200;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-text h1 strong { font-weight: 900; }
+
+    .hero-text p {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      max-width: 540px;
+      line-height: 1.4;
       font-weight: 400;
+      color: var(--ink-soft);
     }
 
-    .lede a {
+    .hero-text p a {
       color: var(--accent);
       text-decoration: underline;
-      text-decoration-style: dotted;
+      text-decoration-thickness: 2px;
       text-underline-offset: 3px;
-      text-decoration-color: var(--accent-soft);
-    }
-
-    .lede a:hover {
-      text-decoration-style: solid;
+      font-weight: 600;
     }
 
     /* ── CONTROLS ─────────────────────────────────── */
     .controls {
-      margin: 3rem 0 2.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      margin-bottom: 0;
+      align-items: center;
     }
 
-    .search-wrap {
-      position: relative;
-    }
+    .search-wrap { display: flex; align-items: center; gap: 0.6rem; }
 
-    .search-input {
-      width: 100%;
-      padding: 0.85rem 1rem 0.85rem 2.7rem;
-      background: var(--paper-soft);
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      color: var(--ink);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
-      letter-spacing: -0.005em;
-      transition: all 0.2s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a6a55' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: 0.95rem center;
-    }
-
-    .search-input::placeholder {
+    .search-prefix {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       color: var(--ink-faint);
+    }
+
+    .search {
+      width: 100%;
+      padding: 0.6rem 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .search:focus { outline: none; border-bottom-color: var(--accent); }
+    .search::placeholder {
+      color: rgba(0, 0, 0, 0.3);
       font-weight: 400;
       font-style: italic;
     }
 
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(184, 116, 44, 0.1);
-    }
-
-    .filter-row {
+    .filters {
       display: flex;
-      gap: 0.4rem;
+      gap: 0;
       flex-wrap: wrap;
       align-items: center;
     }
 
     .filter-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem;
+      font-weight: 700;
+      font-size: 0.7rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--ink-faint);
-      margin-right: 0.4rem;
+      margin-right: 1rem;
     }
 
     .chip {
-      padding: 0.28rem 0.75rem;
-      border-radius: 999px;
+      padding: 0.55rem 1rem;
       background: transparent;
-      border: 1px solid var(--rule);
-      color: var(--ink-soft);
-      font-size: 0.78rem;
+      border: 2px solid var(--ink);
+      border-right: none;
       font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
       cursor: pointer;
-      transition: all 0.18s;
-      letter-spacing: 0.02em;
-    }
-
-    .chip:hover {
-      border-color: var(--accent-soft);
       color: var(--ink);
+      transition: background 0.15s;
     }
-
-    .chip.active {
-      background: var(--ink);
-      border-color: var(--ink);
-      color: var(--paper);
-    }
+    .chip:last-of-type { border-right: 2px solid var(--ink); }
+    .chip:hover:not(.active) { background: var(--accent-soft); }
+    .chip.active { background: var(--ink); color: var(--bg); }
 
     .result-count {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
       color: var(--ink-faint);
-      margin-left: auto;
-      letter-spacing: 0.05em;
+      margin-left: 1.2rem;
     }
 
-    /* ── SECTION LABEL ────────────────────────────── */
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.4rem;
-    }
-
-    .section-label::before,
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--rule);
-    }
-
-    /* ── DECKS ────────────────────────────────────── */
+    /* ── DECK LIST ────────────────────────────────── */
     .deck-list {
       display: flex;
       flex-direction: column;
-      gap: 0;
-      border-top: 1px solid var(--rule);
     }
 
-    .deck-card {
-      border-bottom: 1px solid var(--rule);
-      transition: background 0.2s;
-      position: relative;
+    .deck {
+      border-bottom: 1px solid var(--ink);
+      transition: background 0.15s;
     }
 
-    .deck-card:hover {
-      background: rgba(184, 116, 44, 0.025);
-    }
-
-    .deck-card.expanded {
-      background: var(--paper-soft);
-    }
+    .deck:hover { background: rgba(255, 0, 51, 0.025); }
+    .deck.expanded { background: var(--paper); }
 
     .deck-head {
       display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 1.5rem;
+      grid-template-columns: 100px 1fr auto;
+      gap: 2rem;
+      padding: 2.5rem 0.4rem;
       align-items: start;
-      padding: 1.6rem 0.4rem;
       cursor: pointer;
     }
 
-    .card-num {
-      font-family: 'Fraunces', Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: 2rem;
-      color: var(--accent);
-      line-height: 1;
-      letter-spacing: -0.02em;
-      min-width: 48px;
-      padding-top: 0.2rem;
-    }
-
-    .card-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      min-width: 0;
-    }
-
-    .card-title-row {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-
-    .card-title {
-      font-family: 'Fraunces', Georgia, serif;
-      font-size: 1.4rem;
-      font-weight: 500;
+    .deck-num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 4.5rem;
+      line-height: 0.8;
+      letter-spacing: -0.05em;
       color: var(--ink);
-      letter-spacing: -0.015em;
-      line-height: 1.2;
     }
 
-    .status-badge {
+    .deck-info { min-width: 0; }
+
+    .deck-status {
+      display: inline-block;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      padding: 0.18rem 0.5rem;
-      border-radius: 3px;
-      font-weight: 500;
-      flex-shrink: 0;
+      padding: 0.25rem 0.7rem;
+      margin-bottom: 1rem;
     }
 
-    .status-upcoming { background: var(--accent-faint); color: #7d4c12; }
-    .status-delivered { background: rgba(90, 117, 72, 0.15); color: var(--green); border: 1px solid rgba(90, 117, 72, 0.25); }
-    .status-draft { background: rgba(128, 115, 102, 0.12); color: var(--gray); border: 1px solid rgba(128, 115, 102, 0.2); }
+    .status-upcoming { background: var(--accent); color: var(--bg); }
+    .status-delivered { background: var(--ink); color: var(--bg); }
+    .status-draft { background: transparent; color: var(--ink-faint); border: 2px solid var(--ink-faint); padding: 0.18rem 0.55rem; }
 
-    .card-desc {
-      font-family: 'Fraunces', Georgia, serif;
+    .deck-title {
+      font-weight: 800;
+      font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+    }
+
+    .deck-desc {
       font-size: 0.98rem;
+      line-height: 1.45;
+      max-width: 720px;
+      margin-bottom: 1rem;
+      font-weight: 400;
       color: var(--ink-soft);
-      line-height: 1.5;
-      max-width: 600px;
     }
 
-    .card-meta {
+    .deck-meta {
       display: flex;
-      gap: 0.7rem;
+      gap: 1.5rem;
       flex-wrap: wrap;
-      align-items: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-      margin-top: 0.15rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--ink-soft);
     }
 
-    .card-meta .dot { color: var(--accent); opacity: 0.6; }
+    .deck-meta strong { color: var(--accent); font-weight: 700; }
 
-    .card-tags {
+    .deck-tags {
       display: flex;
-      gap: 0.35rem;
+      gap: 0.4rem;
       flex-wrap: wrap;
-      margin-top: 0.2rem;
+      margin-top: 0.7rem;
     }
 
     .tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.64rem;
-      letter-spacing: 0.04em;
-      color: var(--ink-faint);
-      background: rgba(26, 22, 18, 0.04);
-      padding: 0.16rem 0.5rem;
-      border-radius: 2px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-transform: lowercase;
+      padding: 0.2rem 0.55rem;
+      background: var(--ink);
+      color: var(--bg);
     }
 
-    .card-actions {
+    .deck-actions {
       display: flex;
-      gap: 0.5rem;
-      align-items: center;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: stretch;
       flex-shrink: 0;
-      padding-top: 0.3rem;
+      min-width: 90px;
     }
 
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      display: flex;
+    .btn {
+      padding: 0.7rem 0.9rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      border: 2px solid var(--ink);
+      text-align: center;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+
+    .btn-secondary {
       background: transparent;
-      border: 1px solid var(--rule);
-      border-radius: 6px;
-      color: var(--ink-soft);
-      cursor: pointer;
-      transition: all 0.18s;
-      text-decoration: none;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
+      color: var(--ink);
     }
+    .btn-secondary:hover { background: var(--ink); color: var(--bg); }
 
-    .icon-btn:hover {
-      background: var(--accent-faint);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .icon-btn svg { width: 15px; height: 15px; }
-
-    .chevron { transition: transform 0.3s ease; }
-    .deck-card.expanded .chevron { transform: rotate(180deg); }
+    .btn .chev { transition: transform 0.3s; display: inline-block; }
+    .deck.expanded .btn .chev { transform: rotate(180deg); }
 
     /* ── NOTES PANEL ──────────────────────────────── */
     .notes-panel {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.45s ease;
+      transition: max-height 0.4s ease;
     }
 
-    .deck-card.expanded .notes-panel {
-      max-height: 1200px;
-    }
+    .deck.expanded .notes-panel { max-height: 1400px; }
 
     .notes-inner {
-      padding: 0.5rem 0.4rem 1.8rem;
-      border-top: 1px dashed var(--rule);
-      margin-top: 0.5rem;
+      padding: 0 0.4rem 2.5rem 100px + 2rem;
+      padding-left: 132px;
+    }
+
+    .notes-rule {
+      border-top: 4px solid var(--ink);
+      margin-bottom: 1.5rem;
     }
 
     .notes-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin: 1.2rem 0 0.7rem;
+      align-items: baseline;
+      margin-bottom: 0.8rem;
       gap: 1rem;
     }
 
     .notes-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
     }
 
     .notes-status {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       color: var(--green);
       opacity: 0;
       transition: opacity 0.3s;
     }
 
     .notes-status.visible { opacity: 1; }
-
     .notes-status.saving { color: var(--ink-faint); }
 
     .notes-textarea {
       width: 100%;
-      min-height: 180px;
-      padding: 1rem 1.1rem;
-      background: var(--paper-soft);
-      border: 1px solid var(--rule);
-      border-radius: 4px;
+      min-height: 200px;
+      padding: 1.1rem 1.2rem;
+      background: var(--paper);
+      border: 2px solid var(--ink);
       color: var(--ink);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      line-height: 1.65;
+      font-size: 0.88rem;
+      line-height: 1.7;
       resize: vertical;
-      transition: all 0.2s;
       letter-spacing: 0.005em;
       background-image:
-        linear-gradient(to bottom, transparent 1.435rem, var(--rule-soft) 1.435rem, var(--rule-soft) calc(1.435rem + 1px), transparent calc(1.435rem + 1px));
-      background-size: 100% 1.4625rem;
-      background-position: 0 0.75rem;
+        linear-gradient(to bottom, transparent 1.495rem, rgba(0,0,0,0.06) 1.495rem, rgba(0,0,0,0.06) calc(1.495rem + 1px), transparent calc(1.495rem + 1px));
+      background-size: 100% 1.5rem;
+      background-position: 0 0.95rem;
     }
 
     .notes-textarea:focus {
       outline: none;
       border-color: var(--accent);
-      background-color: #fff;
-      box-shadow: 0 0 0 3px rgba(184, 116, 44, 0.1);
+      box-shadow: 0 0 0 4px var(--accent-soft);
     }
 
     .notes-textarea::placeholder {
@@ -529,145 +489,142 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 0.6rem;
+      margin-top: 0.8rem;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem;
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--ink-faint);
     }
 
-    .notes-footer .clear-btn {
-      background: none;
-      border: none;
+    .clear-btn {
+      padding: 0.4rem 0.7rem;
+      background: transparent;
+      border: 2px solid var(--ink-faint);
       color: var(--ink-faint);
       font-family: inherit;
+      font-weight: inherit;
       font-size: inherit;
       letter-spacing: inherit;
+      text-transform: inherit;
       cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 0.2rem 0.4rem;
-      border-radius: 3px;
-      transition: all 0.18s;
+      transition: all 0.15s;
     }
 
-    .notes-footer .clear-btn:hover {
-      color: #c44;
-      background: rgba(200, 60, 60, 0.06);
+    .clear-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
     }
 
-    /* ── EMPTY / ERROR STATE ──────────────────────── */
+    /* ── EMPTY STATE ──────────────────────────────── */
     .empty-state {
+      padding: 4rem 1rem;
       text-align: center;
-      padding: 3.5rem 1rem;
-      font-family: 'Fraunces', Georgia, serif;
-      font-style: italic;
-      font-size: 1.05rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: -0.02em;
       color: var(--ink-faint);
+      border-bottom: 1px solid var(--ink);
     }
 
-    /* ── COLOPHON / FOOTER ────────────────────────── */
-    .colophon {
-      margin-top: 5rem;
-      padding-top: 2rem;
-      border-top: 3px double var(--ink);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 1.5rem;
-      align-items: end;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.04em;
-      color: var(--ink-faint);
-    }
-
-    .colophon .credit {
-      font-family: 'Fraunces', Georgia, serif;
-      font-style: italic;
-      font-size: 0.95rem;
-      color: var(--ink-soft);
-      letter-spacing: 0;
-      max-width: 480px;
-      line-height: 1.5;
-    }
-
-    .colophon a {
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px dotted var(--accent-soft);
-      padding-bottom: 1px;
-    }
-
-    .colophon a:hover { border-bottom-style: solid; }
-
-    .colophon-links {
+    /* ── FOOTER ───────────────────────────────────── */
+    .footer {
+      margin-top: 3rem;
+      padding: 2rem 0;
+      border-top: 4px solid var(--ink);
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
       gap: 1.5rem;
-      letter-spacing: 0.15em;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
+    }
+
+    .footer a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 1px;
+      transition: border-color 0.15s;
+    }
+
+    .footer a:hover { border-bottom-color: var(--accent); color: var(--accent); }
+
+    .footer-links { display: flex; gap: 2rem; }
+
+    .mockups-link {
+      color: var(--accent) !important;
+      border-bottom-color: var(--accent) !important;
     }
 
     /* ── RESPONSIVE ───────────────────────────────── */
-    @media (max-width: 640px) {
-      .deck-head {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-      }
-      .card-num { font-size: 1.4rem; min-width: 0; padding-top: 0; }
-      .card-actions { justify-content: flex-end; padding-top: 0; }
+    @media (max-width: 768px) {
       .masthead {
         grid-template-columns: 1fr;
-        gap: 0.8rem;
+        gap: 1rem;
         align-items: flex-start;
       }
-      .masthead-meta { align-items: flex-start; }
-      .colophon { grid-template-columns: 1fr; }
+      .masthead-meta { text-align: left; }
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      .controls { grid-template-columns: 1fr; }
+      .deck-head {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .deck-num { font-size: 3rem; }
+      .deck-actions { flex-direction: row; }
+      .notes-inner { padding-left: 0.4rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="grid-bg"></div>
 
-    <!-- Masthead with Td logo -->
+  <div class="container">
+    <!-- MASTHEAD -->
     <header class="masthead">
-      <div class="logo" aria-label="Td · Talks and Decks">
+      <a class="logo" href="/" aria-label="Td · Talks and Decks">
         <span class="t">T</span><span class="d">d</span>
+      </a>
+      <div class="masthead-info">
+        <div class="label">Curated by</div>
+        <div class="title">Arun Castro</div>
       </div>
       <div class="masthead-meta">
-        <span class="editor">Curated by Arun Castro</span>
-        <span>Vol. I &middot; <span id="edition-date">—</span></span>
+        <span class="vol">VOL. I</span>
+        <span id="edition-date">APR 2026</span>
       </div>
     </header>
 
-    <div class="edition">
-      <span>The Personal Edition</span>
-      <span>Talks &middot; Decks &middot; Field Notes</span>
-    </div>
-
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="hero">
-      <h1>
-        Talks &amp; <span class="em">decks.</span>
-      </h1>
-      <p class="lede">
-        Slide decks I've built &mdash; talks given, field guides written, ideas explored.
-        Each one is static HTML, fully navigable with keyboard, mouse, and touch.
-        More at <a href="https://castroarun.github.io/portfolio/" target="_blank" rel="noopener noreferrer">castroarun.github.io/portfolio</a>.
-      </p>
+      <div class="hero-num">
+        <span id="hero-count">—</span>
+        <span class="small">editions</span>
+      </div>
+      <div class="hero-text">
+        <h1>Talks &amp; <strong>decks.</strong></h1>
+        <p>Slide decks I've built — talks given, field guides written, ideas explored. Each one is static HTML, fully navigable. More at <a href="https://castroarun.github.io/portfolio/" target="_blank" rel="noopener noreferrer">castroarun.github.io/portfolio</a>.</p>
+      </div>
     </section>
 
-    <!-- Controls -->
+    <!-- CONTROLS -->
     <div class="controls">
       <div class="search-wrap">
-        <input
-          type="text"
-          class="search-input"
-          id="search"
-          placeholder="Search by title, venue, tag, or topic…"
-          autocomplete="off"
-        />
+        <span class="search-prefix">find</span>
+        <input class="search" id="search" type="text" placeholder="title · venue · tag · topic…" autocomplete="off" />
       </div>
-      <div class="filter-row" id="status-filters">
+      <div class="filters" id="status-filters">
         <span class="filter-label">Status</span>
         <button class="chip active" data-status="all">all</button>
         <button class="chip" data-status="upcoming">upcoming</button>
@@ -677,19 +634,16 @@
       </div>
     </div>
 
-    <!-- Decks -->
-    <div class="section-label">Editions</div>
+    <!-- DECKS -->
     <div class="deck-list" id="deck-grid">
       <div class="empty-state">Loading editions…</div>
     </div>
 
-    <!-- Colophon -->
-    <footer class="colophon">
-      <div class="credit">
-        Set in <em>Fraunces</em> &amp; <em>Inter</em>, with mono in <em>JetBrains Mono</em>.<br/>
-        Built solo, with AI as pair-programmer.
-      </div>
-      <div class="colophon-links">
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>Built solo · AI as pair-programmer</span>
+      <div class="footer-links">
+        <a class="mockups-link" href="mockups/">Mockups ↗</a>
         <a href="https://github.com/castroarun/presentations" target="_blank" rel="noopener noreferrer">GitHub</a>
         <a href="https://linkedin.com/in/aruncastromin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
@@ -697,9 +651,9 @@
   </div>
 
   <script>
-    /* ───────────────────────────────────────────────
-       State + helpers
-       ─────────────────────────────────────────────── */
+    /* ──────────────────────────────────────────────
+       State
+       ────────────────────────────────────────────── */
     const state = {
       decks: [],
       query: '',
@@ -710,11 +664,15 @@
     const $search = document.getElementById('search');
     const $resultCount = document.getElementById('result-count');
     const $statusFilters = document.getElementById('status-filters');
+    const $heroCount = document.getElementById('hero-count');
     const $editionDate = document.getElementById('edition-date');
 
     const NOTES_KEY = (id) => `td:notes:${id}`;
     const SAVE_DEBOUNCE_MS = 350;
 
+    /* ──────────────────────────────────────────────
+       Helpers
+       ────────────────────────────────────────────── */
     const fmtDate = (iso) => {
       if (!iso) return '—';
       const d = new Date(iso + 'T00:00:00');
@@ -725,10 +683,10 @@
     const fmtRelativeSaved = (ms) => {
       if (!ms) return '';
       const diff = Date.now() - ms;
-      if (diff < 60_000) return 'saved · just now';
-      if (diff < 3600_000) return `saved · ${Math.floor(diff / 60_000)}m ago`;
+      if (diff < 60_000) return 'just now';
+      if (diff < 3600_000) return `${Math.floor(diff / 60_000)}m ago`;
       const d = new Date(ms);
-      return 'saved · ' + d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) +
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) +
              ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     };
 
@@ -739,10 +697,8 @@
 
     const matchesQuery = (deck, q) => {
       if (!q) return true;
-      const hay = [
-        deck.title, deck.description, deck.venue,
-        ...(deck.tags || []),
-      ].filter(Boolean).join(' ').toLowerCase();
+      const hay = [deck.title, deck.description, deck.venue, ...(deck.tags || [])]
+        .filter(Boolean).join(' ').toLowerCase();
       return q.toLowerCase().split(/\s+/).filter(Boolean).every((tok) => hay.includes(tok));
     };
 
@@ -752,59 +708,52 @@
       (d) => matchesQuery(d, state.query) && matchesStatus(d, state.status)
     );
 
-    /* ───────────────────────────────────────────────
+    /* ──────────────────────────────────────────────
        Render
-       ─────────────────────────────────────────────── */
+       ────────────────────────────────────────────── */
     const renderCard = (deck, idx) => {
       const num = String(idx + 1).padStart(2, '0');
-      const tags = (deck.tags || []).map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+      const tags = (deck.tags || []).slice(0, 5).map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('');
       const statusClass = `status-${deck.status || 'draft'}`;
       const statusLabel = (deck.status || 'draft');
 
       return `
-        <article class="deck-card" data-id="${escapeHtml(deck.id)}">
+        <article class="deck" data-id="${escapeHtml(deck.id)}">
           <div class="deck-head" data-toggle>
-            <div class="card-num">${num}</div>
-            <div class="card-info">
-              <div class="card-title-row">
-                <div class="card-title">${escapeHtml(deck.title)}</div>
-                <span class="status-badge ${statusClass}">${escapeHtml(statusLabel)}</span>
-              </div>
-              ${deck.description ? `<div class="card-desc">${escapeHtml(deck.description)}</div>` : ''}
-              <div class="card-meta">
-                <span>${escapeHtml(deck.venue || '—')}</span>
-                <span class="dot">&middot;</span>
+            <div class="deck-num">${num}</div>
+            <div class="deck-info">
+              <span class="deck-status ${statusClass}">${escapeHtml(statusLabel)}</span>
+              <h2 class="deck-title">${escapeHtml(deck.title)}</h2>
+              ${deck.description ? `<p class="deck-desc">${escapeHtml(deck.description)}</p>` : ''}
+              <div class="deck-meta">
+                <span><strong>${escapeHtml(deck.venue || '—')}</strong></span>
                 <span>${fmtDate(deck.date)}</span>
-                <span class="dot">&middot;</span>
                 <span>${deck.slides || '?'} slides</span>
-                ${deck.duration ? `<span class="dot">&middot;</span><span>${escapeHtml(deck.duration)}</span>` : ''}
+                ${deck.duration ? `<span>${escapeHtml(deck.duration)}</span>` : ''}
               </div>
-              ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+              ${tags ? `<div class="deck-tags">${tags}</div>` : ''}
             </div>
-            <div class="card-actions">
-              <a class="icon-btn" href="${escapeHtml(deck.path)}" target="_blank" rel="noopener" title="Open deck in new tab">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
-              </a>
-              <button class="icon-btn" data-toggle title="Toggle notes">
-                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
+            <div class="deck-actions">
+              <a class="btn btn-primary" href="${escapeHtml(deck.path)}" target="_blank" rel="noopener" onclick="event.stopPropagation();">Open ↗</a>
+              <button class="btn btn-secondary" data-toggle>Notes <span class="chev">▾</span></button>
             </div>
           </div>
           <div class="notes-panel">
             <div class="notes-inner">
+              <div class="notes-rule"></div>
               <div class="notes-header">
-                <span class="notes-label">My notes</span>
+                <span class="notes-label">Notes.</span>
                 <span class="notes-status" data-status></span>
               </div>
               <textarea
                 class="notes-textarea"
                 data-notes-input
-                placeholder="Pre-talk reminders, key messages, anecdotes, audience questions, things to follow up on…"
+                placeholder="Pre-talk reminders. Key messages. Anecdotes. Audience questions. Things to follow up on…"
                 spellcheck="true"
               ></textarea>
               <div class="notes-footer">
                 <span data-counter>0 chars</span>
-                <button class="clear-btn" data-clear>Clear notes</button>
+                <button class="clear-btn" data-clear>Clear</button>
               </div>
             </div>
           </div>
@@ -820,13 +769,12 @@
         return;
       }
       $grid.innerHTML = list.map(renderCard).join('');
-      // Re-attach localStorage values for visible cards
-      $grid.querySelectorAll('.deck-card').forEach(hydrateCard);
+      $grid.querySelectorAll('.deck').forEach(hydrateCard);
     };
 
-    /* ───────────────────────────────────────────────
+    /* ──────────────────────────────────────────────
        Notes — load / save / clear
-       ─────────────────────────────────────────────── */
+       ────────────────────────────────────────────── */
     const loadStoredNotes = (id) => {
       try {
         const raw = localStorage.getItem(NOTES_KEY(id));
@@ -856,7 +804,7 @@
       }, 2200);
     };
 
-    let _saveTimers = new WeakMap();
+    const _saveTimers = new WeakMap();
 
     const hydrateCard = (cardEl) => {
       const id = cardEl.dataset.id;
@@ -869,7 +817,7 @@
       const stored = loadStoredNotes(id);
       if (stored && stored.text) {
         $textarea.value = stored.text;
-        $counter.textContent = `${stored.text.length} chars · ${fmtRelativeSaved(stored.updated)}`;
+        $counter.textContent = `${stored.text.length} chars · saved ${fmtRelativeSaved(stored.updated)}`;
       } else {
         $counter.textContent = '0 chars';
       }
@@ -881,7 +829,7 @@
         const t = setTimeout(() => {
           const payload = saveStoredNotes(id, $textarea.value);
           if (payload) {
-            $counter.textContent = `${$textarea.value.length} chars · ${fmtRelativeSaved(payload.updated)}`;
+            $counter.textContent = `${$textarea.value.length} chars · saved ${fmtRelativeSaved(payload.updated)}`;
             setStatus($status, '✓ saved', 'visible');
           } else {
             setStatus($status, '⚠ save failed', 'saving');
@@ -890,7 +838,8 @@
         _saveTimers.set($textarea, t);
       });
 
-      $clear.addEventListener('click', () => {
+      $clear.addEventListener('click', (e) => {
+        e.stopPropagation();
         if ($textarea.value && !confirm('Clear notes for this deck? This cannot be undone.')) return;
         $textarea.value = '';
         clearStoredNotes(id);
@@ -899,19 +848,19 @@
       });
     };
 
-    /* ───────────────────────────────────────────────
+    /* ──────────────────────────────────────────────
        Events
-       ─────────────────────────────────────────────── */
+       ────────────────────────────────────────────── */
     $grid.addEventListener('click', (e) => {
-      // Don't toggle if a real action button (link, clear) was clicked
-      if (e.target.closest('a.icon-btn')) return;
+      // Don't toggle if user clicked the open link, clear button, or is typing in the textarea
+      if (e.target.closest('a.btn')) return;
       if (e.target.closest('[data-clear]')) return;
       if (e.target.closest('[data-notes-input]')) return;
 
       const toggleEl = e.target.closest('[data-toggle]');
       if (!toggleEl) return;
       e.preventDefault();
-      const card = toggleEl.closest('.deck-card');
+      const card = toggleEl.closest('.deck');
       if (!card) return;
       card.classList.toggle('expanded');
     });
@@ -930,12 +879,12 @@
       render();
     });
 
-    /* ───────────────────────────────────────────────
+    /* ──────────────────────────────────────────────
        Boot
-       ─────────────────────────────────────────────── */
+       ────────────────────────────────────────────── */
     $editionDate.textContent = new Date().toLocaleDateString('en-GB', {
       month: 'short', year: 'numeric',
-    });
+    }).toUpperCase();
 
     (async () => {
       try {
@@ -944,6 +893,7 @@
         state.decks = (data.decks || [])
           .slice()
           .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        $heroCount.textContent = String(state.decks.length).padStart(2, '0');
         render();
       } catch (e) {
         $grid.innerHTML = `<div class="empty-state">Couldn't load decks.json — ${escapeHtml(e.message)}</div>`;

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mockup Gallery · Td Home Page Concepts</title>
+  <title>Mockup Library · Td Home Page Concepts</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,13 +17,13 @@
     }
 
     .gallery {
-      max-width: 1600px;
+      max-width: 1700px;
       margin: 0 auto;
       padding: 4vh 4vw;
     }
 
     header {
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -42,10 +43,16 @@
 
     .lede {
       color: #999;
-      max-width: 640px;
+      max-width: 720px;
       line-height: 1.55;
       font-size: 1rem;
       font-weight: 300;
+    }
+
+    .lede a {
+      color: #fbbf24;
+      text-decoration: none;
+      border-bottom: 1px dotted #fbbf24;
     }
 
     .meta {
@@ -55,6 +62,65 @@
       text-transform: uppercase;
       color: #666;
       text-align: right;
+      line-height: 1.7;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #444;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .back-link:hover {
+      border-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.06);
+    }
+
+    /* SECTION HEADERS */
+    .section-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem 0 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    .section-bar::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #333;
+    }
+
+    .section-bar .badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+    }
+
+    .badge-live {
+      background: #006633;
+      color: #fff;
+    }
+
+    .badge-future {
+      background: #333;
+      color: #aaa;
     }
 
     /* TABS */
@@ -67,21 +133,22 @@
     }
 
     .tab {
-      padding: 1rem 1.5rem;
+      padding: 0.9rem 1.2rem;
       background: transparent;
       border: none;
       border-bottom: 2px solid transparent;
       color: #888;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 500;
       letter-spacing: -0.005em;
       transition: all 0.18s;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       margin-bottom: -1px;
+      white-space: nowrap;
     }
 
     .tab:hover { color: #ddd; }
@@ -93,21 +160,36 @@
 
     .tab .num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       letter-spacing: 0.1em;
       color: #fbbf24;
       font-weight: 600;
     }
 
+    .tab.live-tab .num { color: #4ade80; }
+
+    .tab .live-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      background: #006633;
+      color: #fff;
+      padding: 0.12rem 0.4rem;
+      border-radius: 2px;
+      margin-left: 0.3rem;
+      font-weight: 600;
+    }
+
     .tab .open-link {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: #666;
       text-decoration: none;
-      padding: 0.2rem 0.5rem;
+      padding: 0.18rem 0.45rem;
       border: 1px solid #333;
       border-radius: 3px;
       margin-left: 0.4rem;
+      transition: all 0.15s;
     }
 
     .tab .open-link:hover {
@@ -136,28 +218,41 @@
 
     .preview iframe.active { display: block; }
 
-    /* DESCRIPTIONS */
+    /* DESCRIPTIONS GRID */
     .descriptions {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1rem;
       margin-top: 2rem;
     }
 
     .desc-card {
-      padding: 1.2rem;
+      padding: 1.1rem;
       background: rgba(255,255,255,0.025);
       border: 1px solid #2a2a2a;
       border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s;
     }
+
+    .desc-card:hover { border-color: #555; background: rgba(255,255,255,0.04); }
 
     .desc-card.active {
       border-color: #fbbf24;
       background: rgba(251, 191, 36, 0.04);
     }
 
+    .desc-card.live {
+      border-color: rgba(74, 222, 128, 0.4);
+    }
+
+    .desc-card.live.active {
+      border-color: #4ade80;
+      background: rgba(74, 222, 128, 0.05);
+    }
+
     .desc-card h3 {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: #fbbf24;
@@ -166,15 +261,17 @@
       margin-bottom: 0.5rem;
     }
 
+    .desc-card.live h3 { color: #4ade80; }
+
     .desc-card .name {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.45rem;
       color: #fff;
     }
 
     .desc-card .body {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #aaa;
       line-height: 1.5;
       font-weight: 300;
@@ -197,121 +294,197 @@
 </head>
 <body>
   <div class="gallery">
+    <a class="back-link" href="../">← Back to Td</a>
+
     <header>
       <div>
-        <h1>Td <strong>home page</strong> · concepts</h1>
+        <h1>Td <strong>mockup library</strong></h1>
         <p class="lede">
-          Four directions for the talks-and-decks home page identity.
-          Each uses the same content (logo, hero, decks) but a completely different visual language.
-          Click a tab to preview.
+          Eight directions for the home page identity — one currently <strong style="color:#4ade80;">live</strong>,
+          seven on the shelf for future picks. Each uses the same content (logo, hero, decks)
+          but a completely different visual language. Click a tab to preview, or open in a new tab.
         </p>
       </div>
       <div class="meta">
-        4 mockups<br/>
-        live preview<br/>
-        Apr 2026
+        8 mockups<br/>
+        Apr 2026<br/>
+        <a href="../" style="color:#fbbf24;text-decoration:none;">→ live home page</a>
       </div>
     </header>
 
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-i="0">
+    <!-- LIVE -->
+    <div class="section-bar">
+      <span>Currently in use</span>
+      <span class="badge badge-live">LIVE</span>
+    </div>
+
+    <div class="tabs" id="tabs-live">
+      <button class="tab live-tab active" data-i="0">
         <span class="num">01</span>
         <span>Brutalist</span>
+        <span class="live-pill">LIVE</span>
         <a class="open-link" href="01-brutalist.html" target="_blank" onclick="event.stopPropagation();">↗</a>
       </button>
-      <button class="tab" data-i="1">
+    </div>
+
+    <div class="preview" id="preview-live">
+      <iframe class="active" src="01-brutalist.html"></iframe>
+    </div>
+
+    <div class="descriptions">
+      <div class="desc-card live active" data-target="live" data-i="0">
+        <h3>01 · Brutalist · LIVE</h3>
+        <div class="name">Bold &amp; type-forward</div>
+        <div class="body">
+          Pure black-on-white with one electric red accent. <strong>Massive Helvetica</strong>, hard rectangles, no rounded corners, asymmetric grid lines.
+          <strong>This is the current home page.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- FUTURE PICKS -->
+    <div class="section-bar">
+      <span>On the shelf</span>
+      <span class="badge badge-future">FUTURE PICKS</span>
+    </div>
+
+    <div class="tabs" id="tabs-future">
+      <button class="tab active" data-i="0">
         <span class="num">02</span>
         <span>Terminal</span>
         <a class="open-link" href="02-terminal.html" target="_blank" onclick="event.stopPropagation();">↗</a>
       </button>
-      <button class="tab" data-i="2">
+      <button class="tab" data-i="1">
         <span class="num">03</span>
         <span>Cinema Marquee</span>
         <a class="open-link" href="03-cinema.html" target="_blank" onclick="event.stopPropagation();">↗</a>
       </button>
-      <button class="tab" data-i="3">
+      <button class="tab" data-i="2">
         <span class="num">04</span>
-        <span>Glitch / Cyberpunk</span>
+        <span>Glitch</span>
         <a class="open-link" href="04-glitch.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="3">
+        <span class="num">05</span>
+        <span>Newspaper</span>
+        <a class="open-link" href="05-newspaper.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="4">
+        <span class="num">06</span>
+        <span>Transit Map</span>
+        <a class="open-link" href="06-transit.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="5">
+        <span class="num">07</span>
+        <span>Blueprint</span>
+        <a class="open-link" href="07-blueprint.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="6">
+        <span class="num">08</span>
+        <span>Polaroid Scrapbook</span>
+        <a class="open-link" href="08-polaroid.html" target="_blank" onclick="event.stopPropagation();">↗</a>
       </button>
     </div>
 
-    <div class="preview">
-      <iframe class="active" src="01-brutalist.html"></iframe>
-      <iframe data-src="02-terminal.html"></iframe>
+    <div class="preview" id="preview-future">
+      <iframe class="active" src="02-terminal.html"></iframe>
       <iframe data-src="03-cinema.html"></iframe>
       <iframe data-src="04-glitch.html"></iframe>
+      <iframe data-src="05-newspaper.html"></iframe>
+      <iframe data-src="06-transit.html"></iframe>
+      <iframe data-src="07-blueprint.html"></iframe>
+      <iframe data-src="08-polaroid.html"></iframe>
     </div>
 
-    <div class="descriptions" id="descriptions">
-      <div class="desc-card active" data-i="0">
-        <h3>01 · Brutalist</h3>
-        <div class="name">Bold &amp; type-forward</div>
-        <div class="body">
-          Pure black-on-white with one electric red accent. <strong>Massive Helvetica</strong>, hard rectangles, no rounded corners, asymmetric grid lines.
-          Reads like a Pentagram / Massimo Vignelli design system. Confident, loud, type-driven.
-        </div>
-      </div>
-      <div class="desc-card" data-i="1">
+    <div class="descriptions" id="descriptions-future">
+      <div class="desc-card active" data-target="future" data-i="0">
         <h3>02 · Terminal</h3>
         <div class="name">Phosphor &amp; ASCII</div>
         <div class="body">
-          Dark green-on-black like a CRT terminal, with amber highlights. <strong>Monospaced everything</strong>, ASCII-bordered cards, blinking cursor, scanline overlay.
-          Hacker / engineer aesthetic — feels like ssh-ing into a personal site.
+          Dark green-on-black CRT terminal with amber highlights. <strong>Monospace everything</strong>, ASCII bordered cards, blinking cursor, scanlines.
         </div>
       </div>
-      <div class="desc-card" data-i="2">
+      <div class="desc-card" data-target="future" data-i="1">
         <h3>03 · Cinema Marquee</h3>
         <div class="name">Theatrical &amp; ornate</div>
         <div class="body">
-          Black + gold + velvet red, with lightbulb-edged marquee frame and Bodoni Moda serif italics. Each deck is a "feature" with a poster card.
-          <strong>Old playbill / theatre programme</strong> vibe — romantic and ceremonial.
+          Black + gold + velvet with light-bulb frame and Bodoni Moda italics. Each deck a "feature presentation". <strong>Old playbill</strong> vibe.
         </div>
       </div>
-      <div class="desc-card" data-i="3">
+      <div class="desc-card" data-target="future" data-i="2">
         <h3>04 · Glitch / Cyberpunk</h3>
         <div class="name">Neon &amp; chromatic</div>
         <div class="body">
-          Deep violet with neon pink + cyan. Chromatic-aberration logo, grid-line background, gradient buttons, clipped-corner cards.
-          <strong>Y2K-meets-2026</strong> vibe — high energy, very online, feels demo-ready for an AI talk.
+          Deep violet with neon pink + cyan. <strong>Chromatic-aberration logo</strong>, gradient buttons, clipped-corner cards. Very online energy.
+        </div>
+      </div>
+      <div class="desc-card" data-target="future" data-i="3">
+        <h3>05 · Newspaper</h3>
+        <div class="name">Op-ed broadsheet</div>
+        <div class="body">
+          Cream paper with classic <strong>Playfair + Garamond</strong>. Dateline, multi-column articles, drop caps, double rules. Times-style elegance.
+        </div>
+      </div>
+      <div class="desc-card" data-target="future" data-i="4">
+        <h3>06 · Transit Map</h3>
+        <div class="name">Wayfinding &amp; routes</div>
+        <div class="body">
+          Bold colored "lines" connecting decks like an underground map. <strong>Station cards</strong>, route badges, NYC Subway / TfL energy.
+        </div>
+      </div>
+      <div class="desc-card" data-target="future" data-i="5">
+        <h3>07 · Blueprint</h3>
+        <div class="name">Technical drawing</div>
+        <div class="body">
+          Deep blue with cyan grid lines, title blocks, dimensions, drawing labels. <strong>Architect's working set</strong> aesthetic.
+        </div>
+      </div>
+      <div class="desc-card" data-target="future" data-i="6">
+        <h3>08 · Polaroid Scrapbook</h3>
+        <div class="name">Analog &amp; handwritten</div>
+        <div class="body">
+          Kraft paper desk with polaroid photos, washi tape, handwritten Caveat captions. <strong>Personal scrapbook</strong> warmth.
         </div>
       </div>
     </div>
 
     <div class="footer-note">
-      Click a tab to preview the full concept inline, or click the <strong>↗</strong> to open in a new tab.<br/>
-      Pick one — or remix elements across — and I'll build the real home page from it.
+      Eight concepts banked. Pick one anytime to refresh the home page —<br/>
+      or remix elements across them. <strong>Brutalist is live now.</strong>
     </div>
   </div>
 
   <script>
-    const $tabs = document.getElementById('tabs');
-    const $descs = document.getElementById('descriptions');
-    const $iframes = document.querySelectorAll('.preview iframe');
+    function setupTabGroup(tabsId, previewId, descTarget) {
+      const $tabs = document.getElementById(tabsId);
+      if (!$tabs) return;
+      const $preview = document.getElementById(previewId);
+      const $iframes = $preview.querySelectorAll('iframe');
+      const $descs = document.querySelectorAll(`[data-target="${descTarget}"]`);
 
-    function show(i) {
-      // Lazy-load
-      const iframe = $iframes[i];
-      if (!iframe.src) iframe.src = iframe.dataset.src;
+      function show(i) {
+        const iframe = $iframes[i];
+        if (!iframe) return;
+        if (!iframe.src) iframe.src = iframe.dataset.src;
+        $iframes.forEach((f, idx) => f.classList.toggle('active', idx === i));
+        $tabs.querySelectorAll('.tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
+        $descs.forEach((d) => d.classList.toggle('active', parseInt(d.dataset.i) === i));
+      }
 
-      $iframes.forEach((f, idx) => f.classList.toggle('active', idx === i));
-      document.querySelectorAll('.tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
-      document.querySelectorAll('.desc-card').forEach((d, idx) => d.classList.toggle('active', idx === i));
+      $tabs.addEventListener('click', (e) => {
+        const tab = e.target.closest('.tab');
+        if (!tab) return;
+        if (e.target.closest('.open-link')) return;
+        show(parseInt(tab.dataset.i));
+      });
+
+      $descs.forEach((d) => {
+        d.addEventListener('click', () => show(parseInt(d.dataset.i)));
+      });
     }
 
-    $tabs.addEventListener('click', (e) => {
-      const tab = e.target.closest('.tab');
-      if (!tab) return;
-      // Don't switch if user clicked the open-link
-      if (e.target.closest('.open-link')) return;
-      show(parseInt(tab.dataset.i));
-    });
-
-    $descs.addEventListener('click', (e) => {
-      const card = e.target.closest('.desc-card');
-      if (!card) return;
-      show(parseInt(card.dataset.i));
-    });
+    setupTabGroup('tabs-live', 'preview-live', 'live');
+    setupTabGroup('tabs-future', 'preview-future', 'future');
   </script>
 </body>
 </html>

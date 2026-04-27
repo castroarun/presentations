@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup 08 · Polaroid Scrapbook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Special+Elite&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --kraft: #d4b896;
+      --kraft-deep: #b89b78;
+      --kraft-shadow: rgba(0,0,0,0.18);
+      --photo: #fbf8f0;
+      --ink: #2a2018;
+      --ink-soft: #5a4a3a;
+      --tape: rgba(255, 230, 100, 0.55);
+      --tape-blue: rgba(180, 220, 250, 0.55);
+      --tape-pink: rgba(255, 180, 200, 0.55);
+      --red: #c4453a;
+    }
+    html, body {
+      background: var(--kraft);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+      opacity: 0.25;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at top left, rgba(255,255,255,0.08), transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(0,0,0,0.12), transparent 60%);
+      z-index: 0;
+    }
+
+    .desk {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4vh 5vw 6vh;
+    }
+
+    /* MASTHEAD — handwritten title */
+    .masthead {
+      text-align: center;
+      padding: 1rem 0 2rem;
+      position: relative;
+    }
+
+    .nameplate {
+      display: inline-block;
+      transform: rotate(-1.5deg);
+    }
+
+    .nameplate-label {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-text {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: clamp(5rem, 11vw, 9rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .logo-text .em { color: var(--red); font-style: italic; }
+
+    .nameplate-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--ink-soft);
+      margin-top: 0.4rem;
+      transform: rotate(-1deg);
+    }
+
+    .nameplate-subtitle::before, .nameplate-subtitle::after { content: ' ✿ '; opacity: 0.5; }
+
+    /* Vol/edition tag — like a sticker */
+    .edition-sticker {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      transform: rotate(8deg);
+      background: var(--red);
+      color: var(--photo);
+      padding: 0.6rem 1rem;
+      font-family: 'Special Elite', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 2px 3px 6px rgba(0,0,0,0.2);
+      border-radius: 2px;
+    }
+
+    .edition-sticker .big {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    /* HERO LEDE */
+    .hero-lede {
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 1.5rem 1.8rem;
+      background: var(--photo);
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 4px 16px var(--kraft-shadow);
+      transform: rotate(-0.5deg);
+      position: relative;
+    }
+
+    /* Washi tape on hero */
+    .hero-lede::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 100px;
+      height: 24px;
+      background: var(--tape);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .hero-lede h1 {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 1.8rem;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-lede p {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+
+    .hero-lede a {
+      color: var(--red);
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-underline-offset: 4px;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search {
+      padding: 0.7rem 1.2rem;
+      background: var(--photo);
+      border: 1px solid rgba(0,0,0,0.15);
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--ink);
+      min-width: 280px;
+      box-shadow: 1px 2px 4px var(--kraft-shadow);
+      transform: rotate(-0.5deg);
+    }
+    .search:focus { outline: none; border-color: var(--red); }
+    .search::placeholder { color: rgba(0,0,0,0.3); }
+
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      padding: 0.4rem 1rem;
+      background: var(--photo);
+      border: 1px dashed rgba(0,0,0,0.4);
+      font-family: 'Special Elite', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 1px 2px 4px var(--kraft-shadow);
+      color: var(--ink);
+    }
+
+    .chip.active {
+      background: var(--ink);
+      color: var(--photo);
+      border-color: var(--ink);
+    }
+
+    /* POLAROID GRID */
+    .polaroids {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 3rem 2rem;
+      padding: 2rem 0;
+    }
+
+    .polaroid {
+      background: var(--photo);
+      padding: 1.2rem 1.2rem 4rem;
+      box-shadow: 4px 6px 16px var(--kraft-shadow);
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+
+    .polaroid:nth-child(1) { transform: rotate(-2deg); }
+    .polaroid:nth-child(2) { transform: rotate(1.5deg); }
+
+    .polaroid:hover {
+      transform: rotate(0) translateY(-4px);
+      box-shadow: 6px 8px 22px var(--kraft-shadow);
+      z-index: 5;
+    }
+
+    /* Tape on polaroid */
+    .polaroid::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 30%;
+      width: 90px;
+      height: 22px;
+      transform: rotate(-3deg);
+      background: var(--tape);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .polaroid:nth-child(2)::before { background: var(--tape-blue); transform: rotate(4deg); left: 50%; }
+
+    .polaroid-photo {
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(135deg, var(--ink), var(--ink-soft));
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .polaroid-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.12), transparent 50%),
+        repeating-linear-gradient(45deg, transparent 0, transparent 8px, rgba(255,255,255,0.02) 8px, rgba(255,255,255,0.02) 9px);
+    }
+
+    .polaroid-photo .num {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 5rem;
+      color: rgba(251, 191, 36, 0.9);
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .polaroid-photo .label {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      position: relative;
+      z-index: 1;
+    }
+
+    .polaroid-status {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+
+    .polaroid-title {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: 1.6rem;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0;
+    }
+
+    .polaroid-desc {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 0.8rem;
+    }
+
+    .polaroid-meta {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      padding-top: 0.7rem;
+      border-top: 1px dashed rgba(0,0,0,0.2);
+    }
+
+    /* Handwritten caption at bottom of polaroid */
+    .polaroid-caption {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 1.2rem;
+      right: 1.2rem;
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      transform: rotate(-1deg);
+    }
+    .polaroid-caption .arrow {
+      color: var(--red);
+      font-weight: 700;
+    }
+
+    /* Stamps / corner marks */
+    .stamp {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 60px;
+      height: 60px;
+      background: var(--photo);
+      border: 2px dashed var(--ink-soft);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Special Elite', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--ink-soft);
+      transform: rotate(-15deg);
+      line-height: 1.2;
+      padding: 0.3rem;
+      z-index: 2;
+    }
+
+    /* COLOPHON */
+    .colophon {
+      margin-top: 4rem;
+      text-align: center;
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--ink-soft);
+      transform: rotate(-1deg);
+    }
+    .colophon a {
+      color: var(--red);
+      text-decoration: underline;
+      text-decoration-style: wavy;
+    }
+
+    .mockup-tag {
+      position: fixed; top: 1rem; right: 1rem;
+      background: var(--ink); color: var(--photo);
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700; font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-tag">Mockup 08 · Polaroid</div>
+
+  <div class="desk">
+    <header class="masthead">
+      <div class="edition-sticker">
+        <span class="big">VOL. I</span>
+        <span>Apr 2026</span>
+      </div>
+      <div class="nameplate">
+        <div class="nameplate-label">— Curated by Arun Castro —</div>
+        <div class="logo-text">T<span class="em">d</span></div>
+        <div class="nameplate-subtitle">Talks &amp; Decks Scrapbook</div>
+      </div>
+    </header>
+
+    <div class="hero-lede">
+      <h1>A growing scrapbook of decks I've built —</h1>
+      <p>talks given, field guides written, ideas explored. Each one a polaroid in this little library. More at <a href="#">castroarun.github.io/portfolio</a>.</p>
+    </div>
+
+    <div class="controls">
+      <input class="search" type="text" placeholder="search the scrapbook…" />
+      <div class="filters">
+        <button class="chip active">all</button>
+        <button class="chip">upcoming</button>
+        <button class="chip">delivered</button>
+      </div>
+    </div>
+
+    <div class="polaroids">
+      <article class="polaroid">
+        <div class="stamp">Delivered<br/>Apr 27</div>
+        <div class="polaroid-photo">
+          <div class="num">01</div>
+          <div class="label">★ AI in Action ★</div>
+        </div>
+        <div class="polaroid-status">Delivered · 27 Apr 2026</div>
+        <h3 class="polaroid-title">AI in Action — From Idea to Live Product, Solo</h3>
+        <p class="polaroid-desc">How a single builder ships products end-to-end with AI as pair-programmer. Workflow, mindset, live demos.</p>
+        <div class="polaroid-meta">Rotaract MNM Jain · 9 slides · 20 min</div>
+        <div class="polaroid-caption"><span class="arrow">→</span> open the deck</div>
+      </article>
+
+      <article class="polaroid">
+        <div class="stamp">Delivered<br/>Apr 22</div>
+        <div class="polaroid-photo">
+          <div class="num">02</div>
+          <div class="label">★ Hurricane v2 ★</div>
+        </div>
+        <div class="polaroid-status">Delivered · 22 Apr 2026</div>
+        <h3 class="polaroid-title">The Hurricane v2 — A Field Guide to Investing</h3>
+        <p class="polaroid-desc">A 6-part field guide to the markets — the storm, the hurricane, the instruments, the expensive help, the pilot, the cockpit.</p>
+        <div class="polaroid-meta">Self-published · 26 slides · 30 min</div>
+        <div class="polaroid-caption"><span class="arrow">→</span> open the deck</div>
+      </article>
+    </div>
+
+    <div class="colophon">
+      Built solo, with AI as pair-programmer · <a href="#">github</a> · <a href="#">linkedin</a>
+    </div>
+  </div>
+</body>
+</html>

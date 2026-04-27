@@ -467,20 +467,20 @@
         <div>
           <div class="ctas-label">Today you'll see</div>
           <div class="ctas">
-            <a class="cta" href="https://anycalc.in" target="_blank" rel="noopener noreferrer">
+            <a class="cta" href="https://anycalc.in" onclick="return gotoOrOpen(2, 'https://anycalc.in')" target="_blank" rel="noopener noreferrer">
               <div class="cta-icon">01</div>
               <div class="cta-text">
                 <span class="cta-title">AnyCalc &mdash; 19 financial calculators in one app</span>
-                <span class="cta-url">anycalc.in</span>
+                <span class="cta-url">deep dive →</span>
               </div>
               <span class="cta-arrow">&rarr;</span>
             </a>
 
-            <a class="cta" href="https://castroarun.github.io/portfolio/resume/" target="_blank" rel="noopener noreferrer">
+            <a class="cta" href="https://castroarun.github.io/portfolio/resume/" onclick="return gotoOrOpen(3, 'https://castroarun.github.io/portfolio/resume/')" target="_blank" rel="noopener noreferrer">
               <div class="cta-icon">02</div>
               <div class="cta-text">
                 <span class="cta-title">Digital Resume &mdash; my portfolio as a product</span>
-                <span class="cta-url">castroarun.github.io/portfolio/resume</span>
+                <span class="cta-url">deep dive →</span>
               </div>
               <span class="cta-arrow">&rarr;</span>
             </a>
@@ -510,12 +510,22 @@
       }
       if (e.key === 'Escape' && document.fullscreenElement) document.exitFullscreen();
     });
+
+    // CTA click: when running inside the deck, navigate to the deep-dive slide.
+    // When standalone, open the external URL in a new tab (default link behaviour).
+    function gotoOrOpen(slideIdx, externalUrl) {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'goToSlide', index: slideIdx }, '*');
+        return false;  // prevent default link nav inside the deck
+      }
+      return true;  // standalone — let the link open externally
+    }
   </script>
 
   <script>
     if (window.parent !== window) {
       window.addEventListener('keydown', (e) => {
-        const navKeys = ['ArrowRight','ArrowLeft',' ','PageDown','PageUp','Home','End','1','2','3','4','5','6','7','f','F','h','H','?','Escape'];
+        const navKeys = ['ArrowRight','ArrowLeft',' ','PageDown','PageUp','Home','End','1','2','3','4','5','6','7','8','9','f','F','h','H','?','Escape'];
         if (navKeys.includes(e.key)) {
           window.parent.postMessage({ type: 'deckKey', key: e.key, shiftKey: e.shiftKey }, '*');
           e.stopImmediatePropagation();

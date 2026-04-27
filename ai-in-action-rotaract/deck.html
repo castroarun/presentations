@@ -338,7 +338,7 @@
     function ensureLoaded(i) {
       const f = iframes[i];
       if (!f.src) {
-        f.src = f.dataset.src;
+        f.src = f.dataset.src + '?v=' + Date.now();
         // Attach keydown listener to iframe's contentDocument once loaded
         // so arrow keys work even when iframe has focus (works for same-origin)
         f.addEventListener('load', () => {

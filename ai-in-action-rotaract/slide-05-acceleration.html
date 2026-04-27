@@ -35,7 +35,7 @@
       inset: 0;
       background:
         radial-gradient(ellipse 50% 40% at 25% 50%, rgba(99, 102, 241, 0.10), transparent 70%),
-        radial-gradient(ellipse 40% 35% at 88% 30%, rgba(245, 158, 11, 0.16), transparent 70%);
+        radial-gradient(ellipse 50% 40% at 75% 50%, rgba(245, 158, 11, 0.10), transparent 70%);
       pointer-events: none;
       z-index: 0;
     }
@@ -54,10 +54,10 @@
     .slide {
       position: relative; z-index: 1;
       height: 100vh; width: 100vw;
-      padding: 4vh 5vw;
+      padding: 4vh 4vw;
       display: grid;
       grid-template-rows: auto auto 1fr auto;
-      gap: 2.5vh;
+      gap: 2vh;
     }
 
     /* HEADER */
@@ -93,20 +93,20 @@
     }
 
     /* TITLE */
-    .title-block { text-align: center; padding-top: 1vh; }
+    .title-block { text-align: center; padding-top: 0.5vh; }
 
     .pretitle {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.78rem;
       letter-spacing: 0.18em;
       color: #f59e0b;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
       text-transform: uppercase;
     }
     .pretitle .slash { color: #444; margin-right: 0.5rem; }
 
     h1.title {
-      font-size: clamp(2rem, 3.8vw, 3.6rem);
+      font-size: clamp(1.8rem, 3.4vw, 3.2rem);
       font-weight: 200;
       line-height: 1.05;
       letter-spacing: -0.025em;
@@ -130,85 +130,70 @@
       color: #818cf8;
     }
 
-    h1.title .bang {
-      color: #fbbf24;
-      font-weight: 300;
-      margin-left: 0.05em;
+    h1.title .bang { color: #fbbf24; font-weight: 300; margin-left: 0.05em; }
+
+    /* CHART ROW — two panels side by side */
+    .chart-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vw;
+      align-items: stretch;
     }
 
-    /* CHART CONTAINER */
-    .chart-container {
+    .chart-panel {
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
-      padding: 1.5rem 1rem 1rem;
-      border-radius: 16px;
+      gap: 0.8rem;
+      padding: 1.2rem 1rem 0.8rem;
+      border-radius: 14px;
       background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0));
       border: 1px solid rgba(255,255,255,0.06);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
-    .legend {
+    .chart-panel.left { border-color: rgba(99, 102, 241, 0.18); }
+    .chart-panel.right { border-color: rgba(245, 158, 11, 0.22); }
+
+    .panel-header {
       display: flex;
-      justify-content: center;
-      gap: 3rem;
-      padding: 0 1rem;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0 0.5rem;
     }
 
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-    }
-
-    .legend-swatch {
-      width: 36px;
-      height: 3px;
-      border-radius: 2px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .legend-swatch.blue {
-      background: linear-gradient(90deg, #6366f1, #818cf8);
-      box-shadow: 0 0 8px rgba(129, 140, 248, 0.5);
-    }
-
-    .legend-swatch.gold {
-      background: linear-gradient(90deg, #f59e0b 0%, #f59e0b 45%, transparent 46%, transparent 50%, #fbbf24 51%, transparent 55%, transparent 59%, #fbbf24 60%, transparent 64%, transparent 68%, #fbbf24 69%, transparent 73%, transparent 77%, #fbbf24 78%, transparent 82%, transparent 86%, #fbbf24 87%, transparent 91%, transparent 95%, #fbbf24 96%);
-      box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
-    }
-
-    .legend-text {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-
-    .legend-name {
-      font-size: 0.95rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-    }
-
-    .legend-item.blue .legend-name { color: #c7d2fe; }
-    .legend-item.gold .legend-name { color: #fde68a; }
-
-    .legend-meta {
+    .panel-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
       color: #888;
-      letter-spacing: 0.05em;
     }
 
-    .legend-meta .span-num {
-      color: #f59e0b;
+    .panel-title {
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-top: 0.2rem;
+    }
+
+    .chart-panel.left .panel-title { color: #c7d2fe; }
+    .chart-panel.right .panel-title { color: #fde68a; }
+
+    .panel-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .panel-meta .num {
+      font-size: 1.3rem;
       font-weight: 600;
     }
 
-    .legend-item.blue .legend-meta .span-num { color: #818cf8; }
+    .chart-panel.left .panel-meta .num { color: #818cf8; }
+    .chart-panel.right .panel-meta .num { color: #fbbf24; }
 
     /* SVG */
     svg.chart {
@@ -216,7 +201,6 @@
       height: auto;
       max-height: 50vh;
       display: block;
-      overflow: visible;
     }
 
     .axis-line { stroke: #2a2a2e; stroke-width: 1; }
@@ -229,13 +213,8 @@
       letter-spacing: 0.05em;
     }
 
-    .year-label.highlight {
+    .year-label.highlight-gold {
       fill: #fbbf24;
-      font-weight: 600;
-    }
-
-    .year-label.highlight-blue {
-      fill: #818cf8;
       font-weight: 600;
     }
 
@@ -243,6 +222,14 @@
       fill: #555;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .x-axis-sub {
+      fill: #555;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
@@ -268,13 +255,13 @@
       stroke: #fbbf24;
       stroke-width: 2.5;
       stroke-dasharray: 6 6;
-      filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6));
-      opacity: 0.85;
+      opacity: 0.45;
     }
 
     .curve-fill { stroke: none; opacity: 0.18; }
     .curve-fill.blue { fill: url(#gradBlue); }
-    .curve-fill.gold { fill: url(#gradGold); }
+    .curve-fill.gold-solid { fill: url(#gradGoldSolid); }
+    .curve-fill.gold-dotted { fill: url(#gradGoldDotted); opacity: 0.06; }
 
     .milestone-dot {
       fill: #0a0a0b;
@@ -286,68 +273,57 @@
     .milestone-dot.glow.blue { filter: drop-shadow(0 0 8px #6366f1); }
     .milestone-dot.glow.gold { filter: drop-shadow(0 0 10px #f59e0b); }
 
-    /* Vertical era markers */
     .era-marker {
+      stroke: #f59e0b;
       stroke-width: 1.2;
       stroke-dasharray: 3 4;
       opacity: 0.55;
     }
-    .era-marker.gold { stroke: #f59e0b; }
-    .era-marker.blue { stroke: #818cf8; }
 
     .era-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       font-weight: 500;
+      fill: #fbbf24;
     }
-    .era-label.gold { fill: #fbbf24; }
-    .era-label.blue { fill: #c7d2fe; }
 
-    .annotation {
+    .we-are-here {
       font-family: 'Instrument Serif', Georgia, serif;
       font-style: italic;
-      font-size: 18px;
+      font-size: 17px;
       fill: #fbbf24;
-      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.6));
     }
 
-    .arrow-extend {
-      stroke: #fbbf24;
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      filter: drop-shadow(0 0 8px #f59e0b);
-    }
-
-    .question-mark {
-      fill: #fbbf24;
+    .ahead-label {
       font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 36px;
       font-style: italic;
-      filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
+      font-size: 16px;
+      fill: #fde68a;
+      opacity: 0.55;
     }
 
     /* Animations */
     .curve-animated {
-      stroke-dasharray: 3000;
-      stroke-dashoffset: 3000;
-      animation: drawCurve 2.5s 0.4s ease-out forwards;
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      animation: drawCurve 2.4s 0.4s ease-out forwards;
     }
 
-    .curve-animated.delay {
-      animation: drawCurve 1.4s 1.8s ease-out forwards;
+    .curve-animated.delay-1 {
+      animation: drawCurve 0.9s 1.6s ease-out forwards;
     }
 
-    /* Dotted curve uses different animation since stroke-dasharray is fixed */
+    /* The dotted curve uses dasharray for the dots, so we animate via opacity instead */
     .dotted-fade {
       opacity: 0;
-      animation: dottedFadeIn 1.2s 3.0s forwards;
+      animation: dottedFadeIn 1s 2.7s forwards;
     }
 
     @keyframes drawCurve { to { stroke-dashoffset: 0; } }
-    @keyframes dottedFadeIn { to { opacity: 0.85; } }
+    @keyframes dottedFadeIn { to { opacity: 0.45; } }
 
     .fade-in {
       opacity: 0;
@@ -374,7 +350,7 @@
       font-family: 'Instrument Serif', Georgia, serif;
       font-style: italic;
       font-weight: 400;
-      font-size: 1.15em;
+      font-size: 1.2em;
       color: #fbbf24;
     }
 
@@ -439,128 +415,151 @@
       </h1>
     </div>
 
-    <!-- Chart -->
-    <div class="chart-container fade-in" style="animation-delay: 0.5s;">
-      <!-- Legend -->
-      <div class="legend">
-        <div class="legend-item blue">
-          <span class="legend-swatch blue"></span>
-          <span class="legend-text">
-            <span class="legend-name">The Microprocessor</span>
-            <span class="legend-meta">Year 0 — 54 &middot; <span class="span-num">solid</span></span>
-          </span>
+    <!-- Charts side by side -->
+    <div class="chart-row fade-in" style="animation-delay: 0.5s;">
+
+      <!-- LEFT: Microprocessor (full S-curve, 54 years) -->
+      <div class="chart-panel left">
+        <div class="panel-header">
+          <div>
+            <div class="panel-label">The Microprocessor</div>
+            <div class="panel-title">A complete journey</div>
+          </div>
+          <div class="panel-meta"><span class="num">54</span> yrs</div>
         </div>
-        <div class="legend-item gold">
-          <span class="legend-swatch gold"></span>
-          <span class="legend-text">
-            <span class="legend-name">Artificial Intelligence</span>
-            <span class="legend-meta"><span class="span-num">9 yrs actual</span> + 45 yrs projection</span>
-          </span>
-        </div>
+
+        <svg class="chart" viewBox="0 0 720 500" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#818cf8" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Grid -->
+          <line class="grid-line" x1="60" y1="155" x2="660" y2="155"/>
+          <line class="grid-line" x1="60" y1="250" x2="660" y2="250"/>
+          <line class="grid-line" x1="60" y1="345" x2="660" y2="345"/>
+
+          <!-- Axis -->
+          <line class="axis-line" x1="60" y1="440" x2="660" y2="440"/>
+
+          <!-- Y-axis label -->
+          <text class="y-axis-label" x="40" y="80" text-anchor="end" transform="rotate(-90 40 80)">capability →</text>
+
+          <!-- Year ticks (years since launch) -->
+          <text class="year-label" x="60" y="465" text-anchor="middle">0</text>
+          <text class="year-label" x="160" y="465" text-anchor="middle">9</text>
+          <text class="year-label" x="260" y="465" text-anchor="middle">18</text>
+          <text class="year-label" x="360" y="465" text-anchor="middle">27</text>
+          <text class="year-label" x="460" y="465" text-anchor="middle">36</text>
+          <text class="year-label" x="560" y="465" text-anchor="middle">45</text>
+          <text class="year-label" x="660" y="465" text-anchor="middle">54</text>
+          <text class="x-axis-sub" x="360" y="488" text-anchor="middle">years since launch</text>
+
+          <!-- Filled curve (under the line) -->
+          <path class="curve-fill blue"
+            d="M 60 421 C 110 421 140 410 160 389 C 200 360 240 340 260 320 C 290 290 320 270 340 240 C 380 200 420 165 460 140 C 500 115 540 95 580 85 C 620 78 650 76 660 75 L 660 440 L 60 440 Z"/>
+
+          <!-- Solid blue curve (full 54 years) -->
+          <path class="curve blue curve-animated"
+            d="M 60 421 C 110 421 140 410 160 389 C 200 360 240 340 260 320 C 290 290 320 270 340 240 C 380 200 420 165 460 140 C 500 115 540 95 580 85 C 620 78 650 76 660 75"/>
+
+          <!-- Milestone dots -->
+          <g class="fade-in" style="animation-delay: 2.6s;">
+            <circle class="milestone-dot glow blue" cx="60" cy="421" r="5"/>
+            <circle class="milestone-dot blue" cx="260" cy="320" r="4"/>
+            <circle class="milestone-dot blue" cx="460" cy="140" r="4"/>
+            <circle class="milestone-dot glow blue" cx="660" cy="75" r="6"/>
+          </g>
+        </svg>
       </div>
 
-      <!-- Single shared scale: years since launch (0–54). Both curves use full width. -->
-      <svg class="chart" viewBox="-30 -120 1480 660" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#818cf8" stop-opacity="0.5"/>
-            <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="gradGold" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.55"/>
-            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
+      <!-- RIGHT: AI on the same scale (solid 0-9, dotted 9-54) -->
+      <div class="chart-panel right">
+        <div class="panel-header">
+          <div>
+            <div class="panel-label">Artificial Intelligence</div>
+            <div class="panel-title">Year 9 of 54 &mdash; mostly ahead</div>
+          </div>
+          <div class="panel-meta"><span class="num">9</span> + 45 yrs</div>
+        </div>
 
-        <!-- Grid -->
-        <line class="grid-line" x1="80" y1="155" x2="1340" y2="155"/>
-        <line class="grid-line" x1="80" y1="250" x2="1340" y2="250"/>
-        <line class="grid-line" x1="80" y1="345" x2="1340" y2="345"/>
+        <svg class="chart" viewBox="0 0 720 500" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="gradGoldSolid" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="gradGoldDotted" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
 
-        <!-- X-axis -->
-        <line class="axis-line" x1="80" y1="440" x2="1340" y2="440"/>
+          <!-- Grid -->
+          <line class="grid-line" x1="60" y1="155" x2="660" y2="155"/>
+          <line class="grid-line" x1="60" y1="250" x2="660" y2="250"/>
+          <line class="grid-line" x1="60" y1="345" x2="660" y2="345"/>
 
-        <!-- Y-axis label -->
-        <text class="y-axis-label" x="40" y="80" text-anchor="end" transform="rotate(-90 40 80)">capability →</text>
+          <!-- Axis -->
+          <line class="axis-line" x1="60" y1="440" x2="660" y2="440"/>
 
-        <!-- X-axis: years since launch (0 to 54) -->
-        <text class="year-label" x="80" y="465" text-anchor="middle">0</text>
-        <text class="year-label highlight" x="290" y="465" text-anchor="middle">9</text>
-        <text class="year-label" x="500" y="465" text-anchor="middle">18</text>
-        <text class="year-label" x="710" y="465" text-anchor="middle">27</text>
-        <text class="year-label" x="920" y="465" text-anchor="middle">36</text>
-        <text class="year-label" x="1130" y="465" text-anchor="middle">45</text>
-        <text class="year-label highlight-blue" x="1340" y="465" text-anchor="middle">54</text>
+          <!-- Y-axis label -->
+          <text class="y-axis-label" x="40" y="80" text-anchor="end" transform="rotate(-90 40 80)">capability →</text>
 
-        <!-- X-axis sub-label -->
-        <text class="y-axis-label" x="710" y="488" text-anchor="middle">years since launch</text>
+          <!-- Year ticks (years since launch) — same scale as left -->
+          <text class="year-label" x="60" y="465" text-anchor="middle">0</text>
+          <text class="year-label highlight-gold" x="160" y="465" text-anchor="middle">9</text>
+          <text class="year-label" x="260" y="465" text-anchor="middle">18</text>
+          <text class="year-label" x="360" y="465" text-anchor="middle">27</text>
+          <text class="year-label" x="460" y="465" text-anchor="middle">36</text>
+          <text class="year-label" x="560" y="465" text-anchor="middle">45</text>
+          <text class="year-label" x="660" y="465" text-anchor="middle">54</text>
+          <text class="x-axis-sub" x="360" y="488" text-anchor="middle">years since launch</text>
 
-        <!-- Vertical era markers -->
-        <!-- Year 9 marker (AI today) -->
-        <line class="era-marker gold fade-in" style="animation-delay: 1.2s;" x1="290" y1="60" x2="290" y2="440"/>
-        <text class="era-label gold fade-in" style="animation-delay: 1.2s;" x="290" y="46" text-anchor="middle">↓ AI today</text>
+          <!-- Vertical "year 9" marker -->
+          <line class="era-marker fade-in" style="animation-delay: 1.2s;" x1="160" y1="60" x2="160" y2="440"/>
+          <text class="era-label fade-in" style="animation-delay: 1.2s;" x="160" y="48" text-anchor="middle">↓ Today</text>
 
-        <!-- Year 54 marker (Microprocessor today) -->
-        <line class="era-marker blue fade-in" style="animation-delay: 1.2s;" x1="1340" y1="60" x2="1340" y2="440"/>
-        <text class="era-label blue fade-in" style="animation-delay: 1.2s;" x="1340" y="46" text-anchor="end">↓ Microprocessor today</text>
+          <!-- Filled area under the SOLID part (year 0-9) -->
+          <path class="curve-fill gold-solid"
+            d="M 60 421 C 110 421 140 410 160 389 L 160 440 L 60 440 Z"/>
 
-        <!-- Microprocessor curve fill (full width: year 0 to 54) -->
-        <path class="curve-fill blue"
-          d="M 80 421 C 200 421 280 405 407 372 C 480 350 530 332 594 307 C 650 285 700 270 757 231 C 830 200 890 175 990 144 C 1080 120 1160 100 1224 90 C 1280 85 1320 78 1340 75 L 1340 440 L 80 440 Z"/>
+          <!-- Filled area under the DOTTED part (year 9-54) — very faint -->
+          <path class="curve-fill gold-dotted"
+            d="M 160 389 C 200 360 240 340 260 320 C 290 290 320 270 340 240 C 380 200 420 165 460 140 C 500 115 540 95 580 85 C 620 78 650 76 660 75 L 660 440 L 160 440 Z"/>
 
-        <!-- Microprocessor curve (solid blue, year 0 to 54) -->
-        <path class="curve blue curve-animated"
-          d="M 80 421 C 200 421 280 405 407 372 C 480 350 530 332 594 307 C 650 285 700 270 757 231 C 830 200 890 175 990 144 C 1080 120 1160 100 1224 90 C 1280 85 1320 78 1340 75"/>
+          <!-- DOTTED curve (year 9-54) — same shape as microprocessor -->
+          <path class="curve gold-dotted dotted-fade"
+            d="M 160 389 C 200 360 240 340 260 320 C 290 290 320 270 340 240 C 380 200 420 165 460 140 C 500 115 540 95 580 85 C 620 78 650 76 660 75"/>
 
-        <!-- AI solid curve fill (year 0 to 9 only) -->
-        <path class="curve-fill gold"
-          d="M 80 421 C 110 420 130 400 150 356 C 175 310 190 290 197 250 C 215 200 230 175 243 136 C 265 105 280 90 290 79 L 290 440 L 80 440 Z"/>
+          <!-- SOLID curve (year 0-9) — bright -->
+          <path class="curve gold-solid curve-animated"
+            d="M 60 421 C 110 421 140 410 160 389"/>
 
-        <!-- AI solid curve (year 0 to 9, sharp J) -->
-        <path class="curve gold-solid curve-animated delay"
-          d="M 80 421 C 110 420 130 400 150 356 C 175 310 190 290 197 250 C 215 200 230 175 243 136 C 265 105 280 90 290 79"/>
+          <!-- Milestone dots — only on solid portion -->
+          <g class="fade-in" style="animation-delay: 1.9s;">
+            <circle class="milestone-dot glow gold" cx="60" cy="421" r="5"/>
+            <circle class="milestone-dot glow gold" cx="160" cy="389" r="6"/>
+          </g>
 
-        <!-- AI dotted projection (year 9 to 54, exits chart top) -->
-        <path class="curve gold-dotted dotted-fade"
-          d="M 290 79 C 350 65 400 45 460 22 C 520 -5 580 -30 660 -55 C 800 -90 1100 -110 1340 -110"/>
+          <!-- "we are here" annotation -->
+          <text class="we-are-here fade-in" style="animation-delay: 2.1s;" x="160" y="380" text-anchor="middle">we are here</text>
 
-        <!-- Arrow at end of dotted projection -->
-        <g class="dotted-fade">
-          <path class="arrow-extend"
-            d="M 1340 -110 L 1380 -125"/>
-          <path class="arrow-extend"
-            d="M 1362 -125 L 1382 -125 L 1378 -107"/>
-        </g>
+          <!-- "45 years ahead" annotation in the dotted region -->
+          <text class="ahead-label dotted-fade" x="420" y="200" text-anchor="middle">— 45 years still ahead —</text>
+        </svg>
+      </div>
 
-        <!-- Annotation near the dotted projection -->
-        <text class="annotation dotted-fade" x="780" y="-70" text-anchor="middle">where could AI be by year 54?</text>
-
-        <!-- Microprocessor milestones (dots only) -->
-        <g class="fade-in" style="animation-delay: 2.8s;">
-          <circle class="milestone-dot glow blue" cx="80" cy="421" r="5"/>
-          <circle class="milestone-dot blue" cx="594" cy="307" r="4"/>
-          <circle class="milestone-dot blue" cx="990" cy="144" r="4"/>
-          <circle class="milestone-dot glow blue" cx="1340" cy="75" r="6"/>
-        </g>
-
-        <!-- AI milestones -->
-        <g class="fade-in" style="animation-delay: 2.4s;">
-          <circle class="milestone-dot glow gold" cx="80" cy="421" r="5"/>
-          <circle class="milestone-dot gold" cx="197" cy="250" r="4"/>
-          <circle class="milestone-dot glow gold" cx="290" cy="79" r="6"/>
-        </g>
-
-        <!-- "we are here" callout near year 9 -->
-        <text class="annotation" x="290" y="105" text-anchor="middle" style="font-size: 16px; animation: fadeIn 0.6s 2.6s forwards; opacity: 0;">we are here</text>
-      </svg>
     </div>
 
     <!-- Insight -->
-    <div class="insight fade-in" style="animation-delay: 1.2s;">
+    <div class="insight fade-in" style="animation-delay: 1.0s;">
       <div class="insight-line">
-        <span class="strong">9 years in</span>, AI is already where microprocessors got after <span class="num">49</span>.
+        <span class="num">9</span> done. <span class="strong">45 to go.</span>
         <span class="divider"></span>
-        We have <span class="num">45 more years</span> to find out where this leads.
+        Everything you've seen from AI &mdash; that's only the <span class="num">first</span> chapter.
       </div>
     </div>
   </div>

@@ -1,0 +1,30 @@
+{
+  "decks": [
+    {
+      "id": "ai-in-action-rotaract",
+      "title": "AI in Action — From Idea to Live Product, Solo",
+      "description": "How a single builder ships real products end-to-end with AI as pair-programmer — workflow, mindset, and live demos.",
+      "venue": "Rotaract Club, MNM Jain",
+      "date": "2026-04-27",
+      "slides": 9,
+      "duration": "20 min",
+      "status": "delivered",
+      "tags": ["ai", "workflow", "solo-builder", "talk"],
+      "path": "ai-in-action-rotaract/deck.html",
+      "notes": "ai-in-action-rotaract/notes.md"
+    },
+    {
+      "id": "hurricane-v2-investing",
+      "title": "The Hurricane v2 — A Field Guide to Investing",
+      "description": "A 6-part field guide to the markets: the storm, the hurricane, the instruments, the expensive help, the pilot, and the cockpit — ending in the calm.",
+      "venue": "Self-published",
+      "date": "2026-04-22",
+      "slides": 26,
+      "duration": "30 min",
+      "status": "delivered",
+      "tags": ["investing", "markets", "automation", "trading", "swiss-design"],
+      "path": "hurricane-v2-investing/deck.html",
+      "notes": "hurricane-v2-investing/notes.md"
+    }
+  ]
+}

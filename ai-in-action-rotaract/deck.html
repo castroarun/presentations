@@ -277,7 +277,7 @@
     }
   </style>
 </head>
-<body>
+<body tabindex="-1">
   <div class="deck">
     <iframe data-src="slide-01-opening.html" data-title="Opening · Karpathy"></iframe>
     <iframe data-src="slide-02-speaker.html" data-title="About Myself"></iframe>
@@ -369,6 +369,19 @@
       iframes.forEach((f, idx) => {
         f.classList.toggle('active', idx === i);
       });
+
+      // Reclaim focus to the deck so arrow keys keep working after CTA clicks
+      // (clicking a CTA inside an iframe leaves focus there; in fullscreen this
+      // can break navigation until the user exits fullscreen.)
+      try {
+        // Focus the active iframe's window so its forwarder + the deck both stay live
+        const activeFrame = iframes[i];
+        if (activeFrame && activeFrame.contentWindow) {
+          activeFrame.contentWindow.focus();
+        }
+        // And refocus the parent body as a backup
+        document.body.focus();
+      } catch (err) { /* ignore */ }
 
       dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
       document.getElementById('curNum').textContent = i + 1;

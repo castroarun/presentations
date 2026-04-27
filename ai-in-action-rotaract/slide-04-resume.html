@@ -272,15 +272,15 @@
     .bullet-list {
       display: flex;
       flex-direction: column;
-      gap: 0.7rem;
+      gap: 0.5rem;
     }
 
     .bullet {
       display: grid;
       grid-template-columns: auto 1fr;
-      gap: 1rem;
+      gap: 0.9rem;
       align-items: baseline;
-      padding: 0.7rem 0.9rem;
+      padding: 0.55rem 0.85rem;
       border-radius: 8px;
       border: 1px solid rgba(255, 255, 255, 0.04);
       background: rgba(255, 255, 255, 0.015);
@@ -292,6 +292,22 @@
     .bullet:hover {
       border-color: rgba(245, 158, 11, 0.25);
       background: rgba(245, 158, 11, 0.04);
+    }
+
+    .bullet.standout {
+      border-color: rgba(245, 158, 11, 0.18);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(255,255,255,0.01));
+    }
+
+    .bullet.standout:hover {
+      border-color: rgba(245, 158, 11, 0.45);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.10), rgba(255,255,255,0.02));
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.12);
+    }
+
+    .bullet.standout .bullet-check {
+      color: #fde68a;
+      filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.5));
     }
 
     .bullet-check {
@@ -308,25 +324,28 @@
     }
 
     .bullet-title {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #fafafa;
       font-weight: 500;
       letter-spacing: -0.005em;
     }
 
     .bullet-desc {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: #8a8a90;
       font-weight: 300;
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     .bullet:nth-child(1) { animation-delay: 0.85s; }
-    .bullet:nth-child(2) { animation-delay: 0.95s; }
-    .bullet:nth-child(3) { animation-delay: 1.05s; }
-    .bullet:nth-child(4) { animation-delay: 1.15s; }
-    .bullet:nth-child(5) { animation-delay: 1.25s; }
-    .bullet:nth-child(6) { animation-delay: 1.35s; }
+    .bullet:nth-child(2) { animation-delay: 0.92s; }
+    .bullet:nth-child(3) { animation-delay: 0.99s; }
+    .bullet:nth-child(4) { animation-delay: 1.06s; }
+    .bullet:nth-child(5) { animation-delay: 1.13s; }
+    .bullet:nth-child(6) { animation-delay: 1.20s; }
+    .bullet:nth-child(7) { animation-delay: 1.30s; }
+    .bullet:nth-child(8) { animation-delay: 1.37s; }
+    .bullet:nth-child(9) { animation-delay: 1.44s; }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes fadeUp {
@@ -449,6 +468,27 @@
             <div class="bullet-content">
               <span class="bullet-title">Quick to share, easy to read</span>
               <span class="bullet-desc">One URL &mdash; opens beautifully on phone, tablet, laptop</span>
+            </div>
+          </div>
+          <div class="bullet standout">
+            <span class="bullet-check">★</span>
+            <div class="bullet-content">
+              <span class="bullet-title">AI chat &mdash; talk to my resume</span>
+              <span class="bullet-desc">Ask anything &mdash; experience, projects, certifications &mdash; get instant, sourced answers</span>
+            </div>
+          </div>
+          <div class="bullet standout">
+            <span class="bullet-check">★</span>
+            <div class="bullet-content">
+              <span class="bullet-title">Visual project showcase</span>
+              <span class="bullet-desc">Each project comes alive &mdash; screenshots, live links, tech stack, status badges</span>
+            </div>
+          </div>
+          <div class="bullet standout">
+            <span class="bullet-check">★</span>
+            <div class="bullet-content">
+              <span class="bullet-title">LinkedIn posts &amp; articles gallery</span>
+              <span class="bullet-desc">My thinking on display &mdash; latest posts and long-form articles, inline</span>
             </div>
           </div>
         </div>

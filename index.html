@@ -3,203 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Presentations · Arun Castro</title>
-  <link rel="icon" type="image/svg+xml" href="ai-in-action-rotaract/favicon.svg" />
+  <title>Td · Talks &amp; Decks</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html, body {
-      min-height: 100vh;
-      background: #0a0a0b;
-      font-family: 'Inter', system-ui, sans-serif;
-      color: #f5f5f7;
+    :root {
+      --paper:        #f5efe1;
+      --paper-deep:   #efe7d3;
+      --paper-soft:   #fbf6ea;
+      --ink:          #1a1612;
+      --ink-soft:     #4a3f30;
+      --ink-faint:    #7a6a55;
+      --accent:       #b8742c;
+      --accent-soft:  #d4a14a;
+      --accent-faint: #e8d2a8;
+      --rule:         rgba(26, 22, 18, 0.10);
+      --rule-soft:    rgba(26, 22, 18, 0.05);
+      --green:        #5a7548;
+      --gray:         #807366;
     }
 
+    html, body {
+      min-height: 100vh;
+      background: var(--paper);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* Subtle paper texture */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(ellipse 50% 40% at 25% 30%, rgba(245, 158, 11, 0.08), transparent 70%),
-        radial-gradient(ellipse 50% 40% at 75% 70%, rgba(99, 102, 241, 0.07), transparent 70%);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity: 0.06;
       pointer-events: none;
+      mix-blend-mode: multiply;
       z-index: 0;
     }
 
     .container {
       position: relative;
       z-index: 1;
-      max-width: 1100px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 8vh 6vw;
+      padding: 7vh 5vw 6vh;
     }
 
-    header { margin-bottom: 4rem; }
+    /* ── MASTHEAD ─────────────────────────────────── */
+    .masthead {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+      align-items: end;
+      padding-bottom: 2.2rem;
+      border-bottom: 1px solid var(--ink);
+      margin-bottom: 0.4rem;
+    }
 
-    .pretitle {
+    .logo {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(3.5rem, 6vw, 5rem);
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      display: inline-flex;
+      align-items: baseline;
+    }
+
+    .logo .t {
+      color: var(--ink);
+    }
+
+    .logo .d {
+      font-style: italic;
+      color: var(--accent);
+      margin-left: 0.05em;
+      position: relative;
+    }
+
+    .logo .d::after {
+      content: '';
+      position: absolute;
+      left: 0.05em;
+      right: 0.05em;
+      bottom: 0.12em;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+    }
+
+    .masthead-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      align-items: flex-end;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      color: #f59e0b;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .masthead-meta .editor {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--ink-soft);
+      font-weight: 400;
+    }
+
+    /* Edition strip */
+    .edition {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0 1.5rem;
+      border-bottom: 3px double var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 3rem;
+    }
+
+    /* ── HERO ─────────────────────────────────────── */
+    .hero {
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.4rem, 4.8vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      max-width: 800px;
       margin-bottom: 1.2rem;
     }
 
-    h1 {
-      font-size: clamp(3rem, 7vw, 5.5rem);
-      font-weight: 200;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 .em {
-      font-family: 'Instrument Serif', Georgia, serif;
+    .hero h1 .em {
       font-style: italic;
-      font-weight: 400;
-      background: linear-gradient(135deg, #fbbf24, #f59e0b);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--accent);
     }
 
     .lede {
+      font-family: 'Fraunces', Georgia, serif;
       font-size: 1.15rem;
-      color: #aaa;
-      font-weight: 300;
+      line-height: 1.55;
+      color: var(--ink-soft);
       max-width: 640px;
-      line-height: 1.6;
+      font-weight: 400;
     }
 
     .lede a {
-      color: #fbbf24;
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(245, 158, 11, 0.4);
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--accent-soft);
     }
 
-    .lede a:hover { border-bottom-color: #fbbf24; }
+    .lede a:hover {
+      text-decoration-style: solid;
+    }
 
-    .search-wrap {
-      margin-bottom: 2.5rem;
+    /* ── CONTROLS ─────────────────────────────────── */
+    .controls {
+      margin: 3rem 0 2.2rem;
       display: flex;
       flex-direction: column;
-      gap: 0.7rem;
+      gap: 0.9rem;
+    }
+
+    .search-wrap {
+      position: relative;
     }
 
     .search-input {
       width: 100%;
-      padding: 1rem 1.2rem 1rem 3rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      color: #f5f5f7;
+      padding: 0.85rem 1rem 0.85rem 2.7rem;
+      background: var(--paper-soft);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      color: var(--ink);
       font-family: 'Inter', sans-serif;
-      font-size: 1rem;
-      font-weight: 300;
+      font-size: 0.95rem;
       letter-spacing: -0.005em;
       transition: all 0.2s;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a6a55' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: 1.1rem center;
+      background-position: 0.95rem center;
     }
 
-    .search-input::placeholder { color: #666; font-weight: 300; }
+    .search-input::placeholder {
+      color: var(--ink-faint);
+      font-weight: 400;
+      font-style: italic;
+    }
 
     .search-input:focus {
       outline: none;
-      border-color: rgba(245, 158, 11, 0.5);
-      background: rgba(245, 158, 11, 0.04);
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(184, 116, 44, 0.1);
     }
 
     .filter-row {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.4rem;
       flex-wrap: wrap;
       align-items: center;
     }
 
     .filter-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #666;
-      margin-right: 0.5rem;
+      color: var(--ink-faint);
+      margin-right: 0.4rem;
     }
 
     .chip {
-      padding: 0.3rem 0.75rem;
+      padding: 0.28rem 0.75rem;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: #aaa;
+      background: transparent;
+      border: 1px solid var(--rule);
+      color: var(--ink-soft);
       font-size: 0.78rem;
       font-family: 'JetBrains Mono', monospace;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s;
       letter-spacing: 0.02em;
     }
 
-    .chip:hover { border-color: rgba(245, 158, 11, 0.3); color: #ddd; }
+    .chip:hover {
+      border-color: var(--accent-soft);
+      color: var(--ink);
+    }
 
     .chip.active {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: rgba(245, 158, 11, 0.5);
-      color: #fbbf24;
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--paper);
     }
 
     .result-count {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: #666;
+      font-size: 0.7rem;
+      color: var(--ink-faint);
       margin-left: auto;
       letter-spacing: 0.05em;
     }
 
-    section { margin-bottom: 4rem; }
-
+    /* ── SECTION LABEL ────────────────────────────── */
     .section-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #888;
+      color: var(--ink-faint);
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.4rem;
     }
 
+    .section-label::before,
     .section-label::after {
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, rgba(245, 158, 11, 0.3), transparent);
+      background: var(--rule);
     }
 
-    .deck-grid { display: grid; gap: 1.2rem; }
+    /* ── DECKS ────────────────────────────────────── */
+    .deck-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
 
     .deck-card {
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      transition: all 0.3s ease;
-      overflow: hidden;
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.2s;
+      position: relative;
     }
 
     .deck-card:hover {
-      border-color: rgba(245, 158, 11, 0.3);
-      background: rgba(245, 158, 11, 0.03);
+      background: rgba(184, 116, 44, 0.025);
     }
 
     .deck-card.expanded {
-      border-color: rgba(245, 158, 11, 0.4);
-      background: rgba(245, 158, 11, 0.04);
+      background: var(--paper-soft);
     }
 
     .deck-head {
@@ -207,24 +317,28 @@
       grid-template-columns: auto 1fr auto;
       gap: 1.5rem;
       align-items: start;
-      padding: 1.6rem 1.8rem;
+      padding: 1.6rem 0.4rem;
       cursor: pointer;
-      position: relative;
     }
 
     .card-num {
-      font-family: 'Instrument Serif', Georgia, serif;
+      font-family: 'Fraunces', Georgia, serif;
       font-style: italic;
       font-weight: 400;
-      font-size: 2.2rem;
-      color: #fbbf24;
+      font-size: 2rem;
+      color: var(--accent);
       line-height: 1;
       letter-spacing: -0.02em;
-      min-width: 56px;
-      padding-top: 0.3rem;
+      min-width: 48px;
+      padding-top: 0.2rem;
     }
 
-    .card-info { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      min-width: 0;
+    }
 
     .card-title-row {
       display: flex;
@@ -234,242 +348,325 @@
     }
 
     .card-title {
-      font-size: 1.25rem;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.4rem;
       font-weight: 500;
-      color: #fafafa;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
+      color: var(--ink);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
     }
 
     .status-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
-      border-radius: 4px;
+      padding: 0.18rem 0.5rem;
+      border-radius: 3px;
       font-weight: 500;
       flex-shrink: 0;
     }
 
-    .status-upcoming {
-      background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-
-    .status-delivered {
-      background: rgba(63, 122, 74, 0.15);
-      color: #6ec07d;
-      border: 1px solid rgba(63, 122, 74, 0.3);
-    }
-
-    .status-draft {
-      background: rgba(150, 150, 150, 0.1);
-      color: #888;
-      border: 1px solid rgba(150, 150, 150, 0.2);
-    }
+    .status-upcoming { background: var(--accent-faint); color: #7d4c12; }
+    .status-delivered { background: rgba(90, 117, 72, 0.15); color: var(--green); border: 1px solid rgba(90, 117, 72, 0.25); }
+    .status-draft { background: rgba(128, 115, 102, 0.12); color: var(--gray); border: 1px solid rgba(128, 115, 102, 0.2); }
 
     .card-desc {
-      font-size: 0.92rem;
-      color: #aaa;
-      font-weight: 300;
-      line-height: 1.55;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 0.98rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      max-width: 600px;
     }
 
     .card-meta {
       display: flex;
-      gap: 0.85rem;
+      gap: 0.7rem;
       flex-wrap: wrap;
       align-items: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: #888;
+      font-size: 0.7rem;
+      color: var(--ink-faint);
       letter-spacing: 0.04em;
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
     }
 
-    .card-meta .dot { color: #f59e0b; opacity: 0.6; }
+    .card-meta .dot { color: var(--accent); opacity: 0.6; }
 
     .card-tags {
       display: flex;
-      gap: 0.4rem;
+      gap: 0.35rem;
       flex-wrap: wrap;
-      margin-top: 0.3rem;
+      margin-top: 0.2rem;
     }
 
     .tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.66rem;
-      letter-spacing: 0.05em;
-      color: #888;
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.18rem 0.55rem;
-      border-radius: 3px;
+      font-size: 0.64rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-faint);
+      background: rgba(26, 22, 18, 0.04);
+      padding: 0.16rem 0.5rem;
+      border-radius: 2px;
       text-transform: lowercase;
     }
 
     .card-actions {
       display: flex;
-      gap: 0.6rem;
+      gap: 0.5rem;
       align-items: center;
       flex-shrink: 0;
+      padding-top: 0.3rem;
     }
 
     .icon-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      color: #aaa;
+      background: transparent;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      color: var(--ink-soft);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.18s;
       text-decoration: none;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
     }
 
     .icon-btn:hover {
-      background: rgba(245, 158, 11, 0.1);
-      border-color: rgba(245, 158, 11, 0.4);
-      color: #fbbf24;
+      background: var(--accent-faint);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
-    .icon-btn svg { width: 16px; height: 16px; }
+    .icon-btn svg { width: 15px; height: 15px; }
 
     .chevron { transition: transform 0.3s ease; }
     .deck-card.expanded .chevron { transform: rotate(180deg); }
 
+    /* ── NOTES PANEL ──────────────────────────────── */
     .notes-panel {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease;
+      transition: max-height 0.45s ease;
     }
 
-    .deck-card.expanded .notes-panel { max-height: 4000px; }
+    .deck-card.expanded .notes-panel {
+      max-height: 1200px;
+    }
 
     .notes-inner {
-      padding: 0 1.8rem 1.8rem;
-      border-top: 1px dashed rgba(245, 158, 11, 0.15);
-      padding-top: 1.5rem;
+      padding: 0.5rem 0.4rem 1.8rem;
+      border-top: 1px dashed var(--rule);
+      margin-top: 0.5rem;
+    }
+
+    .notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1.2rem 0 0.7rem;
+      gap: 1rem;
     }
 
     .notes-label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #f59e0b;
-      margin-bottom: 1rem;
+      color: var(--ink-faint);
     }
 
-    .notes-content {
-      font-size: 0.92rem;
-      line-height: 1.65;
-      color: #ccc;
-      font-weight: 300;
-    }
-
-    .notes-content h1, .notes-content h2, .notes-content h3 {
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      color: #f5f5f7;
-      margin: 1.4rem 0 0.6rem;
-      letter-spacing: -0.01em;
-    }
-    .notes-content h1 { font-size: 1.2rem; }
-    .notes-content h2 { font-size: 1.05rem; }
-    .notes-content h3 { font-size: 0.95rem; color: #fbbf24; }
-
-    .notes-content p { margin-bottom: 0.8rem; }
-    .notes-content ul, .notes-content ol { margin: 0.5rem 0 1rem 1.5rem; }
-    .notes-content li { margin-bottom: 0.3rem; }
-    .notes-content code {
+    .notes-status {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85em;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 0.12em 0.4em;
-      border-radius: 3px;
-      color: #fbbf24;
-    }
-    .notes-content blockquote {
-      border-left: 2px solid rgba(245, 158, 11, 0.4);
-      padding-left: 1rem;
-      margin: 0.8rem 0;
-      color: #aaa;
-      font-style: italic;
-    }
-    .notes-content a { color: #fbbf24; }
-    .notes-content hr {
-      border: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      margin: 1.5rem 0;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
-    .notes-empty {
-      font-style: italic;
-      color: #777;
-      padding: 0.5rem 0;
-    }
+    .notes-status.visible { opacity: 1; }
 
-    .empty-state {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: #666;
-      font-size: 0.95rem;
-    }
+    .notes-status.saving { color: var(--ink-faint); }
 
-    footer {
-      margin-top: 6rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    .notes-textarea {
+      width: 100%;
+      min-height: 180px;
+      padding: 1rem 1.1rem;
+      background: var(--paper-soft);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      color: var(--ink);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
-      color: #777;
+      line-height: 1.65;
+      resize: vertical;
+      transition: all 0.2s;
+      letter-spacing: 0.005em;
+      background-image:
+        linear-gradient(to bottom, transparent 1.435rem, var(--rule-soft) 1.435rem, var(--rule-soft) calc(1.435rem + 1px), transparent calc(1.435rem + 1px));
+      background-size: 100% 1.4625rem;
+      background-position: 0 0.75rem;
+    }
+
+    .notes-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background-color: #fff;
+      box-shadow: 0 0 0 3px rgba(184, 116, 44, 0.1);
+    }
+
+    .notes-textarea::placeholder {
+      color: var(--ink-faint);
+      font-style: italic;
+    }
+
+    .notes-footer {
       display: flex;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+      align-items: center;
+      margin-top: 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-faint);
     }
 
-    footer a {
-      color: #aaa;
+    .notes-footer .clear-btn {
+      background: none;
+      border: none;
+      color: var(--ink-faint);
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      transition: all 0.18s;
+    }
+
+    .notes-footer .clear-btn:hover {
+      color: #c44;
+      background: rgba(200, 60, 60, 0.06);
+    }
+
+    /* ── EMPTY / ERROR STATE ──────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 3.5rem 1rem;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ink-faint);
+    }
+
+    /* ── COLOPHON / FOOTER ────────────────────────── */
+    .colophon {
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 3px double var(--ink);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: end;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-faint);
+    }
+
+    .colophon .credit {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      letter-spacing: 0;
+      max-width: 480px;
+      line-height: 1.5;
+    }
+
+    .colophon a {
+      color: var(--accent);
       text-decoration: none;
-      transition: color 0.2s;
+      border-bottom: 1px dotted var(--accent-soft);
+      padding-bottom: 1px;
     }
 
-    footer a:hover { color: #fbbf24; }
+    .colophon a:hover { border-bottom-style: solid; }
 
+    .colophon-links {
+      display: flex;
+      gap: 1.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────── */
     @media (max-width: 640px) {
-      .deck-head { grid-template-columns: 1fr; gap: 1rem; }
-      .card-num { font-size: 1.6rem; min-width: 0; }
-      .card-actions { justify-content: flex-end; }
+      .deck-head {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+      }
+      .card-num { font-size: 1.4rem; min-width: 0; padding-top: 0; }
+      .card-actions { justify-content: flex-end; padding-top: 0; }
+      .masthead {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        align-items: flex-start;
+      }
+      .masthead-meta { align-items: flex-start; }
+      .colophon { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <div class="pretitle">// Presentations · Arun Castro</div>
-      <h1>Talks &amp; <span class="em">decks</span></h1>
+
+    <!-- Masthead with Td logo -->
+    <header class="masthead">
+      <div class="logo" aria-label="Td · Talks and Decks">
+        <span class="t">T</span><span class="d">d</span>
+      </div>
+      <div class="masthead-meta">
+        <span class="editor">Curated by Arun Castro</span>
+        <span>Vol. I &middot; <span id="edition-date">—</span></span>
+      </div>
+    </header>
+
+    <div class="edition">
+      <span>The Personal Edition</span>
+      <span>Talks &middot; Decks &middot; Field Notes</span>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>
+        Talks &amp; <span class="em">decks.</span>
+      </h1>
       <p class="lede">
         Slide decks I've built &mdash; talks given, field guides written, ideas explored.
         Each one is static HTML, fully navigable with keyboard, mouse, and touch.
         More at <a href="https://castroarun.github.io/portfolio/" target="_blank" rel="noopener noreferrer">castroarun.github.io/portfolio</a>.
       </p>
-    </header>
+    </section>
 
-    <div class="search-wrap">
-      <input
-        type="text"
-        class="search-input"
-        id="search"
-        placeholder="Search by title, venue, tag, or topic..."
-        autocomplete="off"
-      />
+    <!-- Controls -->
+    <div class="controls">
+      <div class="search-wrap">
+        <input
+          type="text"
+          class="search-input"
+          id="search"
+          placeholder="Search by title, venue, tag, or topic…"
+          autocomplete="off"
+        />
+      </div>
       <div class="filter-row" id="status-filters">
         <span class="filter-label">Status</span>
         <button class="chip active" data-status="all">all</button>
@@ -480,41 +677,59 @@
       </div>
     </div>
 
-    <section>
-      <div class="section-label">Decks</div>
-      <div class="deck-grid" id="deck-grid">
-        <div class="empty-state">Loading decks&hellip;</div>
-      </div>
-    </section>
+    <!-- Decks -->
+    <div class="section-label">Editions</div>
+    <div class="deck-list" id="deck-grid">
+      <div class="empty-state">Loading editions…</div>
+    </div>
 
-    <footer>
-      <div>Built solo, with AI as pair-programmer.</div>
-      <div>
-        <a href="https://github.com/castroarun/presentations" target="_blank" rel="noopener noreferrer">github &rarr;</a>
-        &nbsp;&middot;&nbsp;
-        <a href="https://linkedin.com/in/aruncastromin" target="_blank" rel="noopener noreferrer">linkedin &rarr;</a>
+    <!-- Colophon -->
+    <footer class="colophon">
+      <div class="credit">
+        Set in <em>Fraunces</em> &amp; <em>Inter</em>, with mono in <em>JetBrains Mono</em>.<br/>
+        Built solo, with AI as pair-programmer.
+      </div>
+      <div class="colophon-links">
+        <a href="https://github.com/castroarun/presentations" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/aruncastromin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
     </footer>
   </div>
 
   <script>
+    /* ───────────────────────────────────────────────
+       State + helpers
+       ─────────────────────────────────────────────── */
     const state = {
       decks: [],
       query: '',
       status: 'all',
-      notesCache: {},
     };
 
     const $grid = document.getElementById('deck-grid');
     const $search = document.getElementById('search');
     const $resultCount = document.getElementById('result-count');
     const $statusFilters = document.getElementById('status-filters');
+    const $editionDate = document.getElementById('edition-date');
+
+    const NOTES_KEY = (id) => `td:notes:${id}`;
+    const SAVE_DEBOUNCE_MS = 350;
 
     const fmtDate = (iso) => {
       if (!iso) return '—';
       const d = new Date(iso + 'T00:00:00');
       if (isNaN(d)) return iso;
       return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    };
+
+    const fmtRelativeSaved = (ms) => {
+      if (!ms) return '';
+      const diff = Date.now() - ms;
+      if (diff < 60_000) return 'saved · just now';
+      if (diff < 3600_000) return `saved · ${Math.floor(diff / 60_000)}m ago`;
+      const d = new Date(ms);
+      return 'saved · ' + d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) +
+             ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
     };
 
     const escapeHtml = (s) =>
@@ -537,11 +752,14 @@
       (d) => matchesQuery(d, state.query) && matchesStatus(d, state.status)
     );
 
+    /* ───────────────────────────────────────────────
+       Render
+       ─────────────────────────────────────────────── */
     const renderCard = (deck, idx) => {
       const num = String(idx + 1).padStart(2, '0');
       const tags = (deck.tags || []).map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('');
       const statusClass = `status-${deck.status || 'draft'}`;
-      const statusLabel = (deck.status || 'draft').toUpperCase();
+      const statusLabel = (deck.status || 'draft');
 
       return `
         <article class="deck-card" data-id="${escapeHtml(deck.id)}">
@@ -564,7 +782,7 @@
               ${tags ? `<div class="card-tags">${tags}</div>` : ''}
             </div>
             <div class="card-actions">
-              <a class="icon-btn" href="${escapeHtml(deck.path)}" target="_blank" rel="noopener" title="Open deck">
+              <a class="icon-btn" href="${escapeHtml(deck.path)}" target="_blank" rel="noopener" title="Open deck in new tab">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
               </a>
               <button class="icon-btn" data-toggle title="Toggle notes">
@@ -574,8 +792,20 @@
           </div>
           <div class="notes-panel">
             <div class="notes-inner">
-              <div class="notes-label">Session notes &amp; feedback</div>
-              <div class="notes-content" data-notes-target>Loading&hellip;</div>
+              <div class="notes-header">
+                <span class="notes-label">My notes</span>
+                <span class="notes-status" data-status></span>
+              </div>
+              <textarea
+                class="notes-textarea"
+                data-notes-input
+                placeholder="Pre-talk reminders, key messages, anecdotes, audience questions, things to follow up on…"
+                spellcheck="true"
+              ></textarea>
+              <div class="notes-footer">
+                <span data-counter>0 chars</span>
+                <button class="clear-btn" data-clear>Clear notes</button>
+              </div>
             </div>
           </div>
         </article>
@@ -586,52 +816,104 @@
       const list = filtered();
       $resultCount.textContent = `${list.length} of ${state.decks.length}`;
       if (!list.length) {
-        $grid.innerHTML = `<div class="empty-state">No decks match — try a different search.</div>`;
+        $grid.innerHTML = `<div class="empty-state">No editions match — try a different search.</div>`;
         return;
       }
       $grid.innerHTML = list.map(renderCard).join('');
+      // Re-attach localStorage values for visible cards
+      $grid.querySelectorAll('.deck-card').forEach(hydrateCard);
     };
 
-    const loadNotes = async (deck, $target) => {
-      if (state.notesCache[deck.id] !== undefined) {
-        $target.innerHTML = state.notesCache[deck.id];
-        return;
-      }
-      if (!deck.notes) {
-        const html = `<div class="notes-empty">No notes yet for this deck.</div>`;
-        state.notesCache[deck.id] = html;
-        $target.innerHTML = html;
-        return;
-      }
+    /* ───────────────────────────────────────────────
+       Notes — load / save / clear
+       ─────────────────────────────────────────────── */
+    const loadStoredNotes = (id) => {
       try {
-        const res = await fetch(deck.notes, { cache: 'no-cache' });
-        if (!res.ok) throw new Error('not found');
-        const md = await res.text();
-        const html = marked.parse(md);
-        state.notesCache[deck.id] = html;
-        $target.innerHTML = html;
-      } catch (e) {
-        const html = `<div class="notes-empty">No notes yet — add <code>${escapeHtml(deck.notes)}</code> to this deck folder.</div>`;
-        state.notesCache[deck.id] = html;
-        $target.innerHTML = html;
-      }
+        const raw = localStorage.getItem(NOTES_KEY(id));
+        if (!raw) return null;
+        return JSON.parse(raw);
+      } catch (e) { return null; }
     };
 
+    const saveStoredNotes = (id, text) => {
+      try {
+        const payload = { text, updated: Date.now() };
+        localStorage.setItem(NOTES_KEY(id), JSON.stringify(payload));
+        return payload;
+      } catch (e) { return null; }
+    };
+
+    const clearStoredNotes = (id) => {
+      try { localStorage.removeItem(NOTES_KEY(id)); } catch (e) {}
+    };
+
+    const setStatus = ($status, msg, kind) => {
+      $status.textContent = msg;
+      $status.className = 'notes-status visible' + (kind ? ' ' + kind : '');
+      clearTimeout($status._t);
+      $status._t = setTimeout(() => {
+        $status.classList.remove('visible');
+      }, 2200);
+    };
+
+    let _saveTimers = new WeakMap();
+
+    const hydrateCard = (cardEl) => {
+      const id = cardEl.dataset.id;
+      const $textarea = cardEl.querySelector('[data-notes-input]');
+      const $status = cardEl.querySelector('[data-status]');
+      const $counter = cardEl.querySelector('[data-counter]');
+      const $clear = cardEl.querySelector('[data-clear]');
+      if (!$textarea) return;
+
+      const stored = loadStoredNotes(id);
+      if (stored && stored.text) {
+        $textarea.value = stored.text;
+        $counter.textContent = `${stored.text.length} chars · ${fmtRelativeSaved(stored.updated)}`;
+      } else {
+        $counter.textContent = '0 chars';
+      }
+
+      $textarea.addEventListener('input', () => {
+        $counter.textContent = `${$textarea.value.length} chars`;
+        setStatus($status, 'saving…', 'saving');
+        clearTimeout(_saveTimers.get($textarea));
+        const t = setTimeout(() => {
+          const payload = saveStoredNotes(id, $textarea.value);
+          if (payload) {
+            $counter.textContent = `${$textarea.value.length} chars · ${fmtRelativeSaved(payload.updated)}`;
+            setStatus($status, '✓ saved', 'visible');
+          } else {
+            setStatus($status, '⚠ save failed', 'saving');
+          }
+        }, SAVE_DEBOUNCE_MS);
+        _saveTimers.set($textarea, t);
+      });
+
+      $clear.addEventListener('click', () => {
+        if ($textarea.value && !confirm('Clear notes for this deck? This cannot be undone.')) return;
+        $textarea.value = '';
+        clearStoredNotes(id);
+        $counter.textContent = '0 chars';
+        setStatus($status, '✓ cleared', 'visible');
+      });
+    };
+
+    /* ───────────────────────────────────────────────
+       Events
+       ─────────────────────────────────────────────── */
     $grid.addEventListener('click', (e) => {
+      // Don't toggle if a real action button (link, clear) was clicked
       if (e.target.closest('a.icon-btn')) return;
+      if (e.target.closest('[data-clear]')) return;
+      if (e.target.closest('[data-notes-input]')) return;
+
       const toggleEl = e.target.closest('[data-toggle]');
       if (!toggleEl) return;
       e.preventDefault();
       const card = toggleEl.closest('.deck-card');
       if (!card) return;
-      const id = card.dataset.id;
-      const deck = state.decks.find((d) => d.id === id);
-      const isExpanding = !card.classList.contains('expanded');
       card.classList.toggle('expanded');
-      if (isExpanding) {
-        const $target = card.querySelector('[data-notes-target]');
-        loadNotes(deck, $target);
-      }
     });
 
     $search.addEventListener('input', (e) => {
@@ -648,14 +930,23 @@
       render();
     });
 
+    /* ───────────────────────────────────────────────
+       Boot
+       ─────────────────────────────────────────────── */
+    $editionDate.textContent = new Date().toLocaleDateString('en-GB', {
+      month: 'short', year: 'numeric',
+    });
+
     (async () => {
       try {
         const res = await fetch('decks.json', { cache: 'no-cache' });
         const data = await res.json();
-        state.decks = (data.decks || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        state.decks = (data.decks || [])
+          .slice()
+          .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
         render();
       } catch (e) {
-        $grid.innerHTML = `<div class="empty-state">Failed to load decks.json &mdash; ${escapeHtml(e.message)}</div>`;
+        $grid.innerHTML = `<div class="empty-state">Couldn't load decks.json — ${escapeHtml(e.message)}</div>`;
       }
     })();
   </script>

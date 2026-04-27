@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup Gallery · Td Home Page Concepts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      background: #1a1a1a;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #e5e5e5;
+      min-height: 100vh;
+    }
+
+    .gallery {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 4vh 4vw;
+    }
+
+    header {
+      margin-bottom: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    h1 {
+      font-weight: 200;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.025em;
+      line-height: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    h1 strong { font-weight: 700; }
+
+    .lede {
+      color: #999;
+      max-width: 640px;
+      line-height: 1.55;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    .meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #666;
+      text-align: right;
+    }
+
+    /* TABS */
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 1px solid #333;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 1rem 1.5rem;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #888;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: -1px;
+    }
+
+    .tab:hover { color: #ddd; }
+
+    .tab.active {
+      color: #fff;
+      border-bottom-color: #fbbf24;
+    }
+
+    .tab .num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: #fbbf24;
+      font-weight: 600;
+    }
+
+    .tab .open-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #666;
+      text-decoration: none;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid #333;
+      border-radius: 3px;
+      margin-left: 0.4rem;
+    }
+
+    .tab .open-link:hover {
+      color: #fbbf24;
+      border-color: #fbbf24;
+    }
+
+    /* PREVIEW FRAME */
+    .preview {
+      margin-top: 0;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-top: none;
+      height: 80vh;
+      min-height: 600px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+    }
+
+    .preview iframe.active { display: block; }
+
+    /* DESCRIPTIONS */
+    .descriptions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .desc-card {
+      padding: 1.2rem;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+    }
+
+    .desc-card.active {
+      border-color: #fbbf24;
+      background: rgba(251, 191, 36, 0.04);
+    }
+
+    .desc-card h3 {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .desc-card .name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .desc-card .body {
+      font-size: 0.85rem;
+      color: #aaa;
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    .desc-card .body strong { color: #ddd; font-weight: 500; }
+
+    .footer-note {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #2a2a2a;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .footer-note strong { color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <div class="gallery">
+    <header>
+      <div>
+        <h1>Td <strong>home page</strong> · concepts</h1>
+        <p class="lede">
+          Four directions for the talks-and-decks home page identity.
+          Each uses the same content (logo, hero, decks) but a completely different visual language.
+          Click a tab to preview.
+        </p>
+      </div>
+      <div class="meta">
+        4 mockups<br/>
+        live preview<br/>
+        Apr 2026
+      </div>
+    </header>
+
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-i="0">
+        <span class="num">01</span>
+        <span>Brutalist</span>
+        <a class="open-link" href="01-brutalist.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="1">
+        <span class="num">02</span>
+        <span>Terminal</span>
+        <a class="open-link" href="02-terminal.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="2">
+        <span class="num">03</span>
+        <span>Cinema Marquee</span>
+        <a class="open-link" href="03-cinema.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+      <button class="tab" data-i="3">
+        <span class="num">04</span>
+        <span>Glitch / Cyberpunk</span>
+        <a class="open-link" href="04-glitch.html" target="_blank" onclick="event.stopPropagation();">↗</a>
+      </button>
+    </div>
+
+    <div class="preview">
+      <iframe class="active" src="01-brutalist.html"></iframe>
+      <iframe data-src="02-terminal.html"></iframe>
+      <iframe data-src="03-cinema.html"></iframe>
+      <iframe data-src="04-glitch.html"></iframe>
+    </div>
+
+    <div class="descriptions" id="descriptions">
+      <div class="desc-card active" data-i="0">
+        <h3>01 · Brutalist</h3>
+        <div class="name">Bold &amp; type-forward</div>
+        <div class="body">
+          Pure black-on-white with one electric red accent. <strong>Massive Helvetica</strong>, hard rectangles, no rounded corners, asymmetric grid lines.
+          Reads like a Pentagram / Massimo Vignelli design system. Confident, loud, type-driven.
+        </div>
+      </div>
+      <div class="desc-card" data-i="1">
+        <h3>02 · Terminal</h3>
+        <div class="name">Phosphor &amp; ASCII</div>
+        <div class="body">
+          Dark green-on-black like a CRT terminal, with amber highlights. <strong>Monospaced everything</strong>, ASCII-bordered cards, blinking cursor, scanline overlay.
+          Hacker / engineer aesthetic — feels like ssh-ing into a personal site.
+        </div>
+      </div>
+      <div class="desc-card" data-i="2">
+        <h3>03 · Cinema Marquee</h3>
+        <div class="name">Theatrical &amp; ornate</div>
+        <div class="body">
+          Black + gold + velvet red, with lightbulb-edged marquee frame and Bodoni Moda serif italics. Each deck is a "feature" with a poster card.
+          <strong>Old playbill / theatre programme</strong> vibe — romantic and ceremonial.
+        </div>
+      </div>
+      <div class="desc-card" data-i="3">
+        <h3>04 · Glitch / Cyberpunk</h3>
+        <div class="name">Neon &amp; chromatic</div>
+        <div class="body">
+          Deep violet with neon pink + cyan. Chromatic-aberration logo, grid-line background, gradient buttons, clipped-corner cards.
+          <strong>Y2K-meets-2026</strong> vibe — high energy, very online, feels demo-ready for an AI talk.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      Click a tab to preview the full concept inline, or click the <strong>↗</strong> to open in a new tab.<br/>
+      Pick one — or remix elements across — and I'll build the real home page from it.
+    </div>
+  </div>
+
+  <script>
+    const $tabs = document.getElementById('tabs');
+    const $descs = document.getElementById('descriptions');
+    const $iframes = document.querySelectorAll('.preview iframe');
+
+    function show(i) {
+      // Lazy-load
+      const iframe = $iframes[i];
+      if (!iframe.src) iframe.src = iframe.dataset.src;
+
+      $iframes.forEach((f, idx) => f.classList.toggle('active', idx === i));
+      document.querySelectorAll('.tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
+      document.querySelectorAll('.desc-card').forEach((d, idx) => d.classList.toggle('active', idx === i));
+    }
+
+    $tabs.addEventListener('click', (e) => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      // Don't switch if user clicked the open-link
+      if (e.target.closest('.open-link')) return;
+      show(parseInt(tab.dataset.i));
+    });
+
+    $descs.addEventListener('click', (e) => {
+      const card = e.target.closest('.desc-card');
+      if (!card) return;
+      show(parseInt(card.dataset.i));
+    });
+  </script>
+</body>
+</html>

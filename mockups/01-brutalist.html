@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup 01 · Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f5f3;
+      --ink: #000;
+      --accent: #ff0033;
+      --grid: rgba(0,0,0,0.08);
+    }
+
+    html, body {
+      background: var(--bg);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 80px 80px;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 5vh 4vw;
+    }
+
+    /* MASTHEAD — asymmetric grid */
+    .masthead {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 2rem;
+      align-items: end;
+      padding-bottom: 2rem;
+      border-bottom: 4px solid var(--ink);
+    }
+
+    .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(8rem, 16vw, 14rem);
+      line-height: 0.78;
+      letter-spacing: -0.06em;
+      display: inline-flex;
+      align-items: baseline;
+    }
+
+    .logo .t { color: var(--ink); }
+    .logo .d {
+      color: var(--accent);
+      transform: translateX(-0.06em);
+    }
+
+    .masthead-info {
+      align-self: end;
+      padding-bottom: 1rem;
+    }
+
+    .masthead-info .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .masthead-info .title {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+
+    .masthead-meta {
+      align-self: end;
+      text-align: right;
+      padding-bottom: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .masthead-meta .vol {
+      color: var(--accent);
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 4rem 0 3rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: end;
+    }
+
+    .hero-num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(6rem, 12vw, 10rem);
+      line-height: 0.85;
+      color: var(--accent);
+      letter-spacing: -0.05em;
+    }
+
+    .hero-num .small {
+      display: block;
+      color: var(--ink);
+      font-size: 0.18em;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    .hero-text h1 {
+      font-weight: 200;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-text h1 strong {
+      font-weight: 900;
+    }
+
+    .hero-text p {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      max-width: 540px;
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      margin-bottom: 0;
+    }
+
+    .search {
+      width: 100%;
+      padding: 0.8rem 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .search:focus { outline: none; border-bottom-color: var(--accent); }
+    .search::placeholder { color: rgba(0,0,0,0.3); font-weight: 400; }
+
+    .filters {
+      display: flex;
+      gap: 0;
+    }
+
+    .chip {
+      padding: 0.6rem 1.2rem;
+      background: transparent;
+      border: 2px solid var(--ink);
+      border-right: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .chip:last-child { border-right: 2px solid var(--ink); }
+    .chip.active { background: var(--ink); color: var(--bg); }
+
+    /* DECK CARDS */
+    .deck {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 2rem;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--ink);
+      align-items: start;
+    }
+
+    .deck-num {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 5rem;
+      line-height: 0.8;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+    }
+
+    .deck-info { min-width: 0; }
+
+    .deck-status {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .deck-status.delivered { background: var(--ink); }
+
+    .deck-title {
+      font-weight: 800;
+      font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+    }
+
+    .deck-desc {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      max-width: 600px;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    .deck-meta {
+      display: flex;
+      gap: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .deck-meta strong { color: var(--accent); font-weight: 700; }
+
+    .deck-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.4rem;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .deck-cta:hover { background: var(--accent); }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 3rem;
+      padding: 2rem 0;
+      border-top: 4px solid var(--ink);
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .mockup-tag {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="mockup-tag">Mockup 01 · Brutalist</div>
+
+  <div class="container">
+    <header class="masthead">
+      <div class="logo"><span class="t">T</span><span class="d">d</span></div>
+      <div class="masthead-info">
+        <div class="label">Curated by</div>
+        <div class="title">Arun Castro</div>
+      </div>
+      <div class="masthead-meta">
+        <span class="vol">VOL. I</span>
+        <span>APR 2026</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-num">02
+        <span class="small">editions</span>
+      </div>
+      <div class="hero-text">
+        <h1>Talks &amp; <strong>decks.</strong></h1>
+        <p>Slide decks I've built — talks given, field guides written, ideas explored. Each one is static HTML, fully navigable.</p>
+      </div>
+    </section>
+
+    <div class="controls">
+      <input class="search" type="text" placeholder="Search decks…" />
+      <div class="filters">
+        <button class="chip active">all</button>
+        <button class="chip">upcoming</button>
+        <button class="chip">delivered</button>
+      </div>
+    </div>
+
+    <article class="deck">
+      <div class="deck-num">01</div>
+      <div class="deck-info">
+        <span class="deck-status delivered">delivered</span>
+        <h2 class="deck-title">AI in Action — From Idea to Live Product, Solo</h2>
+        <p class="deck-desc">How a single builder ships real products end-to-end with AI as pair-programmer — workflow, mindset, and live demos.</p>
+        <div class="deck-meta">
+          <span><strong>Rotaract MNM Jain</strong></span>
+          <span>27 Apr 2026</span>
+          <span>9 slides</span>
+          <span>20 min</span>
+        </div>
+      </div>
+      <a class="deck-cta" href="#">↗</a>
+    </article>
+
+    <article class="deck">
+      <div class="deck-num">02</div>
+      <div class="deck-info">
+        <span class="deck-status delivered">delivered</span>
+        <h2 class="deck-title">The Hurricane v2 — A Field Guide to Investing</h2>
+        <p class="deck-desc">A 6-part field guide to the markets: the storm, the hurricane, the instruments, the expensive help, the pilot, and the cockpit — ending in the calm.</p>
+        <div class="deck-meta">
+          <span><strong>Self-published</strong></span>
+          <span>22 Apr 2026</span>
+          <span>26 slides</span>
+          <span>30 min</span>
+        </div>
+      </div>
+      <a class="deck-cta" href="#">↗</a>
+    </article>
+
+    <footer class="footer">
+      <div>Built solo · AI as pair-programmer</div>
+      <div>github · linkedin</div>
+    </footer>
+  </div>
+</body>
+</html>

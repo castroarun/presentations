@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trading Automation, Illustrated · The Opening Range Breakout</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --paper:        #f5efe1;
+      --paper-deep:   #efe7d3;
+      --paper-soft:   #fbf6ea;
+      --ink:          #1a1612;
+      --ink-soft:     #4a3f30;
+      --ink-faint:    #7a6a55;
+      --accent:       #b8742c;
+      --accent-soft:  #d4a14a;
+      --accent-faint: #e8d2a8;
+      --rule:         rgba(26, 22, 18, 0.10);
+      --rule-soft:    rgba(26, 22, 18, 0.05);
+      --green:        #5a7548;
+      --red:          #a84a3a;
+      --gray:         #807366;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--paper);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      opacity: 0.06;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 7vh 5vw 8vh;
+    }
+
+    /* Masthead */
+    .masthead {
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid var(--ink);
+      margin-bottom: 0.4rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: end;
+    }
+    .pretitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .masthead-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .edition {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0 1.5rem;
+      border-bottom: 3px double var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin-bottom: 3rem;
+    }
+
+    /* Hero */
+    .hero { margin-bottom: 3.5rem; }
+
+    .kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      max-width: 800px;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero h1 .em { font-style: italic; color: var(--accent); }
+
+    .hero .lede {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.2rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 660px;
+    }
+
+    /* Body prose */
+    .prose {
+      max-width: 660px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .prose p {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: var(--ink-soft);
+      margin-bottom: 1.1rem;
+    }
+
+    .prose p strong { color: var(--ink); font-weight: 600; }
+    .prose p em { color: var(--accent); font-style: italic; }
+
+    /* Section heading */
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      max-width: 660px;
+      margin: 4rem auto 1.2rem;
+    }
+    h2 .num {
+      font-style: italic;
+      color: var(--accent);
+      margin-right: 0.4em;
+    }
+
+    /* The interactive itself */
+    .lab {
+      margin: 2.5rem 0 4rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .lab-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .lab-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-wrap {
+      position: relative;
+      background: var(--paper-soft);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 1.5rem 1.8rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    svg.chart {
+      width: 100%;
+      height: 360px;
+      display: block;
+      cursor: ew-resize;
+    }
+
+    .chart-axis {
+      stroke: var(--rule);
+      stroke-width: 1;
+    }
+    .chart-grid {
+      stroke: var(--rule-soft);
+      stroke-width: 1;
+      stroke-dasharray: 2 3;
+    }
+    .axis-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      fill: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+
+    .price-line {
+      fill: none;
+      stroke: var(--ink);
+      stroke-width: 1.4;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    .price-line-future {
+      fill: none;
+      stroke: var(--ink-faint);
+      stroke-width: 1;
+      stroke-dasharray: 2 3;
+      opacity: 0.5;
+    }
+
+    .or-rect {
+      fill: var(--accent-faint);
+      fill-opacity: 0.45;
+      stroke: var(--accent);
+      stroke-width: 1;
+      stroke-dasharray: 4 3;
+    }
+
+    .or-line {
+      stroke: var(--accent);
+      stroke-width: 1;
+      stroke-dasharray: 4 4;
+      opacity: 0.7;
+    }
+
+    .or-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      fill: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .scrub-line {
+      stroke: var(--ink);
+      stroke-width: 1.5;
+    }
+    .scrub-handle {
+      fill: var(--ink);
+    }
+
+    .signal-marker {
+      stroke-width: 2;
+      fill: var(--paper);
+    }
+    .signal-marker.long  { stroke: var(--green); }
+    .signal-marker.short { stroke: var(--red); }
+
+    .sl-line {
+      stroke: var(--red);
+      stroke-width: 1;
+      stroke-dasharray: 3 4;
+      opacity: 0.7;
+    }
+    .sl-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      fill: var(--red);
+    }
+
+    /* Scrub control */
+    .scrub-control {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 1.8rem 0.5rem;
+    }
+
+    .scrub-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--ink);
+      min-width: 56px;
+      letter-spacing: 0.04em;
+      font-weight: 500;
+    }
+
+    .scrub-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 2px;
+      background: var(--rule);
+      outline: none;
+    }
+    .scrub-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--ink);
+      cursor: pointer;
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px var(--ink);
+    }
+    .scrub-slider::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--ink);
+      cursor: pointer;
+      border: 2px solid var(--paper);
+    }
+
+    .play-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .play-btn:hover { background: var(--accent); }
+    .play-btn svg { width: 14px; height: 14px; }
+
+    /* Live readouts */
+    .readout-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 0.5rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .readout {
+      padding: 1rem 0.5rem;
+      border-right: 1px solid var(--rule);
+      text-align: center;
+    }
+    .readout:last-child { border-right: none; }
+
+    .readout-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.4rem;
+    }
+
+    .readout-value {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .readout-value.long  { color: var(--green); font-style: italic; }
+    .readout-value.short { color: var(--red); font-style: italic; }
+    .readout-value.dim   { color: var(--ink-faint); }
+
+    .readout-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-faint);
+      margin-top: 0.3rem;
+    }
+
+    /* Caption */
+    .caption {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--ink-faint);
+      text-align: center;
+      max-width: 560px;
+      margin: 1rem auto 0;
+      line-height: 1.5;
+    }
+
+    /* Knob row */
+    .knobs {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 1rem 1.8rem;
+      border-top: 1px solid var(--rule);
+    }
+    .knob {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      min-width: 140px;
+    }
+    .knob-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .knob-value {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+    .knob-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 2px;
+      background: var(--rule);
+      outline: none;
+    }
+    .knob-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+    .knob-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Coming-up section */
+    .coming {
+      margin-top: 6rem;
+      padding-top: 2rem;
+      border-top: 3px double var(--ink);
+    }
+
+    .coming h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+      max-width: 660px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .upcoming-list {
+      max-width: 660px;
+      margin: 0 auto;
+      list-style: none;
+      counter-reset: upcoming;
+    }
+
+    .upcoming-list li {
+      counter-increment: upcoming;
+      padding: 1.1rem 0 1.1rem 3rem;
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: var(--ink-soft);
+    }
+    .upcoming-list li::before {
+      content: counter(upcoming, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 1.2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .upcoming-list li strong { color: var(--ink); font-weight: 500; }
+
+    /* Footer */
+    footer {
+      margin-top: 6rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .readout-grid { grid-template-columns: repeat(2, 1fr); }
+      .readout:nth-child(2n) { border-right: none; }
+      .readout:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="masthead">
+      <div>
+        <div class="pretitle">// Quantifyd · The Field Notes · Vol. II</div>
+      </div>
+      <div class="masthead-meta">Trading automation, illustrated</div>
+    </header>
+
+    <div class="edition">
+      <span>Working draft</span>
+      <span>Concept · v0.1</span>
+      <span>Apr 2026</span>
+    </div>
+
+    <section class="hero">
+      <div class="kicker">// Strategy 01 of 03 · Opening Range Breakout</div>
+      <h1>The first fifteen <span class="em">minutes</span> tell you where the day is going.</h1>
+      <p class="lede">
+        Most traders watch the open and react. The algorithm waits exactly fifteen
+        minutes, marks the high and the low, then commits — only when price escapes
+        that range does it act. Watch it work, one minute at a time.
+      </p>
+    </section>
+
+    <article class="prose">
+      <p>
+        Here is one trading day. The line is the price of the index, minute by minute,
+        from the bell at <strong>09:15</strong> to the close at <strong>15:30</strong>.
+        The shaded box is the <em>opening range</em> — the highest and lowest price the
+        market touched in its first fifteen minutes.
+      </p>
+      <p>
+        That box is the only thing the algorithm cares about. As long as price stays
+        inside it, nothing happens. The moment a candle <strong>closes</strong> outside
+        it, the algorithm fires.
+      </p>
+      <p>
+        Drag the marker below to step through the day, minute by minute. Watch the
+        signal come to life.
+      </p>
+    </article>
+
+    <section class="lab">
+      <div class="lab-label">Interactive · figure 1</div>
+      <div class="lab-title">A trading day, scrubbed</div>
+
+      <div class="chart-wrap">
+        <svg class="chart" id="chart" viewBox="0 0 800 360" preserveAspectRatio="none"></svg>
+      </div>
+
+      <div class="scrub-control">
+        <button class="play-btn" id="play" title="Play / pause">
+          <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <span class="scrub-time" id="scrub-time">09:15</span>
+        <input type="range" class="scrub-slider" id="scrub" min="0" max="374" value="14" />
+        <span class="scrub-time" id="scrub-end">15:30</span>
+      </div>
+
+      <div class="readout-grid">
+        <div class="readout">
+          <div class="readout-label">OR High</div>
+          <div class="readout-value" id="or-high">—</div>
+          <div class="readout-sub">first 15 min</div>
+        </div>
+        <div class="readout">
+          <div class="readout-label">OR Low</div>
+          <div class="readout-value" id="or-low">—</div>
+          <div class="readout-sub">first 15 min</div>
+        </div>
+        <div class="readout">
+          <div class="readout-label">Signal</div>
+          <div class="readout-value dim" id="signal">waiting</div>
+          <div class="readout-sub" id="signal-time">—</div>
+        </div>
+        <div class="readout">
+          <div class="readout-label">Position P&amp;L</div>
+          <div class="readout-value dim" id="pnl">—</div>
+          <div class="readout-sub" id="pnl-pct">—</div>
+        </div>
+      </div>
+
+      <div class="knobs">
+        <div class="knob">
+          <span class="knob-label">OR window</span>
+          <span class="knob-value" id="or-mins-label">15 min</span>
+          <input type="range" class="knob-slider" id="or-mins" min="5" max="60" step="5" value="15" />
+        </div>
+        <div class="knob">
+          <span class="knob-label">Stop loss</span>
+          <span class="knob-value" id="sl-label">opposite OR</span>
+          <input type="range" class="knob-slider" id="sl" min="0" max="100" step="10" value="100" />
+        </div>
+      </div>
+
+      <p class="caption">
+        Drag the marker, change the window, watch the signal respond. The algorithm sees
+        no headlines, no news — only this picture, recomputed every minute.
+      </p>
+    </section>
+
+    <h2><span class="num">II.</span> What the algo can't see</h2>
+    <article class="prose">
+      <p>
+        Range breakouts fail more often than they succeed — that's not a flaw, that's the
+        market. What makes the algorithm worth running is not the win rate but the
+        <em>asymmetry</em>: when it wins, it wins big; when it loses, the stop is one
+        range-width away. A losing day is small. A winning day is a meaningful one.
+      </p>
+      <p>
+        The next interactives in this deck unpack that idea — what the win/loss
+        distribution looks like, why position size matters more than entry price, and
+        what happens when you change the window from fifteen minutes to forty-five.
+      </p>
+    </article>
+
+    <section class="coming">
+      <h3>Coming next, in this same field-notes format</h3>
+      <ul class="upcoming-list">
+        <li><strong>Why size, not signal, decides your year.</strong> A live position-sizing demo: drag risk-per-trade and capital, watch a year of P&amp;L deform.</li>
+        <li><strong>The KC6 channel, drawn live.</strong> Keltner bands forming candle by candle; a slider for the ATR multiplier shows how the channel breathes.</li>
+        <li><strong>Stops that walk.</strong> Trailing-stop logic visualized as a moving floor under a real day.</li>
+        <li><strong>One year, one chart.</strong> The actual equity curve of the live ORB stack, hover any day to see what happened that morning.</li>
+        <li><strong>Why MQ exists.</strong> Paper-trading sandbox — a quote stream playing in real time, with no money at stake, ever.</li>
+      </ul>
+    </section>
+
+    <footer>
+      Built solo, for fun, with AI as pair-programmer ·
+      <a href="../">all decks</a>
+    </footer>
+  </div>
+
+  <script>
+    /* ======================================================================
+       Synthetic intraday data — one trading day, NIFTY-ish
+       375 minutes from 09:15 to 15:30, with deliberate intraday character:
+       morning chop, midday drift, late-day breakout
+       ====================================================================== */
+    const TOTAL_MINS = 375;
+    const START_PRICE = 25000;
+
+    function generatePath() {
+      const path = [START_PRICE];
+      let price = START_PRICE;
+      let drift = 0;
+      for (let i = 1; i < TOTAL_MINS; i++) {
+        // Phase-based behavior
+        let phaseDrift = 0;
+        if (i < 30) {
+          phaseDrift = 0;       // chop in the open
+        } else if (i < 90) {
+          phaseDrift = 0.08;    // mild upward drift mid-morning
+        } else if (i < 180) {
+          phaseDrift = -0.04;   // midday consolidation
+        } else if (i < 280) {
+          phaseDrift = 0.18;    // afternoon trend
+        } else {
+          phaseDrift = 0.05;    // taper into close
+        }
+        drift = drift * 0.9 + phaseDrift * 0.1;
+        const noise = (Math.random() - 0.5) * 24;
+        price = price + drift + noise;
+        path.push(price);
+      }
+      return path;
+    }
+
+    // Use a fixed seed-ish pattern for reproducibility across reloads
+    // (purely visual, no real seeding — close enough for inspiration)
+    const PRICES = generatePath();
+
+    const minToTime = (m) => {
+      // 0 → 09:15, 374 → 15:30 (with lunch absorbed; visual simplification)
+      const totalSec = 9 * 60 + 15 + m;
+      const h = Math.floor(totalSec / 60);
+      const mm = totalSec % 60;
+      return String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    };
+
+    const fmtPrice = (p) => p.toFixed(2);
+    const fmtSigned = (p) => (p >= 0 ? '+' : '') + p.toFixed(2);
+
+    /* ======================================================================
+       Chart geometry
+       ====================================================================== */
+    const VB_W = 800;
+    const VB_H = 360;
+    const PAD = { top: 30, right: 60, bottom: 30, left: 50 };
+    const CHART_W = VB_W - PAD.left - PAD.right;
+    const CHART_H = VB_H - PAD.top - PAD.bottom;
+
+    const yMin = Math.min(...PRICES) - 30;
+    const yMax = Math.max(...PRICES) + 30;
+    const yRange = yMax - yMin;
+
+    const xAt = (i) => PAD.left + (i / (TOTAL_MINS - 1)) * CHART_W;
+    const yAt = (p) => PAD.top + (1 - (p - yMin) / yRange) * CHART_H;
+
+    /* ======================================================================
+       State + render loop
+       ====================================================================== */
+    const state = {
+      idx: 14,        // current minute (0-indexed); 14 = end of first 15 mins
+      orMins: 15,
+      slPctOfRange: 100, // 100 = full opposite OR; lower = tighter
+      playing: false,
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const svg = $('chart');
+
+    // Build static skeleton once
+    function buildSkeleton() {
+      const g = `
+        <defs>
+          <pattern id="paper" width="40" height="40" patternUnits="userSpaceOnUse">
+          </pattern>
+        </defs>
+        <!-- y-axis ticks/labels -->
+        ${[0, 0.25, 0.5, 0.75, 1].map(t => {
+          const p = yMin + t * yRange;
+          const y = PAD.top + (1 - t) * CHART_H;
+          return `
+            <line class="chart-grid" x1="${PAD.left}" y1="${y}" x2="${VB_W - PAD.right}" y2="${y}" />
+            <text class="axis-label" x="${VB_W - PAD.right + 6}" y="${y + 3}">${p.toFixed(0)}</text>
+          `;
+        }).join('')}
+        <!-- x-axis (time) ticks -->
+        ${[0, 75, 165, 255, 345, 374].map(i => {
+          const x = xAt(i);
+          return `
+            <line class="chart-grid" x1="${x}" y1="${PAD.top}" x2="${x}" y2="${PAD.top + CHART_H}" />
+            <text class="axis-label" x="${x}" y="${PAD.top + CHART_H + 16}" text-anchor="middle">${minToTime(i)}</text>
+          `;
+        }).join('')}
+        <line class="chart-axis" x1="${PAD.left}" y1="${PAD.top + CHART_H}" x2="${VB_W - PAD.right}" y2="${PAD.top + CHART_H}" />
+        <line class="chart-axis" x1="${PAD.left}" y1="${PAD.top}" x2="${PAD.left}" y2="${PAD.top + CHART_H}" />
+        <g id="dynamic"></g>
+      `;
+      svg.innerHTML = g;
+    }
+
+    function buildPath(start, end) {
+      let d = '';
+      for (let i = start; i <= end; i++) {
+        d += (i === start ? 'M' : 'L') + xAt(i).toFixed(1) + ' ' + yAt(PRICES[i]).toFixed(1) + ' ';
+      }
+      return d.trim();
+    }
+
+    function render() {
+      const orWindow = state.orMins;
+      const orEnd = orWindow - 1; // index inclusive
+      const orVisible = state.idx >= orEnd;
+
+      const orPrices = PRICES.slice(0, orWindow);
+      const orHigh = Math.max(...orPrices);
+      const orLow = Math.min(...orPrices);
+      const orRange = orHigh - orLow;
+
+      // Find first breakout after orEnd
+      let signal = null; // { side, idx, entry, sl, target }
+      if (orVisible) {
+        for (let i = orEnd + 1; i <= state.idx; i++) {
+          if (PRICES[i] > orHigh && !signal) {
+            const slDist = orRange * (state.slPctOfRange / 100);
+            signal = {
+              side: 'long',
+              idx: i,
+              entry: PRICES[i],
+              sl: PRICES[i] - slDist,
+            };
+            break;
+          }
+          if (PRICES[i] < orLow && !signal) {
+            const slDist = orRange * (state.slPctOfRange / 100);
+            signal = {
+              side: 'short',
+              idx: i,
+              entry: PRICES[i],
+              sl: PRICES[i] + slDist,
+            };
+            break;
+          }
+        }
+      }
+
+      // P&L (mark-to-market)
+      let pnl = null;
+      if (signal && state.idx >= signal.idx) {
+        const cur = PRICES[state.idx];
+        pnl = signal.side === 'long' ? cur - signal.entry : signal.entry - cur;
+      }
+
+      const dynamic = document.getElementById('dynamic');
+
+      const orRectY = yAt(orHigh);
+      const orRectH = yAt(orLow) - yAt(orHigh);
+      const orRectW = xAt(orEnd) - xAt(0);
+
+      const pricePath = buildPath(0, state.idx);
+      const futurePath = state.idx < TOTAL_MINS - 1
+        ? buildPath(state.idx, TOTAL_MINS - 1)
+        : '';
+
+      const scrubX = xAt(state.idx);
+      const scrubY = yAt(PRICES[state.idx]);
+
+      let signalSvg = '';
+      let slLine = '';
+      if (orVisible) {
+        slLine = `
+          <line class="or-line" x1="${PAD.left}" y1="${yAt(orHigh)}" x2="${VB_W - PAD.right}" y2="${yAt(orHigh)}" />
+          <line class="or-line" x1="${PAD.left}" y1="${yAt(orLow)}"  x2="${VB_W - PAD.right}" y2="${yAt(orLow)}" />
+          <text class="or-label" x="${VB_W - PAD.right + 6}" y="${yAt(orHigh) + 3}">OR↑</text>
+          <text class="or-label" x="${VB_W - PAD.right + 6}" y="${yAt(orLow) + 3}">OR↓</text>
+        `;
+      }
+
+      if (signal) {
+        const sx = xAt(signal.idx);
+        const sy = yAt(signal.entry);
+        signalSvg += `
+          <line class="sl-line" x1="${sx}" y1="${yAt(signal.sl)}" x2="${VB_W - PAD.right}" y2="${yAt(signal.sl)}" />
+          <text class="sl-label" x="${VB_W - PAD.right + 6}" y="${yAt(signal.sl) + 3}">SL</text>
+          <circle class="signal-marker ${signal.side}" cx="${sx}" cy="${sy}" r="6" />
+        `;
+      }
+
+      dynamic.innerHTML = `
+        ${orVisible ? `<rect class="or-rect" x="${xAt(0)}" y="${orRectY}" width="${orRectW}" height="${orRectH}" />` : ''}
+        ${slLine}
+        ${futurePath ? `<path class="price-line-future" d="${futurePath}" />` : ''}
+        <path class="price-line" d="${pricePath}" />
+        ${signalSvg}
+        <line class="scrub-line" x1="${scrubX}" y1="${PAD.top}" x2="${scrubX}" y2="${PAD.top + CHART_H}" />
+        <circle class="scrub-handle" cx="${scrubX}" cy="${scrubY}" r="3.5" />
+      `;
+
+      // Update readouts
+      $('scrub-time').textContent = minToTime(state.idx);
+      $('or-high').textContent = orVisible ? fmtPrice(orHigh) : '—';
+      $('or-low').textContent = orVisible ? fmtPrice(orLow) : '—';
+
+      const sigEl = $('signal');
+      const sigTimeEl = $('signal-time');
+      sigEl.classList.remove('long', 'short', 'dim');
+      if (!signal) {
+        sigEl.textContent = orVisible ? 'no fire' : 'waiting';
+        sigEl.classList.add('dim');
+        sigTimeEl.textContent = orVisible ? 'inside range' : 'building OR';
+      } else {
+        sigEl.textContent = signal.side.toUpperCase();
+        sigEl.classList.add(signal.side);
+        sigTimeEl.textContent = '@ ' + minToTime(signal.idx) + ' · ' + fmtPrice(signal.entry);
+      }
+
+      const pnlEl = $('pnl');
+      const pnlPctEl = $('pnl-pct');
+      pnlEl.classList.remove('long', 'short', 'dim');
+      if (pnl === null) {
+        pnlEl.textContent = '—';
+        pnlEl.classList.add('dim');
+        pnlPctEl.textContent = signal ? 'entry pending' : '—';
+      } else {
+        pnlEl.textContent = fmtSigned(pnl);
+        pnlEl.classList.add(pnl >= 0 ? 'long' : 'short');
+        const pct = (pnl / signal.entry) * 100;
+        pnlPctEl.textContent = fmtSigned(pct) + '%';
+      }
+    }
+
+    /* ======================================================================
+       Wiring
+       ====================================================================== */
+    buildSkeleton();
+    render();
+
+    $('scrub').addEventListener('input', (e) => {
+      state.idx = parseInt(e.target.value, 10);
+      stopPlay();
+      render();
+    });
+
+    $('or-mins').addEventListener('input', (e) => {
+      state.orMins = parseInt(e.target.value, 10);
+      $('or-mins-label').textContent = state.orMins + ' min';
+      // Ensure scrub doesn't sit before OR end
+      if (state.idx < state.orMins - 1) {
+        state.idx = state.orMins - 1;
+        $('scrub').value = state.idx;
+      }
+      render();
+    });
+
+    $('sl').addEventListener('input', (e) => {
+      state.slPctOfRange = parseInt(e.target.value, 10);
+      $('sl-label').textContent = state.slPctOfRange === 100
+        ? 'opposite OR'
+        : (state.slPctOfRange + '% of range');
+      render();
+    });
+
+    /* Click on chart to scrub */
+    svg.addEventListener('click', (e) => {
+      const rect = svg.getBoundingClientRect();
+      const xRel = (e.clientX - rect.left) / rect.width * VB_W;
+      const i = Math.round(((xRel - PAD.left) / CHART_W) * (TOTAL_MINS - 1));
+      const clamped = Math.max(0, Math.min(TOTAL_MINS - 1, i));
+      state.idx = clamped;
+      $('scrub').value = clamped;
+      stopPlay();
+      render();
+    });
+
+    /* Play / pause */
+    let playInterval = null;
+    function startPlay() {
+      if (playInterval) return;
+      state.playing = true;
+      $('play-icon').innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+      playInterval = setInterval(() => {
+        if (state.idx >= TOTAL_MINS - 1) {
+          stopPlay();
+          return;
+        }
+        state.idx += 1;
+        $('scrub').value = state.idx;
+        render();
+      }, 30);
+    }
+    function stopPlay() {
+      if (!playInterval) return;
+      clearInterval(playInterval);
+      playInterval = null;
+      state.playing = false;
+      $('play-icon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+    }
+    $('play').addEventListener('click', () => {
+      if (state.playing) stopPlay();
+      else {
+        if (state.idx >= TOTAL_MINS - 1) state.idx = state.orMins - 1;
+        $('scrub').value = state.idx;
+        startPlay();
+      }
+    });
+  </script>
+</body>
+</html>

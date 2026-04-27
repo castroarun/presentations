@@ -38,6 +38,19 @@
       "tags": ["automation", "trading", "quantifyd", "orb", "kc6", "algo"],
       "path": "quantifyd-trading-automation/deck.html",
       "notes": "quantifyd-trading-automation/notes.md"
+    },
+    {
+      "id": "trading-automation-v2",
+      "title": "Trading Automation, Illustrated — Field Notes (v2 concept)",
+      "description": "A ciechanow.ski-style reimagining of the trading deck: scrubbable price chart, live OR detection, real signal logic, two knobs to tweak the algorithm — the diagram is the explanation.",
+      "venue": "Concept · field notes",
+      "date": "2026-04-27",
+      "slides": 1,
+      "duration": "interactive",
+      "status": "draft",
+      "tags": ["interactive", "trading", "orb", "ciechanowski", "field-notes", "concept"],
+      "path": "trading-automation-v2/deck.html",
+      "notes": "trading-automation-v2/notes.md"
     }
   ]
 }

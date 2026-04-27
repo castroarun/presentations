@@ -685,23 +685,24 @@
     function generatePath() {
       const rand = mulberry32(7);
 
-      // (minute, target price, noise amplitude in that segment)
-      // The journey: entry → loss → small profit → loss → peak → close below peak.
-      // Every dip stays safely above SL so the trade survives all the chop.
+      // (minute, target price, noise amplitude in that segment).
+      // Linear interpolation between waypoints creates sharp V-shapes —
+      // the chop is visible, not smoothed away. Every dip stays above
+      // SL (~25008) so the trade survives the full rollercoaster.
       const waypoints = [
         { i: 0,   p: 25000, n: 3 },  // Open
-        { i: 20,  p: 25010, n: 3 },  // OR ends near upper edge (~16pt range)
-        { i: 32,  p: 25025, n: 2 },  // LONG fires here — entry ~25025, SL ~25008
-        { i: 70,  p: 25014, n: 2 },  // First dip:    loss  ≈ -11
-        { i: 105, p: 25034, n: 2 },  // Recovery:     profit ≈ +9
-        { i: 150, p: 25016, n: 2 },  // Second dip:   loss  ≈ -9
-        { i: 235, p: 25085, n: 3 },  // Peak:         profit ≈ +60
-        { i: 374, p: 25055, n: 3 },  // Close:        profit ≈ +30 (down from peak)
+        { i: 19,  p: 25011, n: 3 },  // OR ends (range ≈ 25000-25013)
+        { i: 25,  p: 25005, n: 2 },  // Brief consolidation INSIDE OR
+        { i: 28,  p: 25027, n: 1 },  // BREAKOUT candle — entry fires ~25025, SL ~25008
+        { i: 55,  p: 25010, n: 1 },  // DIP 1 bottom        — loss   ≈ -15
+        { i: 82,  p: 25032, n: 1 },  // RECOVERY peak       — profit ≈ +7
+        { i: 115, p: 25011, n: 1 },  // DIP 2 bottom        — loss   ≈ -14
+        { i: 235, p: 25085, n: 3 },  // PEAK profit         — profit ≈ +60
+        { i: 374, p: 25055, n: 3 },  // CLOSE below peak    — profit ≈ +30
       ];
 
       const path = [];
       for (let i = 0; i < TOTAL_MINS; i++) {
-        // Find the waypoint segment this minute belongs to
         let prev = waypoints[0];
         let next = waypoints[waypoints.length - 1];
         for (let w = 0; w < waypoints.length - 1; w++) {
@@ -711,11 +712,9 @@
             break;
           }
         }
-        // Cosine ease so direction changes feel organic, not piecewise-linear
         const t = next.i === prev.i ? 0 : (i - prev.i) / (next.i - prev.i);
-        const eased = 0.5 * (1 - Math.cos(Math.PI * t));
-        const trend = prev.p + eased * (next.p - prev.p);
-        const noise = next.n; // use the destination segment's noise budget
+        const trend = prev.p + t * (next.p - prev.p); // linear — sharp turns at waypoints
+        const noise = next.n;
         path.push(trend + (rand() - 0.5) * noise * 2);
       }
       return path;

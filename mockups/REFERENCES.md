@@ -68,6 +68,13 @@ Each entry lists the source(s) the mockup borrowed from, the specific patterns l
 - **Patterns borrowed:** SVG circular progress rings (`stroke-dasharray` with variable arc length), animated number counters, score-coloured stops (green/iris/orange), candidate-row layout with rank ring on the left and tags column on the right, dashboard summary stats in masthead.
 - **Why notable:** the score-ring + candidate-row layout is one of the most replicable "scoring/ranking" patterns in modern UI — useful any time decks/items need to feel ranked or graded.
 
+### `11-investor-pitch.html`
+
+- **Lineage:** **[pitch.com](https://pitch.com)** — specifically the [Investor Pitch Deck template](https://pitch.com/templates/Investor-Pitch-Deck-52NJt62Vk3cZ5g7Hgb3XGSPG). Pitch (founded 2018 by ex-Wunderlist team) defined the modern startup-pitch-deck aesthetic.
+- **Patterns borrowed:** **multi-section pitch-as-page** (cover → numbers → library → CTA, each labelled `01 / 04`, etc.); **alternating high-contrast slides** (light cover → dark stats → light grid → vibrant CTA); jumbo display type (Inter 900 at 7vw+); **violet-bright accent** (`#7c3aed`) on a deep navy `#0e1230`; **stat-grid pattern** with massive coloured numbers (violet/lime/pink/amber); deck thumbnails with **gradient-mesh backgrounds** (radial-gradient ellipses for "spotlight" effects); pitch-deck slide numbering as a UI pattern.
+- **Why notable:** Pitch's design system is the de-facto standard for VC/investor pitches in 2024–26. Borrowing this aesthetic makes a deck instantly read as "fundraise-grade" — useful when the user is presenting to investors, exec leadership, or anyone expecting a polished startup story.
+- **Note on faithfulness:** Pitch.com's template gallery is JavaScript-rendered, so this mockup was built from general knowledge of Pitch's design language rather than a direct asset extraction. If the user wants a tighter match to a specific template, they can supply screenshots and the mockup can be refined.
+
 ---
 
 ## Future inspiration — sites worth studying for new picks
@@ -81,7 +88,7 @@ These are sites the agent (or you) should study when reaching for a new aestheti
 | [revealjs.com](https://revealjs.com) | The reference framework. Hakim's demos are minimalist masters | Any deck that needs reveal-style transitions or flying-fragment animations |
 | [hakim.se](https://hakim.se) | Hakim El Hattab's personal site — every detail is intentional | Studying restraint and motion design |
 | [slides.com](https://slides.com) | Reveal.js's hosted version — see "Featured" decks | Real-world long-form decks |
-| [pitch.com](https://pitch.com) | Modern startup pitch-deck templates | Corporate/funding-style decks |
+| [pitch.com](https://pitch.com) | Modern startup pitch-deck templates — the VC-ready standard. **See `11-investor-pitch.html` for a Td port.** | Corporate/funding-style decks |
 | [tldraw.com/p/decks](https://tldraw.com) | Hand-drawn aesthetic done well | Workshop / whiteboard-style talks |
 
 ### SaaS / product landing pages (visual systems to borrow)
@@ -154,6 +161,11 @@ These are specific techniques that can be borrowed into any mockup, regardless o
 | **Title block with dimensions** | Blueprint mockup | Any "spec sheet" feel |
 | **Washi tape on photo** | Polaroid mockup | Personal / scrapbook moments |
 | **Stat band in masthead** | Score Rings (← ResumeFilter) | Summarising library/collection at top |
+| **Multi-section page-as-pitch** | Investor Pitch (← Pitch.com) | Long landing pages that read as a pitch deck |
+| **Alternating-contrast slides** | Investor Pitch (← Pitch.com) | When you want each section to feel like a new "page" |
+| **Jumbo coloured stat numbers** | Investor Pitch (← Pitch.com) | Anywhere stats deserve the loudest voice |
+| **Gradient-mesh card thumbnails** | Investor Pitch (← Pitch.com) | Deck/feature thumbnails when you don't have real screenshots |
+| **Slide numbering as UI** | Investor Pitch (← Pitch.com) | Anywhere "deck-feel" should bleed into a regular page |
 
 ---
 

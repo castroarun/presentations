@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mockup 11 · Investor Pitch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-light: #fafafa;
+      --bg-paper: #ffffff;
+      --ink: #0a0a14;
+      --ink-soft: #4a4a5e;
+      --ink-faint: #8a8aa0;
+
+      --bg-dark: #0e1230;
+      --bg-darker: #08091e;
+
+      --violet: #7c3aed;
+      --violet-bright: #a855f7;
+      --violet-soft: rgba(124, 58, 237, 0.12);
+
+      --pink: #ec4899;
+      --lime: #84cc16;
+      --amber: #f59e0b;
+
+      --rule: rgba(10, 10, 20, 0.08);
+      --rule-dark: rgba(255, 255, 255, 0.1);
+    }
+
+    html, body {
+      background: var(--bg-light);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HEADER — minimal nav strip */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(250, 250, 250, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.04em;
+      display: flex;
+      align-items: baseline;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .nav-logo .d {
+      color: var(--violet);
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta {
+      padding: 0.5rem 1.1rem;
+      background: var(--ink);
+      color: white;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .nav-cta:hover { background: var(--violet) !important; }
+
+    /* SLIDE — every section is a pseudo-slide with full-bleed framing */
+    .slide {
+      min-height: 100vh;
+      padding: 9rem 3rem 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .slide-num {
+      position: absolute;
+      top: 7rem;
+      right: 3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      font-weight: 700;
+    }
+
+    .slide-light .slide-num { color: var(--ink-faint); }
+    .slide-dark .slide-num { color: rgba(255, 255, 255, 0.4); }
+    .slide-violet .slide-num { color: rgba(255, 255, 255, 0.6); }
+
+    /* COVER SLIDE */
+    .cover {
+      background: var(--bg-light);
+    }
+
+    .cover-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--violet);
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    .cover h1 {
+      font-weight: 900;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.045em;
+      max-width: 1200px;
+      margin-bottom: 2.5rem;
+    }
+
+    .cover h1 .em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--violet);
+    }
+
+    .cover-sub {
+      font-size: 1.4rem;
+      max-width: 720px;
+      color: var(--ink-soft);
+      font-weight: 400;
+      line-height: 1.45;
+      margin-bottom: 3.5rem;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 3rem;
+      align-items: end;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+      max-width: 1200px;
+    }
+
+    .cover-meta .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .cover-meta .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      font-weight: 600;
+    }
+
+    .cover-meta .val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    /* THE NUMBERS slide */
+    .numbers {
+      background: var(--bg-dark);
+      color: white;
+    }
+
+    .slide-dark .slide-num { color: rgba(255, 255, 255, 0.4); }
+
+    .numbers-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--violet-bright);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .numbers h2 {
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: -0.035em;
+      max-width: 900px;
+      margin-bottom: 4rem;
+    }
+
+    .numbers h2 .em { color: var(--violet-bright); font-style: italic; font-weight: 500; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 4rem 3rem;
+      max-width: 1200px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--rule-dark);
+    }
+
+    .stat-num {
+      font-weight: 900;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+    }
+
+    .stat-num.violet { color: var(--violet-bright); }
+    .stat-num.lime { color: var(--lime); }
+    .stat-num.pink { color: var(--pink); }
+    .stat-num.amber { color: var(--amber); }
+
+    .stat-label {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      max-width: 260px;
+      line-height: 1.4;
+    }
+
+    .stat-label strong { color: white; font-weight: 700; }
+
+    /* THE LIBRARY slide */
+    .library {
+      background: var(--bg-paper);
+    }
+
+    .library-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--violet);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .library h2 {
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: -0.035em;
+      max-width: 1100px;
+      margin-bottom: 1.5rem;
+    }
+
+    .library h2 .em { font-style: italic; color: var(--violet); font-weight: 500; }
+
+    .library .lede {
+      font-size: 1.2rem;
+      max-width: 720px;
+      color: var(--ink-soft);
+      margin-bottom: 3.5rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      max-width: 1200px;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .search {
+      flex: 1;
+      padding: 0.85rem 1.2rem 0.85rem 2.8rem;
+      background: var(--bg-light);
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--ink);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8aa0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 1rem center;
+    }
+
+    .search:focus {
+      outline: none;
+      border-color: var(--violet);
+      box-shadow: 0 0 0 3px var(--violet-soft);
+    }
+
+    .filters { display: flex; gap: 0.4rem; }
+
+    .chip {
+      padding: 0.55rem 1rem;
+      background: var(--bg-light);
+      border: 1px solid var(--rule);
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    .chip.active {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    /* DECK CARDS — the pitch grid */
+    .deck-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+    }
+
+    .deck-card {
+      background: var(--bg-light);
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.25s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .deck-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(10, 10, 20, 0.08);
+      border-color: var(--violet);
+    }
+
+    .deck-thumb {
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, var(--violet), var(--bg-darker));
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+
+    .deck-thumb.alt-1 {
+      background:
+        radial-gradient(ellipse at top right, var(--violet-bright) 0%, transparent 60%),
+        linear-gradient(135deg, #1a1f5c, #0e1230);
+    }
+
+    .deck-thumb.alt-2 {
+      background:
+        radial-gradient(ellipse at bottom left, var(--pink) 0%, transparent 60%),
+        linear-gradient(135deg, #4a1942, #0e1230);
+    }
+
+    .deck-thumb.alt-3 {
+      background:
+        radial-gradient(ellipse at center, var(--amber) 0%, transparent 70%),
+        linear-gradient(135deg, #2a2010, #0e1230);
+    }
+
+    .deck-thumb-num {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 700;
+    }
+
+    .deck-thumb-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: white;
+      max-width: 280px;
+    }
+
+    .deck-thumb-title .em { font-style: italic; font-weight: 400; opacity: 0.85; }
+
+    .deck-body {
+      padding: 1.4rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      flex: 1;
+    }
+
+    .deck-status-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .pill-delivered { background: rgba(132, 204, 22, 0.15); color: #5d8c0d; }
+    .pill-upcoming { background: rgba(245, 158, 11, 0.15); color: #b07408; }
+
+    .deck-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-faint);
+    }
+
+    .deck-desc {
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .deck-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--rule);
+      margin-top: 0.4rem;
+    }
+
+    .deck-tags {
+      display: flex;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      padding: 0.18rem 0.5rem;
+      background: var(--violet-soft);
+      color: var(--violet);
+      border-radius: 3px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .open-btn {
+      padding: 0.5rem 1rem;
+      background: var(--ink);
+      color: white;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .open-btn:hover { background: var(--violet); }
+
+    /* CTA SLIDE */
+    .cta {
+      background: var(--violet);
+      color: white;
+      text-align: center;
+      padding: 9rem 3rem 6rem;
+    }
+
+    .slide-violet h2 {
+      font-weight: 900;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      max-width: 900px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .slide-violet h2 .em {
+      font-style: italic;
+      font-weight: 400;
+      color: white;
+      opacity: 0.85;
+    }
+
+    .slide-violet p {
+      font-size: 1.3rem;
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: white;
+      color: var(--violet);
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Footer */
+    .colophon {
+      padding: 2.5rem 3rem;
+      background: var(--ink);
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    .colophon a {
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+    }
+
+    /* Mockup tags */
+    .mockup-tag {
+      position: fixed;
+      top: 0.7rem;
+      right: 0.7rem;
+      background: var(--violet);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      z-index: 200;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+    }
+
+    .inspiration {
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--rule);
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.66rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-soft);
+      z-index: 150;
+      max-width: 380px;
+      line-height: 1.5;
+    }
+    .inspiration a { color: var(--violet); text-decoration: none; border-bottom: 1px dotted var(--violet); }
+    .inspiration .label {
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    @media (max-width: 768px) {
+      .slide { padding: 7rem 1.5rem 3rem; }
+      .nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1rem; }
+      .stat-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .deck-grid { grid-template-columns: 1fr; }
+      .colophon { padding: 2rem 1.5rem; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mockup-tag">Mockup 11 · Investor Pitch</div>
+  <div class="inspiration">
+    <span class="label">Inspired by</span>
+    <a href="https://pitch.com/templates/Investor-Pitch-Deck-52NJt62Vk3cZ5g7Hgb3XGSPG" target="_blank" rel="noopener">Pitch Investor Deck template</a>
+    — <strong>pitch.com</strong>
+  </div>
+
+  <nav class="nav">
+    <a href="#" class="nav-logo">T<span class="d">d</span></a>
+    <div class="nav-links">
+      <a href="#library">Library</a>
+      <a href="#numbers">Stats</a>
+      <a href="#" class="nav-cta">Subscribe</a>
+    </div>
+  </nav>
+
+  <!-- COVER SLIDE -->
+  <section class="slide slide-light cover">
+    <div class="slide-num">01 / 04 · Cover</div>
+    <div class="cover-eyebrow">Td · Vol. I · April 2026</div>
+    <h1>Talks &amp;<br/><span class="em">decks,</span><br/>shipped solo.</h1>
+    <p class="cover-sub">A growing library of slide decks built end-to-end with AI as pair-programmer. Talks given. Field guides written. Ideas explored.</p>
+    <div class="cover-meta">
+      <div class="field">
+        <span class="label">Curator</span>
+        <span class="val">Arun Castro</span>
+      </div>
+      <div class="field">
+        <span class="label">Editions</span>
+        <span class="val">02 delivered</span>
+      </div>
+      <div class="field">
+        <span class="label">Total runtime</span>
+        <span class="val">50 minutes</span>
+      </div>
+      <div class="field">
+        <span class="label">Status</span>
+        <span class="val" style="color: var(--violet);">● Live</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NUMBERS SLIDE -->
+  <section class="slide slide-dark numbers" id="numbers">
+    <div class="slide-num">02 / 04 · The Numbers</div>
+    <div class="numbers-eyebrow">By the numbers</div>
+    <h2>Built solo, shipped fast — <span class="em">no team, no budget, no excuses.</span></h2>
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-num violet">02</div>
+        <div class="stat-label"><strong>Editions delivered</strong> across distinct audiences and formats</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num lime">35</div>
+        <div class="stat-label"><strong>Slides shipped</strong> as standalone HTML — no build step, no framework</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num pink">10</div>
+        <div class="stat-label"><strong>Mockup directions</strong> banked for future picks across the visual library</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num amber">100%</div>
+        <div class="stat-label"><strong>AI-paired</strong> — every deck designed and built with AI as pair-programmer</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIBRARY SLIDE -->
+  <section class="slide slide-light library" id="library">
+    <div class="slide-num">03 / 04 · The Library</div>
+    <div class="library-eyebrow">The programme</div>
+    <h2>Two editions. <span class="em">More on the runway.</span></h2>
+    <p class="lede">Each deck is static HTML, fully navigable with keyboard, mouse, and touch. Built to be shared, archived, and re-watched.</p>
+
+    <div class="controls">
+      <input type="text" class="search" placeholder="Search by title, venue, tag…" />
+      <div class="filters">
+        <button class="chip active">all</button>
+        <button class="chip">delivered</button>
+        <button class="chip">upcoming</button>
+      </div>
+    </div>
+
+    <div class="deck-grid">
+      <article class="deck-card">
+        <div class="deck-thumb alt-1">
+          <span class="deck-thumb-num">EDITION 01</span>
+          <h3 class="deck-thumb-title">AI in <span class="em">Action</span></h3>
+        </div>
+        <div class="deck-body">
+          <div class="deck-status-row">
+            <span class="pill pill-delivered">Delivered</span>
+            <span class="deck-meta">Rotaract MNM Jain · 27 Apr 2026 · 9 slides · 20 min</span>
+          </div>
+          <p class="deck-desc">How a single builder ships products end-to-end with AI as pair-programmer — workflow, mindset, live demos.</p>
+          <div class="deck-foot">
+            <div class="deck-tags">
+              <span class="tag">AI</span>
+              <span class="tag">Talk</span>
+            </div>
+            <a class="open-btn" href="#">Open ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="deck-card">
+        <div class="deck-thumb alt-2">
+          <span class="deck-thumb-num">EDITION 02</span>
+          <h3 class="deck-thumb-title">The <span class="em">Hurricane</span> v2</h3>
+        </div>
+        <div class="deck-body">
+          <div class="deck-status-row">
+            <span class="pill pill-delivered">Delivered</span>
+            <span class="deck-meta">Self-published · 22 Apr 2026 · 26 slides · 30 min</span>
+          </div>
+          <p class="deck-desc">A 6-part field guide to the markets — the storm, the hurricane, the instruments, and the calm.</p>
+          <div class="deck-foot">
+            <div class="deck-tags">
+              <span class="tag">Markets</span>
+              <span class="tag">Guide</span>
+            </div>
+            <a class="open-btn" href="#">Open ↗</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="deck-card">
+        <div class="deck-thumb alt-3">
+          <span class="deck-thumb-num">EDITION 03</span>
+          <h3 class="deck-thumb-title">Coming <span class="em">soon…</span></h3>
+        </div>
+        <div class="deck-body">
+          <div class="deck-status-row">
+            <span class="pill pill-upcoming">Drafting</span>
+            <span class="deck-meta">Topic &amp; venue TBD</span>
+          </div>
+          <p class="deck-desc">Next deck in the pipeline. Drafting in progress.</p>
+          <div class="deck-foot">
+            <div class="deck-tags">
+              <span class="tag" style="background: rgba(245, 158, 11, 0.15); color: #b07408;">Draft</span>
+            </div>
+            <a class="open-btn" href="#" style="background: var(--ink-faint); pointer-events: none;">Soon</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA SLIDE -->
+  <section class="slide slide-violet cta">
+    <div class="slide-num">04 / 04 · Connect</div>
+    <h2>Got a talk you want me to <span class="em">give?</span></h2>
+    <p>Or a deck you want built? Reach out — every collaboration is welcome.</p>
+    <a class="cta-btn" href="#">Get in touch →</a>
+  </section>
+
+  <footer class="colophon">
+    <span>Built solo · AI as pair-programmer · Static HTML · No build step</span>
+    <span><a href="#">github</a> · <a href="#">linkedin</a> · <a href="#">support</a></span>
+  </footer>
+</body>
+</html>

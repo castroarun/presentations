@@ -407,6 +407,42 @@
     .btn .chev { transition: transform 0.3s; display: inline-block; }
     .deck.expanded .btn .chev { transform: rotate(180deg); }
 
+    /* SHARE ROW */
+    .share-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      margin-top: 0.4rem;
+    }
+
+    .share-btn {
+      padding: 0.55rem 0.4rem;
+      background: transparent;
+      border: 2px solid var(--ink);
+      border-right: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.66rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink);
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .share-btn:last-child { border-right: 2px solid var(--ink); }
+
+    .share-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+
+    .share-btn.copied {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
     /* ── NOTES PANEL ──────────────────────────────── */
     .notes-panel {
       max-height: 0;
@@ -747,6 +783,11 @@
             <div class="deck-actions">
               <a class="btn btn-primary" href="${escapeHtml(deck.path)}" target="_blank" rel="noopener" onclick="event.stopPropagation();">Open ↗</a>
               <button class="btn btn-secondary" data-toggle>Notes <span class="chev">▾</span></button>
+              <div class="share-row">
+                <button class="share-btn" data-share="wa" title="Share on WhatsApp">WA</button>
+                <button class="share-btn" data-share="gm" title="Share via Gmail">@</button>
+                <button class="share-btn" data-share="copy" title="Copy link">⎘</button>
+              </div>
             </div>
           </div>
           <div class="notes-panel">
@@ -860,9 +901,67 @@
     };
 
     /* ──────────────────────────────────────────────
+       Share — WhatsApp / Gmail / Copy link
+       ────────────────────────────────────────────── */
+    const buildAbsoluteUrl = (relPath) => {
+      // location.href ends in /index.html or /; strip filename and append the deck path
+      const base = location.href.replace(/\/[^/]*$/, '/');
+      return base + relPath;
+    };
+
+    const handleShare = (kind, deck, btn) => {
+      const url = buildAbsoluteUrl(deck.path);
+      const subject = `Slide deck: ${deck.title}`;
+      const body = `${deck.title}${deck.description ? '\n\n' + deck.description : ''}${deck.venue ? `\n\nVenue: ${deck.venue}` : ''}\n\n${url}`;
+
+      if (kind === 'wa') {
+        window.open(`https://wa.me/?text=${encodeURIComponent(body)}`, '_blank', 'noopener');
+      } else if (kind === 'gm') {
+        window.open(`https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_blank', 'noopener');
+      } else if (kind === 'copy') {
+        const fallbackCopy = (text) => {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          ta.remove();
+        };
+
+        const showCopied = () => {
+          const original = btn.textContent;
+          btn.textContent = '✓';
+          btn.classList.add('copied');
+          setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1200);
+        };
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(showCopied).catch(() => { fallbackCopy(url); showCopied(); });
+        } else {
+          fallbackCopy(url);
+          showCopied();
+        }
+      }
+    };
+
+    /* ──────────────────────────────────────────────
        Events
        ────────────────────────────────────────────── */
     $grid.addEventListener('click', (e) => {
+      // Share buttons fire first — they don't toggle the card
+      const shareBtn = e.target.closest('[data-share]');
+      if (shareBtn) {
+        e.stopPropagation();
+        e.preventDefault();
+        const card = shareBtn.closest('.deck');
+        const id = card?.dataset.id;
+        const deck = state.decks.find((d) => d.id === id);
+        if (deck) handleShare(shareBtn.dataset.share, deck, shareBtn);
+        return;
+      }
+
       // Don't toggle if user clicked the open link, clear button, or is typing in the textarea
       if (e.target.closest('a.btn')) return;
       if (e.target.closest('[data-clear]')) return;

@@ -679,36 +679,41 @@
       };
     }
 
-    // Designed-for-clarity day: tight OR forms, then a clean LONG breakout
-    // that runs all day with one shallow pullback that stays above SL.
+    // Designed day: waypoint-based instead of pure random walk so the
+    // narrative is guaranteed every reload — clean LONG entry, profit,
+    // a scary pullback that nearly hits SL, recovery, strong close.
     function generatePath() {
       const rand = mulberry32(7);
-      const path = [START_PRICE];
-      let price = START_PRICE;
-      for (let i = 1; i < TOTAL_MINS; i++) {
-        let drift, noise;
-        if (i < 20) {           // OR formation: tight oscillation, ~50pt range
-          drift = 0;
-          noise = 5;
-        } else if (i < 55) {    // Pre-breakout coil: gentle upward pressure
-          drift = 0.12;
-          noise = 4;
-        } else if (i < 85) {    // The breakout: punch through OR high
-          drift = 0.85;
-          noise = 6;
-        } else if (i < 200) {   // Post-breakout trend: steady uptrend
-          drift = 0.22;
-          noise = 6;
-        } else if (i < 260) {   // Shallow pullback: profit-taking, stays above SL
-          drift = -0.18;
-          noise = 5;
-        } else {                // Afternoon continuation into the close
-          drift = 0.28;
-          noise = 6;
+
+      // (minute, target price, noise amplitude in that segment)
+      const waypoints = [
+        { i: 0,   p: 25000, n: 3 },  // Open
+        { i: 20,  p: 25010, n: 3 },  // OR formation ends near upper edge (~16pt range)
+        { i: 32,  p: 25025, n: 2 },  // Breakout candle — first close above OR high
+        { i: 90,  p: 25080, n: 5 },  // Post-breakout trend up
+        { i: 175, p: 25015, n: 3 },  // Pullback bottom — scary, ~10pt below entry
+        { i: 260, p: 25090, n: 5 },  // Recovery breaks prior high
+        { i: 374, p: 25180, n: 6 },  // Strong close
+      ];
+
+      const path = [];
+      for (let i = 0; i < TOTAL_MINS; i++) {
+        // Find the waypoint segment this minute belongs to
+        let prev = waypoints[0];
+        let next = waypoints[waypoints.length - 1];
+        for (let w = 0; w < waypoints.length - 1; w++) {
+          if (i >= waypoints[w].i && i < waypoints[w + 1].i) {
+            prev = waypoints[w];
+            next = waypoints[w + 1];
+            break;
+          }
         }
-        const move = drift + (rand() - 0.5) * noise * 2;
-        price = price + move;
-        path.push(price);
+        // Cosine ease so direction changes feel organic, not piecewise-linear
+        const t = next.i === prev.i ? 0 : (i - prev.i) / (next.i - prev.i);
+        const eased = 0.5 * (1 - Math.cos(Math.PI * t));
+        const trend = prev.p + eased * (next.p - prev.p);
+        const noise = next.n; // use the destination segment's noise budget
+        path.push(trend + (rand() - 0.5) * noise * 2);
       }
       return path;
     }
